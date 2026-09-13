@@ -192,6 +192,32 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 </div>
 </div>
 </sc-for>
+
+<sc-if value="{{ hasHighlights }}">
+<div style="display:flex;flex-direction:column;gap:12px;margin-top:clamp(18px,2vw,26px)">
+<div style="display:flex;align-items:center;gap:11px">
+<span style="font-size:10.5px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)">Números da copa</span>
+<span style="flex:1;height:1px;background:rgba(255,255,255,.08)"></span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,212px),1fr));gap:10px">
+<sc-for list="{{ highlights }}" as="hl" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:10px;padding:13px 14px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)">
+<span style="font-size:9.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.42)">{{ hl.label }}</span>
+<sc-for list="{{ hl.items }}" as="it" hint-placeholder-count="1">
+<div onClick="{{ it.open }}" style="display:flex;align-items:center;gap:9px;cursor:pointer;border-radius:9px;transition:background .12s ease" style-hover="background:rgba(255,255,255,.05)">
+<span style="flex:none;width:28px;height:28px;border-radius: {{ it.redondo }};background: {{ it.g }};box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:900;color:#8FD0FF">{{ it.i }}</span>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column">
+<span style="font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.name }}</span>
+<span style="font-size:9.5px;font-weight:600;color:rgba(255,255,255,.4)">{{ it.sub }}</span>
+</div>
+<span style="flex:none;font-size:11.5px;font-weight:900;color:#8FD0FF;white-space:nowrap">{{ it.value }}</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
 </div>
 
 <aside style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:clamp(20px,2.4vw,30px)">
@@ -234,7 +260,7 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <sc-for list="{{ scorers }}" as="s" hint-placeholder-count="4">
 <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.06)">
 <span style="flex:none;width:24px;font-size:11px;font-weight:900;color:rgba(255,255,255,.4)">{{ s.pos }}</span>
-<span style="flex:none;width:26px;height:26px;border-radius:8px;background: {{ s.g }};box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:900">{{ s.i }}</span>
+<span style="flex:none;width:28px;height:28px;border-radius:99px;background: {{ s.g }};box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#8FD0FF">{{ s.i }}</span>
 <div style="flex:1;min-width:0;display:flex;flex-direction:column">
 <span style="font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span>
 <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,.42)">{{ s.team }}</span>
@@ -447,7 +473,7 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:60px 20px;text-align:center">
 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6"><path d="M4 5h12v14H5a1 1 0 01-1-1V5z"></path><path d="M16 9h4v8.5a1.5 1.5 0 01-3 0V9z"></path></svg>
 <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.55)">Nenhuma notícia publicada ainda</span>
-<span style="font-size:11.5px;color:rgba(255,255,255,.35);max-width:360px">Assim que a organização publicar algo na planilha, as notícias aparecem aqui automaticamente.</span>
+<span style="font-size:11.5px;color:rgba(255,255,255,.35);max-width:360px">As novidades da competição aparecem aqui em breve.</span>
 </div>
 </sc-if>
 </div>
@@ -647,14 +673,14 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <div style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45)">ELENCO</div>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:0 26px">
 <sc-for list="{{ lineup }}" as="p" hint-placeholder-count="6">
-<div style="display:flex;align-items:center;gap:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)">
-<span style="flex:none;width:28px;height:28px;border-radius:9px;background:rgba(63,169,255,.14);color:#8FD0FF;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:900">{{ p.n }}</span>
+<div style="display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)">
+<span style="flex:none;width:30px;height:30px;border-radius:99px;background: {{ p.fg }};box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);color:#8FD0FF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900">{{ p.fi }}</span>
+<span style="flex:none;min-width:22px;font-size:11.5px;font-weight:900;color:rgba(255,255,255,.45)">{{ p.n }}</span>
 <span style="flex:1;font-size:13px;font-weight:700">{{ p.name }}</span>
 <span style="font-size:10.5px;font-weight:800;letter-spacing:.8px;color:rgba(255,255,255,.42)">{{ p.pos }}</span>
 </div>
 </sc-for>
 </div>
-<div style="font-size:10.5px;color:rgba(255,255,255,.35);line-height:1.5">Jogadores inscritos por cada time na planilha da competição.</div>
 </div>
 </sc-if>
 </div>
@@ -717,7 +743,7 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <div onClick="{{ gm.open }}" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);cursor:pointer" style-hover="background:rgba(255,255,255,.07)">
 <div style="flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;background: {{ gm.oppG }}">{{ gm.oppInitials }}</div>
 <div style="flex:1;min-width:0">
-<div style="font-size:12.5px;font-weight:700">{{ gm.mandante }} × {{ gm.oppNome }}</div>
+<div style="font-size:12.5px;font-weight:700">{{ gm.oppNome }}</div>
 <div style="font-size:10px;color:rgba(255,255,255,.42)">{{ gm.centerSub }}</div>
 </div>
 <div style="flex:none;font-size:15px;font-weight:900">{{ gm.center }}</div>
@@ -728,15 +754,16 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <span style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.45)">ELENCO</span>
 <sc-if value="{{ teamProfile.hasSquad }}">
 <sc-for list="{{ teamProfile.squad }}" as="p" hint-placeholder-count="4">
-<div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07)">
-<span style="flex:none;width:26px;height:26px;border-radius:8px;background:rgba(63,169,255,.14);color:#8FD0FF;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900">{{ p.n }}</span>
+<div style="display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07)">
+<span style="flex:none;width:30px;height:30px;border-radius:99px;background: {{ p.fg }};box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);color:#8FD0FF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900">{{ p.fi }}</span>
+<span style="flex:none;min-width:20px;font-size:11px;font-weight:900;color:rgba(255,255,255,.45)">{{ p.n }}</span>
 <span style="flex:1;font-size:13px;font-weight:700">{{ p.name }}</span>
 <span style="font-size:10.5px;font-weight:800;color:rgba(255,255,255,.42)">{{ p.pos }}</span>
 </div>
 </sc-for>
 </sc-if>
 <sc-if value="{{ !teamProfile.hasSquad }}">
-<div style="padding:16px 0;font-size:12px;color:rgba(255,255,255,.4)">Elenco ainda não cadastrado na planilha.</div>
+<div style="padding:16px 0;font-size:12px;color:rgba(255,255,255,.4)">Elenco ainda não divulgado.</div>
 </sc-if>
 </div>
 </div>
@@ -757,7 +784,7 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 </div>
 </sc-for>
 <sc-if value="{{ !hasTeams }}">
-<div style="padding:30px 0;text-align:center;font-size:12px;color:rgba(255,255,255,.4)">Nenhum time cadastrado ainda na planilha.</div>
+<div style="padding:30px 0;text-align:center;font-size:12px;color:rgba(255,255,255,.4)">Times ainda não divulgados.</div>
 </sc-if>
 </div>
 </sc-if>
@@ -817,7 +844,7 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 20px;text-align:center">
 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6"><path d="M4 7h16v13H4z"></path><path d="M9 3h6v4H9z"></path></svg>
 <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.55)">Conteúdo em breve</span>
-<span style="font-size:11.5px;color:rgba(255,255,255,.35);max-width:340px">As gravações aparecem aqui assim que uma partida for encerrada com o link cadastrado na planilha.</span>
+<span style="font-size:11.5px;color:rgba(255,255,255,.35);max-width:340px">As gravações das partidas aparecem aqui em breve.</span>
 </div>
 </sc-if>
 </sc-if>
@@ -837,7 +864,6 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 20px;text-align:center">
 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M9 15V9l6 3-6 3z"></path></svg>
 <span style="font-size:13px;font-weight:700;color:rgba(255,255,255,.55)">Transmissão em breve</span>
-<span style="font-size:11.5px;color:rgba(255,255,255,.35);max-width:340px">Assim que a URL da rádio for cadastrada na planilha (RadioURL do jogo ao vivo, ou radio_url_padrao na aba Config), o player aparece aqui e no rodapé automaticamente.</span>
 </div>
 </sc-if>
 </sc-if>
@@ -854,7 +880,7 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 </div>
 </sc-if>
 <sc-if value="{{ !hasRegulamento }}">
-<div style="padding:50px 20px;text-align:center;font-size:12.5px;color:rgba(255,255,255,.4)">Regulamento ainda não publicado na planilha.</div>
+<div style="padding:50px 20px;text-align:center;font-size:12.5px;color:rgba(255,255,255,.4)">Regulamento ainda não divulgado.</div>
 </sc-if>
 </sc-if>
 
@@ -877,7 +903,7 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 </div>
 </sc-if>
 <sc-if value="{{ !hasContato }}">
-<div style="padding:50px 20px;text-align:center;font-size:12.5px;color:rgba(255,255,255,.4)">Informações de contato ainda não publicadas na planilha.</div>
+<div style="padding:50px 20px;text-align:center;font-size:12.5px;color:rgba(255,255,255,.4)">Informações de contato em breve.</div>
 </sc-if>
 </sc-if>
 
@@ -1087,14 +1113,17 @@ class Component extends DCLogic {
   }
   closeVideo() { this.setState({ videoOpen: false }); }
 
-  // Testa cada foto de notícia no navegador (CSS background-image sozinho não
-  // avisa quando uma URL falha). Se der erro (link do Drive sem permissão
-  // pública, 404, etc.), o card cai pro mesmo visual de "sem foto" — nunca
-  // fica um quadro quebrado.
+  // Testa no navegador cada imagem vinda do Drive — foto de notícia, escudo de
+  // time e foto de jogador (CSS background-image sozinho não avisa quando uma
+  // URL falha). Se der erro (link sem permissão pública, 404, etc.), aquele
+  // ponto cai sozinho na alternativa visual — nunca fica um quadro quebrado.
   preloadNewsImages(data) {
     if (!data) return;
-    data.noticias.forEach(n => {
-      const url = n.imagem;
+    const urls = []
+      .concat(data.noticias.map(n => n.imagem))
+      .concat(data.times.map(t => t.escudo))
+      .concat(data.jogadores.map(j => j.foto));
+    urls.forEach(url => {
       if (!url || this.triedImages[url]) return;
       this.triedImages[url] = true;
       const img = new Image();
@@ -1165,6 +1194,7 @@ class Component extends DCLogic {
       filterGrupo: this.state.filterGrupo, filterRodada: this.state.filterRodada,
       view: this.state.view, tab: this.state.tab, openId: this.state.openId,
       group: this.state.group, wide: this.state.wide, now: new Date(),
+      debug: /[?&]debug=1\b/.test(location.search),
       brokenImages: this.state.brokenImages,
       newsOpenId: this.state.newsOpenId, teamOpenId: this.state.teamOpenId,
       followedTeams: this.state.followedTeams, searchQuery: this.state.searchQuery
@@ -1201,10 +1231,10 @@ class Component extends DCLogic {
     const hasRadio = (this.props.showRadio !== false) && base.hasRadio;
 
     const moreDefs = [
-      { n: '01', t: 'Times participantes', d: 'Os 24 times por grupo, com cor e iniciais. Clique pra ver o perfil.', key: 'Times' },
+      { n: '01', t: 'Times participantes', d: 'Todos os times por grupo. Clique pra ver o perfil completo.', key: 'Times' },
       { n: '02', t: 'Notificações de gol', d: 'Com esta página aberta, avisamos na tela quando o placar de um time que você segue mudar.', key: 'Notificacoes' },
       { n: '03', t: 'Central de mídia', d: 'Gravações das partidas encerradas, com os gols marcados no vídeo.', key: 'Midia' },
-      { n: '04', t: 'Rádio ao vivo', d: hasRadio ? 'Transmissão ao vivo dos jogos, direto no player.' : 'Transmissão em breve — assim que o link for cadastrado na planilha.', key: 'Radio' },
+      { n: '04', t: 'Rádio ao vivo', d: hasRadio ? 'Transmissão ao vivo dos jogos, direto no player.' : 'Transmissão em breve.', key: 'Radio' },
       { n: '05', t: 'Regulamento', d: 'Formato da competição, critérios de desempate e arbitragem.', key: 'Regulamento' },
       { n: '06', t: 'Fale com a organização', d: 'Contato da comissão, imprensa e inscrições da próxima edição.', key: 'Contato' }
     ];

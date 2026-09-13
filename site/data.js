@@ -281,7 +281,7 @@
           setor: str(r["Setor"]),
           grupo: str(r["Grupo"]),
           corHex: /^#[0-9a-fA-F]{3,6}$/.test(str(r["CorHex"])) ? str(r["CorHex"]) : FALLBACK_HEX,
-          escudo: str(r["Escudo (URL)"]) || str(r["Escudo"])
+          escudo: normalizeDriveImageUrl(str(r["Escudo (URL)"]) || str(r["Escudo"]))
         };
       });
     var timeById = {};
@@ -296,7 +296,7 @@
           timeId: str(r["TimeID"]),
           numero: str(r["Número"]),
           posicao: str(r["Posição"]),
-          foto: str(r["Foto (URL)"]) || str(r["Foto"])
+          foto: normalizeDriveImageUrl(str(r["Foto (URL)"]) || str(r["Foto"]))
         };
       });
     var jogadorById = {};

@@ -38,6 +38,25 @@
   }
   function cssUrl(u) { return String(u).replace(/["\\]/g, ""); }
 
+  // ---- imagens: escudo do time e foto do jogador ---------------------------
+  // A imagem só é usada depois que o navegador confirmou que ela carrega
+  // (ui.brokenImages). Havendo imagem, as iniciais saem de cena — escudo nunca
+  // fica com letra por cima. Sem imagem, ou se ela falhar, as iniciais
+  // coloridas voltam como alternativa.
+  function imgOk(url, ui) {
+    return !!url && !(ui && ui.brokenImages && ui.brokenImages[url]);
+  }
+  function teamBadge(team, ui) {
+    var t = team || {};
+    if (imgOk(t.escudo, ui)) return { g: "center/contain no-repeat url(" + cssUrl(t.escudo) + ")", i: "" };
+    return { g: teamGradient(t.corHex || FALLBACK_HEX), i: initials(t.nome || "?") };
+  }
+  function playerAvatar(player, ui) {
+    var p = player || {};
+    if (imgOk(p.foto, ui)) return { g: "center/cover no-repeat url(" + cssUrl(p.foto) + ")", i: "" };
+    return { g: "rgba(63,169,255,.16)", i: str(p.nome || "?").charAt(0).toUpperCase() };
+  }
+
   // ---- cronômetro -----------------------------------------------------------
 
   function matchMinute(game, config, now) {
@@ -82,7 +101,7 @@
     switch (game.status) {
       case "Ao vivo": return minute === null ? "AO VIVO" : (minute > config.duracaoTempoMin ? "2º TEMPO" : "1º TEMPO");
       case "Intervalo": return "INTERVALO";
-      case "Encerrado": return "FINALIZADO";
+      case "Encerrado": return statusLabel(game);
       case "Adiado": return "ADIADO";
       case "WO": return "W.O.";
       default: return "LOCAL";
@@ -96,14 +115,24 @@
     }
     return "VS";
   }
+  // O rótulo do jogo segue o valor da coluna Status da planilha, em vez de um
+  // texto próprio ("FINAL"), pra planilha e site nunca divergirem.
+  function statusLabel(game) {
+    return str(game.status).toUpperCase() || "AGENDADO";
+  }
+  function scheduleLabel(game) {
+    var dia = formatDatePt(game.data);
+    var hora = game.hora || "--:--";
+    return dia ? (dia + " · " + hora) : hora;
+  }
   function centerSubText(game, minute, config) {
     switch (game.status) {
       case "Ao vivo": return minute === null ? "AO VIVO" : (minute + "'");
       case "Intervalo": return config.duracaoTempoMin + "'";
-      case "Encerrado": return "FINAL";
-      case "Adiado": return "ADIADO";
+      case "Encerrado": return statusLabel(game);
+      case "Adiado": return statusLabel(game);
       case "WO": return "W.O.";
-      default: return game.hora || "--:--";
+      default: return scheduleLabel(game);
     }
   }
 
@@ -114,12 +143,11 @@
     var minute = matchMinute(game, config, ui.now);
     var bucket = classify(game.status);
     var style = BUCKET_STYLE[bucket];
+    var badgeA = teamBadge(teamA, ui), badgeB = teamBadge(teamB, ui);
     return {
       id: game.id, isLive: bucket === "live",
-      ia: initials(teamA.nome), na: teamA.nome,
-      ga: teamA.escudo ? ("center/cover no-repeat url(" + cssUrl(teamA.escudo) + ")") : teamGradient(teamA.corHex),
-      ib: initials(teamB.nome), nb: teamB.nome,
-      gb: teamB.escudo ? ("center/cover no-repeat url(" + cssUrl(teamB.escudo) + ")") : teamGradient(teamB.corHex),
+      ia: badgeA.i, na: teamA.nome, ga: badgeA.g,
+      ib: badgeB.i, nb: teamB.nome, gb: badgeB.g,
       center: centerText(game),
       centerSub: centerSubText(game, minute, config),
       centerFg: style.centerFg, subFg: style.subFg, centerAnim: "none",
@@ -192,7 +220,7 @@
     ];
   }
 
-  function buildLineup(game, data) {
+  function buildLineup(game, data, ui) {
     var squadA = data.jogadores.filter(function (j) { return j.timeId === game.timeCasaId; });
     var squadB = data.jogadores.filter(function (j) { return j.timeId === game.timeForaId; });
     if (!squadA.length && !squadB.length) return [];
@@ -200,7 +228,10 @@
     function mapSquad(list, teamName) {
       return list.slice()
         .sort(function (x, y) { return (Number(x.numero) || 99) - (Number(y.numero) || 99); })
-        .map(function (j) { return { n: j.numero || "-", name: j.nome, pos: (j.posicao || "—") + " · " + teamName }; });
+        .map(function (j) {
+          var av = playerAvatar(j, ui);
+          return { n: j.numero || "-", name: j.nome, pos: (j.posicao || "—") + " · " + teamName, fg: av.g, fi: av.i };
+        });
     }
     return mapSquad(squadA, teamA ? teamA.nome : "Casa").concat(mapSquad(squadB, teamB ? teamB.nome : "Visitante"));
   }
@@ -214,7 +245,7 @@
     switch (game.status) {
       case "Ao vivo": statusLong = "AO VIVO" + (minute !== null ? " · " + minute + "'" : ""); break;
       case "Intervalo": statusLong = "INTERVALO"; break;
-      case "Encerrado": statusLong = "FINALIZADO"; break;
+      case "Encerrado": statusLong = statusLabel(game); break;
       case "Adiado": statusLong = "ADIADO"; break;
       case "WO": statusLong = "W.O."; break;
       default: statusLong = (game.hora || "");
@@ -222,7 +253,7 @@
 
     var events = buildEvents(game, data, actions);
     var stats = buildStats(game, data);
-    var lineup = buildLineup(game, data);
+    var lineup = buildLineup(game, data, ui);
 
     var tabDefs = [{ key: "Eventos", label: "Eventos" }];
     if (stats.length) tabDefs.push({ key: "Estatísticas", label: "Estatísticas" });
@@ -297,16 +328,16 @@
     return rows;
   }
 
-  function standingsRowShape(r, idx, cutoff, data, actions) {
+  function standingsRowShape(r, idx, cutoff, data, ui, actions) {
     var team = data.timeById[r.timeId];
     var nome = team ? team.nome : r.time;
     var corHex = team ? team.corHex : FALLBACK_HEX;
     var classified = idx < cutoff;
+    var badge = teamBadge(team || { nome: nome, corHex: corHex }, ui);
     var pct = r.j > 0 ? Math.round((r.p / (r.j * 3)) * 100) : 0;
     return {
       pos: String(idx + 1), n: nome,
-      g: team && team.escudo ? ("center/cover no-repeat url(" + cssUrl(team.escudo) + ")") : teamGradient(corHex),
-      i: initials(nome),
+      g: badge.g, i: badge.i,
       j: r.j, v: r.v, e: r.e, d: r.d, gp: r.gp, gc: r.gc,
       sg: (r.sg > 0 ? "+" : "") + r.sg, pts: r.p,
       apr: pct + "%", aprW: pct + "%",
@@ -317,7 +348,7 @@
     };
   }
 
-  function buildStandings(data, groupFilter, actions) {
+  function buildStandings(data, groupFilter, ui, actions) {
     var rows = data.classificacao.slice();
     if (groupFilter) {
       var idsInGroup = {};
@@ -326,12 +357,12 @@
     }
     sortStandingsRows(rows, data);
     var cutoff = data.config.timesClassificados;
-    return rows.map(function (r, idx) { return standingsRowShape(r, idx, cutoff, data, actions); });
+    return rows.map(function (r, idx) { return standingsRowShape(r, idx, cutoff, data, ui, actions); });
   }
 
   // Um bloco por grupo (A, B, C...), cada um já ordenado e com sua própria
   // zona de classificação — usado na Tabela em vez de uma lista só com abas.
-  function buildGroupBlocks(data, actions) {
+  function buildGroupBlocks(data, ui, actions) {
     var groupsList = buildGroupsList(data);
     var byGroup = {};
     data.times.forEach(function (t) { if (t.grupo) (byGroup[t.grupo] = byGroup[t.grupo] || []).push(t.id); });
@@ -343,7 +374,7 @@
       sortStandingsRows(rows, data);
       return {
         group: g, label: "GRUPO " + g,
-        teams: rows.map(function (r, idx) { return standingsRowShape(r, idx, cutoffPerGroup, data, actions); })
+        teams: rows.map(function (r, idx) { return standingsRowShape(r, idx, cutoffPerGroup, data, ui, actions); })
       };
     });
   }
@@ -362,7 +393,7 @@
 
   // ---- artilharia -----------------------------------------------------------
 
-  function buildScorers(data) {
+  function buildScorers(data, ui) {
     var counts = {};
     Object.keys(data.golsPorJogo).forEach(function (jogoId) {
       data.golsPorJogo[jogoId].forEach(function (g) {
@@ -373,12 +404,13 @@
     var list = Object.keys(counts).map(function (id) {
       var j = data.jogadorById[id];
       var team = j ? data.timeById[j.timeId] : null;
-      return { name: j ? j.nome : id, team: team ? team.nome : "", corHex: team ? team.corHex : FALLBACK_HEX, goals: counts[id] };
+      var av = playerAvatar(j, ui);
+      return { name: j ? j.nome : id, team: team ? team.nome : "", goals: counts[id], g: av.g, i: av.i };
     });
     list.sort(function (a, b) { return b.goals - a.goals; });
     var ord = ["1º", "2º", "3º", "4º"];
     return list.slice(0, 4).map(function (s, i) {
-      return { pos: ord[i] || (i + 1) + "º", i: initials(s.name), g: teamGradient(s.corHex), name: s.name, team: s.team, goals: s.goals };
+      return { pos: ord[i] || (i + 1) + "º", i: s.i, g: s.g, name: s.name, team: s.team, goals: s.goals };
     });
   }
 
@@ -572,15 +604,14 @@
 
   // ---- times: listagem por grupo + perfil ------------------------------------
 
-  function buildTeamsGrouped(data, actions) {
+  function buildTeamsGrouped(data, ui, actions) {
     var groupsList = buildGroupsList(data);
     return groupsList.map(function (g) {
       var teams = data.times.filter(function (t) { return t.grupo === g; })
         .slice().sort(function (a, b) { return a.nome.localeCompare(b.nome); })
         .map(function (t) {
           return {
-            id: t.id, nome: t.nome, i: initials(t.nome),
-            g: t.escudo ? ("center/cover no-repeat url(" + cssUrl(t.escudo) + ")") : teamGradient(t.corHex),
+            id: t.id, nome: t.nome, i: teamBadge(t, ui).i, g: teamBadge(t, ui).g,
             open: function () { actions.openTeam(t.id); }
           };
         });
@@ -596,10 +627,9 @@
         var oppId = isCasa ? g.timeForaId : g.timeCasaId;
         var opp = data.timeById[oppId] || { nome: "A definir", corHex: FALLBACK_HEX };
         var card = matchCard(g, data, ui, actions);
+        var oppBadge = teamBadge(opp, ui);
         return {
-          oppNome: opp.nome, oppInitials: initials(opp.nome),
-          oppG: opp.escudo ? ("center/cover no-repeat url(" + cssUrl(opp.escudo) + ")") : teamGradient(opp.corHex),
-          mandante: isCasa ? "CASA" : "FORA",
+          oppNome: opp.nome, oppInitials: oppBadge.i, oppG: oppBadge.g,
           center: card.center, centerSub: card.centerSub,
           chip: card.chip, chipFg: card.chipFg,
           open: card.open
@@ -615,11 +645,13 @@
     var pct = classRow && classRow.j > 0 ? Math.round((classRow.p / (classRow.j * 3)) * 100) : 0;
     var squad = data.jogadores.filter(function (j) { return j.timeId === teamId; })
       .sort(function (a, b) { return (Number(a.numero) || 99) - (Number(b.numero) || 99); })
-      .map(function (j) { return { n: j.numero || "-", name: j.nome, pos: j.posicao || "—" }; });
+      .map(function (j) {
+        var av = playerAvatar(j, ui);
+        return { n: j.numero || "-", name: j.nome, pos: j.posicao || "—", fg: av.g, fi: av.i };
+      });
     return {
       id: team.id, nome: team.nome, grupo: team.grupo ? ("GRUPO " + team.grupo) : "",
-      i: initials(team.nome),
-      g: team.escudo ? ("center/cover no-repeat url(" + cssUrl(team.escudo) + ")") : teamGradient(team.corHex),
+      i: teamBadge(team, ui).i, g: teamBadge(team, ui).g,
       v: classRow ? classRow.v : 0, e: classRow ? classRow.e : 0, d: classRow ? classRow.d : 0,
       pts: classRow ? classRow.p : 0, aproveitamento: pct + "%",
       games: buildTeamGames(data, teamId, ui, actions),
@@ -629,12 +661,11 @@
 
   // ---- notificações de gol (só enquanto a página está aberta) --------------
 
-  function buildFollowTeams(data, followedTeams, actions) {
+  function buildFollowTeams(data, followedTeams, ui, actions) {
     return data.times.slice().sort(function (a, b) { return a.nome.localeCompare(b.nome); }).map(function (t) {
       var on = !!(followedTeams && followedTeams[t.id]);
       return {
-        id: t.id, nome: t.nome, i: initials(t.nome),
-        g: t.escudo ? ("center/cover no-repeat url(" + cssUrl(t.escudo) + ")") : teamGradient(t.corHex),
+        id: t.id, nome: t.nome, i: teamBadge(t, ui).i, g: teamBadge(t, ui).g,
         on: on, onFg: on ? "#fff" : "rgba(255,255,255,.6)",
         onBg: on ? "linear-gradient(100deg,#1E6BFF,#3FA9FF)" : "rgba(255,255,255,.06)",
         onBd: on ? "rgba(143,208,255,.6)" : "rgba(255,255,255,.1)",
@@ -715,18 +746,184 @@
 
   // ---- busca de time ----------------------------------------------------------
 
-  function buildSearchResults(data, query, actions) {
+  function buildSearchResults(data, query, ui, actions) {
     var q = str(query).toLowerCase();
     if (!q) return [];
     return data.times.filter(function (t) { return t.nome.toLowerCase().indexOf(q) !== -1; })
       .slice(0, 12)
       .map(function (t) {
         return {
-          id: t.id, nome: t.nome, grupo: t.grupo, i: initials(t.nome),
-          g: t.escudo ? ("center/cover no-repeat url(" + cssUrl(t.escudo) + ")") : teamGradient(t.corHex),
+          id: t.id, nome: t.nome, grupo: t.grupo, i: teamBadge(t, ui).i, g: teamBadge(t, ui).g,
           open: function () { actions.openSearchResult(t.id); }
         };
       });
+  }
+
+  // ---- destaques da Home ----------------------------------------------------
+  // Tudo derivado de Jogos + Gols, recalculado a cada leitura da planilha.
+  // Cada card só existe se tiver dado real por trás: sem gol registrado não
+  // há artilheiro, sem jogo encerrado não há ataque/defesa nem goleada. Em
+  // caso de empate, todos os empatados aparecem — nunca se escolhe um.
+
+  function jogosEncerrados(data) {
+    return data.jogos.filter(function (g) {
+      return (g.status === "Encerrado" || g.status === "WO") &&
+        g.golsCasa !== null && g.golsFora !== null;
+    });
+  }
+
+  // Índices dos valores máximos (ou mínimos) — devolve todos os empatados.
+  function melhores(list, valorDe, maior) {
+    if (!list.length) return [];
+    var best = null;
+    list.forEach(function (x) {
+      var v = valorDe(x);
+      if (best === null || (maior ? v > best : v < best)) best = v;
+    });
+    return list.filter(function (x) { return valorDe(x) === best; });
+  }
+
+  function golsPorTime(data) {
+    var acc = {};
+    jogosEncerrados(data).forEach(function (g) {
+      [[g.timeCasaId, g.golsCasa, g.golsFora], [g.timeForaId, g.golsFora, g.golsCasa]]
+        .forEach(function (par) {
+          var id = par[0];
+          if (!id || !data.timeById[id]) return;
+          var a = acc[id] || (acc[id] = { id: id, jogos: 0, pro: 0, contra: 0 });
+          a.jogos++; a.pro += par[1]; a.contra += par[2];
+        });
+    });
+    return Object.keys(acc).map(function (k) { return acc[k]; });
+  }
+
+  function cardArtilheiro(data, ui, actions) {
+    var counts = {};
+    Object.keys(data.golsPorJogo).forEach(function (jogoId) {
+      data.golsPorJogo[jogoId].forEach(function (g) {
+        if (/contra/i.test(g.tipo) || !g.jogadorId) return;
+        counts[g.jogadorId] = (counts[g.jogadorId] || 0) + 1;
+      });
+    });
+    var lista = Object.keys(counts)
+      .filter(function (id) { return counts[id] > 0 && data.jogadorById[id]; })
+      .map(function (id) { return { jogador: data.jogadorById[id], gols: counts[id] }; });
+    if (!lista.length) return null;
+    var top = melhores(lista, function (x) { return x.gols; }, true);
+    return {
+      id: "artilheiro",
+      label: top.length > 1 ? "Artilheiros" : "Artilheiro",
+      items: top.map(function (x) {
+        var av = playerAvatar(x.jogador, ui);
+        var time = data.timeById[x.jogador.timeId];
+        return {
+          g: av.g, i: av.i, redondo: "99px",
+          name: x.jogador.nome,
+          sub: time ? time.nome : "",
+          value: x.gols + (x.gols === 1 ? " gol" : " gols"),
+          open: function () { if (time) actions.openTeam(time.id); }
+        };
+      })
+    };
+  }
+
+  function cardAtaque(data, ui, actions) {
+    var times = golsPorTime(data).filter(function (t) { return t.pro > 0; });
+    if (!times.length) return null;
+    var top = melhores(times, function (t) { return t.pro; }, true);
+    return {
+      id: "ataque", label: "Ataque mais forte",
+      items: top.map(function (t) {
+        var time = data.timeById[t.id], b = teamBadge(time, ui);
+        return {
+          g: b.g, i: b.i, redondo: "12px",
+          name: time.nome,
+          sub: t.jogos + (t.jogos === 1 ? " jogo" : " jogos"),
+          value: t.pro + " gols",
+          open: function () { actions.openTeam(time.id); }
+        };
+      })
+    };
+  }
+
+  function cardDefesa(data, ui, actions) {
+    var times = golsPorTime(data);
+    if (!times.length) return null;
+    var top = melhores(times, function (t) { return t.contra; }, false);
+    return {
+      id: "defesa", label: "Defesa menos vazada",
+      items: top.map(function (t) {
+        var time = data.timeById[t.id], b = teamBadge(time, ui);
+        return {
+          g: b.g, i: b.i, redondo: "12px",
+          name: time.nome,
+          sub: t.jogos + (t.jogos === 1 ? " jogo" : " jogos"),
+          value: t.contra + (t.contra === 1 ? " gol sofrido" : " gols sofridos"),
+          open: function () { actions.openTeam(time.id); }
+        };
+      })
+    };
+  }
+
+  function cardGoleada(data, ui, actions) {
+    var comMargem = jogosEncerrados(data).filter(function (g) {
+      return Math.abs(g.golsCasa - g.golsFora) > 0;
+    });
+    if (!comMargem.length) return null;
+    var top = melhores(comMargem, function (g) { return Math.abs(g.golsCasa - g.golsFora); }, true);
+    return {
+      id: "goleada", label: top.length > 1 ? "Maiores goleadas" : "Maior goleada",
+      items: top.map(function (g) {
+        var venceuCasa = g.golsCasa > g.golsFora;
+        var vencedor = data.timeById[venceuCasa ? g.timeCasaId : g.timeForaId];
+        var perdedor = data.timeById[venceuCasa ? g.timeForaId : g.timeCasaId];
+        var b = teamBadge(vencedor, ui);
+        return {
+          g: b.g, i: b.i, redondo: "12px",
+          name: (vencedor ? vencedor.nome : "?") + " " + Math.max(g.golsCasa, g.golsFora) +
+            " × " + Math.min(g.golsCasa, g.golsFora) + " " + (perdedor ? perdedor.nome : "?"),
+          sub: formatDatePt(g.data),
+          value: "+" + Math.abs(g.golsCasa - g.golsFora),
+          open: function () { actions.openMatch(g.id); }
+        };
+      })
+    };
+  }
+
+  function cardLideres(data, ui, actions) {
+    var porGrupo = {};
+    data.times.forEach(function (t) { if (t.grupo) porGrupo[t.grupo] = true; });
+    var grupos = Object.keys(porGrupo).sort();
+    var items = [];
+    grupos.forEach(function (grupo) {
+      var ids = {};
+      data.times.forEach(function (t) { if (t.grupo === grupo) ids[t.id] = true; });
+      var rows = data.classificacao.filter(function (r) { return ids[r.timeId] && r.j > 0; });
+      if (!rows.length) return;
+      sortStandingsRows(rows, data);
+      var lider = rows[0];
+      var time = data.timeById[lider.timeId];
+      if (!time) return;
+      var b = teamBadge(time, ui);
+      items.push({
+        g: b.g, i: b.i, redondo: "12px",
+        name: time.nome, sub: "GRUPO " + grupo,
+        value: lider.p + (lider.p === 1 ? " pt" : " pts"),
+        open: function () { actions.openTeam(time.id); }
+      });
+    });
+    if (!items.length) return null;
+    return { id: "lideres", label: "Líderes dos grupos", items: items };
+  }
+
+  function buildHighlights(data, ui, actions) {
+    return [
+      cardArtilheiro(data, ui, actions),
+      cardAtaque(data, ui, actions),
+      cardDefesa(data, ui, actions),
+      cardGoleada(data, ui, actions),
+      cardLideres(data, ui, actions)
+    ].filter(Boolean);
   }
 
   // ---- cabeçalho (contagens e período, calculados da planilha) --------------
@@ -753,7 +950,9 @@
     var cardsWithGame = buildAllCards(data, ui, actions);
     var groupsList = buildGroupsList(data);
     var activeGroup = (ui.group && groupsList.indexOf(ui.group) !== -1) ? ui.group : (groupsList[0] || null);
-    var standings = buildStandings(data, activeGroup, actions);
+    var standings = buildStandings(data, activeGroup, ui, actions);
+    var scorers = buildScorers(data, ui);
+    var highlights = buildHighlights(data, ui, actions);
     var newsB = buildNews(data, ui.brokenImages, actions);
     var newsDetail = buildNewsDetail(data, ui.newsOpenId, ui.brokenImages);
     var openGame = ui.openId ? data.jogoById[ui.openId] : null;
@@ -776,9 +975,10 @@
       hasGroups: groupsList.length > 0,
       homeSections: buildHomeSections(cardsWithGame),
       standings: standings, miniStandings: standings.slice(0, 5),
-      groupBlocks: buildGroupBlocks(data, actions),
+      groupBlocks: buildGroupBlocks(data, ui, actions),
+      highlights: highlights, hasHighlights: highlights.length > 0,
       groupsTabs: buildGroupsTabs(groupsList, activeGroup, actions),
-      scorers: buildScorers(data), hasScorers: buildScorers(data).length > 0,
+      scorers: scorers, hasScorers: scorers.length > 0,
       news: newsB.all, hasNews: newsB.all.length > 0,
       newsHighlights: newsB.highlights, hasNewsHighlights: newsB.highlights.length > 0,
       newsDetail: newsDetail,
@@ -791,16 +991,18 @@
       radioNow: radioNowLabel(data),
       radioUrl: radioUrl, hasRadio: !!radioUrl,
       staleData: !!global.CopaData.getState().error,
-      validationIssues: validationIssues, hasValidationIssues: validationIssues.length > 0,
+      // Painel de diagnóstico da planilha: é ferramenta de quem administra, não
+      // conteúdo pro torcedor. Só aparece com ?debug=1 na URL.
+      validationIssues: validationIssues, hasValidationIssues: ui.debug && validationIssues.length > 0,
       validationIssuesCount: validationIssues.length,
-      teamsGrouped: buildTeamsGrouped(data, actions), hasTeams: data.times.length > 0,
+      teamsGrouped: buildTeamsGrouped(data, ui, actions), hasTeams: data.times.length > 0,
       teamProfile: teamProfile,
-      followTeams: buildFollowTeams(data, ui.followedTeams, actions),
+      followTeams: buildFollowTeams(data, ui.followedTeams, ui, actions),
       mediaItems: mediaItems, hasMediaItems: mediaItems.length > 0,
       regulamentoBlocks: regulamentoBlocks, hasRegulamento: regulamentoBlocks.length > 0,
       contatoBlocks: contatoBlocks, hasContato: contatoBlocks.length > 0,
       contatoLinks: contatoLinks, hasContatoLinks: contatoLinks.length > 0,
-      searchResults: buildSearchResults(data, ui.searchQuery, actions)
+      searchResults: buildSearchResults(data, ui.searchQuery, ui, actions)
     };
   }
 
