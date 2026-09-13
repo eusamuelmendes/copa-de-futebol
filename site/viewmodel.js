@@ -319,11 +319,6 @@
 
   function buildStandings(data, groupFilter, actions) {
     var rows = data.classificacao.slice();
-    // Se Classificação está vazia, calcula a partir dos jogos
-    if (rows.length === 0 || rows.every(function (r) { return r.j === 0; })) {
-      var calcFromGames = calcularClassificacaoDoGames(data);
-      rows = Object.keys(calcFromGames).map(function (k) { return calcFromGames[k]; });
-    }
     if (groupFilter) {
       var idsInGroup = {};
       data.times.forEach(function (t) { if (t.grupo === groupFilter) idsInGroup[t.id] = true; });
@@ -341,16 +336,10 @@
     var byGroup = {};
     data.times.forEach(function (t) { if (t.grupo) (byGroup[t.grupo] = byGroup[t.grupo] || []).push(t.id); });
     var cutoffPerGroup = 2; // regra da competição: os 2 primeiros de cada grupo avançam
-    // Se Classificação está vazia, calcula a partir dos jogos
-    var allRows = data.classificacao.slice();
-    if (allRows.length === 0 || allRows.every(function (r) { return r.j === 0; })) {
-      var calcFromGames = calcularClassificacaoDoGames(data);
-      allRows = Object.keys(calcFromGames).map(function (k) { return calcFromGames[k]; });
-    }
     return groupsList.map(function (g) {
       var idsInGroup = {};
       (byGroup[g] || []).forEach(function (id) { idsInGroup[id] = true; });
-      var rows = allRows.filter(function (r) { return idsInGroup[r.timeId]; });
+      var rows = data.classificacao.filter(function (r) { return idsInGroup[r.timeId]; });
       sortStandingsRows(rows, data);
       return {
         group: g, label: "GRUPO " + g,
@@ -599,33 +588,6 @@
     });
   }
 
-  // Auto-calcula a classificação a partir dos jogos encerrados
-  function calcularClassificacaoDoGames(data) {
-    var calc = {};
-    data.times.forEach(function (t) {
-      calc[t.id] = { timeId: t.id, j: 0, v: 0, e: 0, d: 0, p: 0, gp: 0, gc: 0 };
-    });
-    data.jogos.forEach(function (g) {
-      if (g.status !== "Encerrado" || g.golsCasa === null || g.golsFora === null) return;
-      var casa = calc[g.timeCasaId], fora = calc[g.timeForaId];
-      if (!casa || !fora) return;
-      casa.j++; fora.j++;
-      casa.gp += g.golsCasa; casa.gc += g.golsFora;
-      fora.gp += g.golsFora; fora.gc += g.golsCasa;
-      if (g.golsCasa > g.golsFora) {
-        casa.v++; casa.p += 3;
-        fora.d++;
-      } else if (g.golsCasa < g.golsFora) {
-        fora.v++; fora.p += 3;
-        casa.d++;
-      } else {
-        casa.e++; casa.p += 1;
-        fora.e++; fora.p += 1;
-      }
-    });
-    return calc;
-  }
-
   function buildTeamGames(data, teamId, ui, actions) {
     return data.jogos.filter(function (g) { return g.timeCasaId === teamId || g.timeForaId === teamId; })
       .sort(function (a, b) { return (a.data + a.hora).localeCompare(b.data + b.hora); })
@@ -650,11 +612,6 @@
     var team = data.timeById[teamId];
     if (!team) return null;
     var classRow = data.classificacao.filter(function (r) { return r.timeId === teamId; })[0];
-    // Se Classificação da planilha está vazia, calcula a partir dos jogos encerrados
-    if (!classRow || classRow.j === 0) {
-      var calcFromGames = calcularClassificacaoDoGames(data);
-      classRow = calcFromGames[teamId] || { j: 0, v: 0, e: 0, d: 0, p: 0 };
-    }
     var pct = classRow && classRow.j > 0 ? Math.round((classRow.p / (classRow.j * 3)) * 100) : 0;
     var squad = data.jogadores.filter(function (j) { return j.timeId === teamId; })
       .sort(function (a, b) { return (Number(a.numero) || 99) - (Number(b.numero) || 99); })

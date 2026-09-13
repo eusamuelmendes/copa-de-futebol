@@ -68,8 +68,24 @@
       var detail = (json.errors && json.errors[0] && json.errors[0].detailed_message) || "erro desconhecido";
       throw new Error(detail);
     }
-    var cols = (json.table.cols || []).map(function (c, i) {
-      return (c.label || c.id || ("col" + i)).trim();
+    // O gviz devolve uma coluna para TODA a largura da grade, não só para as
+    // colunas preenchidas: as vazias do fim vêm sem label, sobrando só o id
+    // (a LETRA da coluna). Usar essa letra como chave colide com cabeçalhos de
+    // uma letra só — numa aba com "P" (16ª letra) e "V" (22ª), a coluna vazia P
+    // apagava os pontos e a V apagava as vitórias, silenciosamente. Por isso o
+    // nome do cabeçalho sempre ganha da letra, e nada sobrescreve uma chave já
+    // ocupada.
+    var meta = (json.table.cols || []).map(function (c, i) {
+      return { label: str(c.label), id: str(c.id) || ("col" + i) };
+    });
+    var byLabel = {};
+    meta.forEach(function (c) { if (c.label) byLabel[c.label] = true; });
+    var used = {};
+    var cols = meta.map(function (c) {
+      var key = c.label || (byLabel[c.id] ? "" : c.id);
+      if (!key || used[key]) return "";
+      used[key] = true;
+      return key;
     });
     var rows = (json.table.rows || []).map(function (r) {
       var obj = {};
