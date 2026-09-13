@@ -290,6 +290,9 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <div style="position:absolute;inset:0;background:linear-gradient(125deg,#0C2A63,#1E6BFF)"></div>
 <span style="position:relative;z-index:1;font-size:7px;font-weight:800;letter-spacing:.8px;color:rgba(255,255,255,.62);border:1px dashed rgba(255,255,255,.32);padding:2px 4px">FOTO</span>
 </sc-if>
+<sc-if value="{{ n.hasVideo }}">
+<div data-cse-video="{{ n.videoSrc }}" data-kind="{{ n.videoKind }}" data-compact="1" style="position:absolute;inset:0;z-index:2;overflow:hidden"></div>
+</sc-if>
 </div>
 <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
 <span style="font-size:9px;font-weight:900;letter-spacing:1.4px;color:#8FD0FF">{{ n.tag }}</span>
@@ -458,6 +461,9 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <sc-if value="{{ !n.hasImg }}">
 <div style="position:absolute;inset:0;background:linear-gradient(125deg,#0C2A63,#1E6BFF)"></div>
 <span style="position:relative;z-index:1;font-size:8.5px;font-weight:800;letter-spacing:1.4px;color:rgba(255,255,255,.62);border:1px dashed rgba(255,255,255,.35);padding:5px 8px">ESPAÇO PARA FOTO OFICIAL</span>
+</sc-if>
+<sc-if value="{{ n.hasVideo }}">
+<div data-cse-video="{{ n.videoSrc }}" data-kind="{{ n.videoKind }}" style="position:absolute;inset:0;z-index:2;overflow:hidden"></div>
 </sc-if>
 </div>
 <div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px">
@@ -699,6 +705,9 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <sc-if value="{{ !newsDetail.hasImg }}">
 <div style="position:absolute;inset:0;background:linear-gradient(125deg,#0C2A63,#1E6BFF)"></div>
 </sc-if>
+<sc-if value="{{ newsDetail.hasVideo }}">
+<div data-cse-video="{{ newsDetail.videoSrc }}" data-kind="{{ newsDetail.videoKind }}" style="position:absolute;inset:0;z-index:2;overflow:hidden"></div>
+</sc-if>
 <span onClick="{{ closeNews }}" style="position:absolute;top:12px;right:12px;z-index:2;cursor:pointer;padding:8px 12px;font-size:11px;font-weight:800;letter-spacing:.8px;color:#fff;background:rgba(3,6,15,.55);border-radius:99px;backdrop-filter:blur(6px)" style-hover="background:rgba(3,6,15,.8)">← VOLTAR</span>
 </div>
 <div style="flex:1;overflow:auto;padding:22px clamp(18px,2.4vw,28px) 28px;display:flex;flex-direction:column;gap:10px">
@@ -742,11 +751,13 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <sc-for list="{{ teamProfile.games }}" as="gm" hint-placeholder-count="3">
 <div onClick="{{ gm.open }}" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);cursor:pointer" style-hover="background:rgba(255,255,255,.07)">
 <div style="flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;background: {{ gm.oppG }}">{{ gm.oppInitials }}</div>
-<div style="flex:1;min-width:0">
-<div style="font-size:12.5px;font-weight:700">{{ gm.oppNome }}</div>
-<div style="font-size:10px;color:rgba(255,255,255,.42)">{{ gm.centerSub }}</div>
-</div>
-<div style="flex:none;font-size:15px;font-weight:900">{{ gm.center }}</div>
+<div style="flex:1;min-width:0;font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ gm.linha }}</div>
+<sc-if value="{{ gm.temSelo }}">
+<span style="flex:none;padding:4px 9px;border-radius:99px;font-size:9.5px;font-weight:900;letter-spacing:.7px;color: {{ gm.seloFg }};background: {{ gm.seloBg }};border:1px solid {{ gm.seloBd }}">{{ gm.seloTexto }}</span>
+</sc-if>
+<sc-if value="{{ !gm.temSelo }}">
+<span style="flex:none;font-size:10.5px;font-weight:800;letter-spacing:.4px;color:rgba(255,255,255,.45)">{{ gm.quando }}</span>
+</sc-if>
 </div>
 </sc-for>
 </div>
@@ -1047,9 +1058,11 @@ class Component extends DCLogic {
     });
     CopaData.start();
     this.syncAudio();
+    if (window.CSEVideo) window.CSEVideo.sync();
   }
   componentDidUpdate() {
     this.syncAudio();
+    if (window.CSEVideo) window.CSEVideo.sync();
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
@@ -1320,6 +1333,158 @@ class Component extends DCLogic {
     return vals;
   }
 }
+
+// ---- vídeo mudo em loop nos cards de notícia -------------------------------
+// O template só desenha a caixa vazia (data-cse-video); quem cria e destrói o
+// <video>/<iframe> é este controlador, então o React nunca briga com ele.
+// Regras: carrega só quando entra na tela, um vídeo tocando por vez, e em
+// conexão limitada nem inicia — mostra a miniatura com botão de play.
+window.CSEVideo = (function () {
+  var tocando = null;
+  var observer = null;
+
+  function conexaoLimitada() {
+    var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (!c) return false;
+    if (c.saveData) return true;
+    return /^(slow-2g|2g|3g)$/.test(c.effectiveType || '');
+  }
+
+  function desmontar(box) {
+    if (!box) return;
+    var m = box.querySelector('video,iframe');
+    if (m) { try { if (m.pause) m.pause(); } catch (e) {} m.remove(); }
+    box.removeAttribute('data-tocando');
+    if (tocando === box) tocando = null;
+  }
+
+  function pararOsOutros(atual) {
+    if (tocando && tocando !== atual) desmontar(tocando);
+    tocando = atual;
+  }
+
+  function botao(box, texto, aoClicar) {
+    var b = box.querySelector('[data-cse-btn]');
+    var mini = box.getAttribute('data-compact') === '1';
+    if (!b) {
+      b = document.createElement('button');
+      b.setAttribute('data-cse-btn', '1');
+      b.type = 'button';
+      b.style.cssText = 'position:absolute;z-index:4;border:0;cursor:pointer;border-radius:99px;' +
+        'background:rgba(3,6,15,.62);color:#fff;line-height:1;display:flex;align-items:center;' +
+        'justify-content:center;backdrop-filter:blur(4px);padding:0;' +
+        (mini ? 'right:4px;bottom:4px;width:20px;height:20px;font-size:9px'
+              : 'right:8px;bottom:8px;width:28px;height:28px;font-size:13px');
+      box.appendChild(b);
+    }
+    b.textContent = texto;
+    b.onclick = function (e) { e.stopPropagation(); e.preventDefault(); aoClicar(); };
+    return b;
+  }
+
+  function ligarSom(box, ligar) {
+    var v = box.querySelector('video');
+    if (v) { v.muted = !ligar; }
+    var f = box.querySelector('iframe');
+    if (f && f.contentWindow) {
+      try {
+        f.contentWindow.postMessage(JSON.stringify({
+          event: 'command', func: ligar ? 'unMute' : 'mute', args: []
+        }), '*');
+      } catch (e) {}
+    }
+    box.setAttribute('data-som', ligar ? '1' : '0');
+    botao(box, ligar ? '🔊' : '🔇', function () { ligarSom(box, box.getAttribute('data-som') !== '1'); });
+  }
+
+  function falhou(box) {
+    // Sem vídeo, a imagem que já está desenhada por baixo reaparece sozinha.
+    desmontar(box);
+    box.setAttribute('data-falhou', '1');
+    var b = box.querySelector('[data-cse-btn]');
+    if (b) b.remove();
+  }
+
+  function montar(box) {
+    if (box.getAttribute('data-falhou') === '1') return;
+    if (box.querySelector('video,iframe')) return;
+    var src = box.getAttribute('data-cse-video');
+    var kind = box.getAttribute('data-kind');
+    if (!src) return;
+    pararOsOutros(box);
+
+    if (kind === 'youtube') {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube.com/embed/' + encodeURIComponent(src) +
+        '?autoplay=1&mute=1&loop=1&playlist=' + encodeURIComponent(src) +
+        '&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1&enablejsapi=1';
+      f.setAttribute('allow', 'autoplay; encrypted-media');
+      f.setAttribute('frameborder', '0');
+      f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1;pointer-events:none';
+      f.onerror = function () { falhou(box); };
+      box.appendChild(f);
+    } else {
+      var v = document.createElement('video');
+      v.muted = true; v.loop = true; v.autoplay = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); v.setAttribute('loop', '');
+      v.preload = 'auto';
+      v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;pointer-events:none';
+      v.onerror = function () { falhou(box); };
+      v.src = src;
+      box.appendChild(v);
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { mostrarPlay(box); });
+    }
+    box.setAttribute('data-tocando', '1');
+    ligarSom(box, false);
+  }
+
+  function mostrarPlay(box) {
+    desmontar(box);
+    botao(box, '▶', function () {
+      box.removeAttribute('data-espera-toque');
+      montar(box);
+    });
+    box.setAttribute('data-espera-toque', '1');
+  }
+
+  function cuidar(box) {
+    var src = box.getAttribute('data-cse-video');
+    if (box.getAttribute('data-init') === src) return;
+    // caixa reaproveitada pelo React com outro vídeo: recomeça do zero
+    desmontar(box);
+    box.removeAttribute('data-falhou');
+    box.removeAttribute('data-espera-toque');
+    var b = box.querySelector('[data-cse-btn]');
+    if (b) b.remove();
+    box.setAttribute('data-init', src);
+    if (observer) observer.observe(box);
+  }
+
+  function sync() {
+    if (!('IntersectionObserver' in window)) return;
+    if (!observer) {
+      observer = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          var box = e.target;
+          if (e.isIntersecting && e.intersectionRatio >= 0.5) {
+            if (box.getAttribute('data-espera-toque') === '1') return;
+            if (conexaoLimitada()) { mostrarPlay(box); return; }
+            montar(box);
+          } else {
+            desmontar(box);
+          }
+        });
+      }, { threshold: [0, 0.5] });
+    }
+    var caixas = document.querySelectorAll('[data-cse-video]');
+    for (var i = 0; i < caixas.length; i++) cuidar(caixas[i]);
+  }
+
+  return { sync: sync };
+})();
+
 </script>
 </body>
 </html>

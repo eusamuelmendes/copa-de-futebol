@@ -42,6 +42,22 @@ no texto do `Conteúdo` vira automaticamente um link clicável (`tel:`/`mailto:`
 abaixo do texto — não precisa formatar nada especial, só escrever o número/
 e-mail normalmente.
 
+## Vídeo na notícia (aba Mídia)
+
+Para uma matéria aparecer com vídeo em vez de foto, crie uma linha na aba
+**Mídia** com `Tipo` = `Vídeo` e a coluna **`NoticiaID`** apontando para o
+`NoticiaID` da matéria. A coluna `NoticiaID` é nova — adicione no fim da aba
+Mídia (adicionar coluna no fim é seguro). Em `URL` vale tanto link do YouTube
+quanto arquivo de vídeo direto (`.mp4`, `.webm`).
+
+O vídeo toca **mudo e em loop**, com um ícone de som no canto: um toque liga o
+áudio, outro desliga. Ele só carrega quando o card entra na tela, e nunca toca
+mais de um vídeo ao mesmo tempo. Em conexão limitada (o navegador sinaliza
+"economia de dados" ou rede lenta) ele não inicia sozinho — mostra a miniatura
+com botão de play. Se o vídeo falhar, o card cai na foto da notícia; sem foto,
+no espaço reservado de sempre. Sem linha de vídeo, a matéria segue com a foto,
+exatamente como antes.
+
 ## Antes de publicar: acesso à planilha
 
 O site lê a planilha pelo ID direto (`1dK_PoKQnyEtfVPNbBkd9kx_J-CXYO7nz2tvTwyNbCsM`,

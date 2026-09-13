@@ -422,10 +422,26 @@
   // inteira (object-fit:contain) com um fundo desfocado da própria foto
   // atrás — funciona pra qualquer proporção (horizontal/vertical/quadrada)
   // sem cortar o assunto e sem distorcer.
-  function newsCardShape(n, brokenImages, actions) {
+  // Vídeo da notícia: linha da aba Mídia com Tipo "Vídeo" e NoticiaID apontando
+  // pra matéria. Aceita link do YouTube ou arquivo de vídeo direto; sem linha
+  // correspondente, o card segue usando a foto como antes.
+  function videoDaNoticia(data, noticiaId) {
+    if (!noticiaId) return null;
+    var linha = (data.midia || []).filter(function (m) {
+      return str(m.noticiaId) === noticiaId && /v[ií]deo/i.test(str(m.tipo)) && str(m.url);
+    })[0];
+    if (!linha) return null;
+    var yt = youTubeId(linha.url);
+    return { kind: yt ? "youtube" : "file", src: yt || linha.url, thumb: linha.thumb || "" };
+  }
+
+  function newsCardShape(n, brokenImages, actions, video) {
     var hasImg = !!n.imagem && !(brokenImages && brokenImages[n.imagem]);
     return {
       id: n.id,
+      hasVideo: !!video,
+      videoKind: video ? video.kind : "",
+      videoSrc: video ? video.src : "",
       tag: (n.categoria || "NOTÍCIA").toUpperCase(),
       title: n.titulo, meta: formatDatePt(n.data),
       hasImg: hasImg,
@@ -436,7 +452,7 @@
   }
   function buildNews(data, brokenImages, actions) {
     var byDateDesc = function (a, b) { return str(b.data).localeCompare(str(a.data)); };
-    var shape = function (n) { return newsCardShape(n, brokenImages, actions); };
+    var shape = function (n) { return newsCardShape(n, brokenImages, actions, videoDaNoticia(data, n.id)); };
     var all = data.noticias.slice().sort(byDateDesc).map(shape);
     var highlights = data.noticias.filter(function (n) { return n.destaque; })
       .slice().sort(byDateDesc).slice(0, 3).map(shape);
@@ -448,13 +464,17 @@
     var n = data.noticias.filter(function (x) { return x.id === newsOpenId; })[0];
     if (!n) return null;
     var hasImg = !!n.imagem && !(brokenImages && brokenImages[n.imagem]);
+    var video = videoDaNoticia(data, n.id);
     return {
+      hasVideo: !!video,
+      videoKind: video ? video.kind : "",
+      videoSrc: video ? video.src : "",
       tag: (n.categoria || "NOTÍCIA").toUpperCase(),
       title: n.titulo, meta: formatDatePt(n.data),
       hasImg: hasImg,
       imgUrl: hasImg ? n.imagem : "",
       g: hasImg ? ("center/cover no-repeat url(" + cssUrl(n.imagem) + ")") : "linear-gradient(125deg,#0C2A63,#1E6BFF)",
-      texto: n.texto || n.resumo || "Sem texto cadastrado para esta matéria."
+      texto: n.texto || n.resumo || "Texto completo em breve."
     };
   }
 
@@ -619,6 +639,16 @@
     });
   }
 
+  // Histórico na perspectiva do time cujo perfil está aberto: o placar sai
+  // sempre como "gols dele × gols do adversário", nunca na ordem
+  // mandante/visitante — senão "SAPOLANDIA · 3 × 1" no perfil do RODOLOC lê-se
+  // como derrota, quando foi vitória.
+  var SELO = {
+    V: { texto: "VITÓRIA", fg: "#5BE49B", bg: "rgba(91,228,155,.14)", bd: "rgba(91,228,155,.35)" },
+    E: { texto: "EMPATE", fg: "#F2C94C", bg: "rgba(242,201,76,.14)", bd: "rgba(242,201,76,.32)" },
+    D: { texto: "DERROTA", fg: "#FF6B75", bg: "rgba(255,107,117,.14)", bd: "rgba(255,107,117,.32)" }
+  };
+
   function buildTeamGames(data, teamId, ui, actions) {
     return data.jogos.filter(function (g) { return g.timeCasaId === teamId || g.timeForaId === teamId; })
       .sort(function (a, b) { return (a.data + a.hora).localeCompare(b.data + b.hora); })
@@ -628,10 +658,24 @@
         var opp = data.timeById[oppId] || { nome: "A definir", corHex: FALLBACK_HEX };
         var card = matchCard(g, data, ui, actions);
         var oppBadge = teamBadge(opp, ui);
+
+        var temPlacar = g.golsCasa !== null && g.golsFora !== null;
+        var meus = isCasa ? g.golsCasa : g.golsFora;
+        var deles = isCasa ? g.golsFora : g.golsCasa;
+        var placar = temPlacar ? (meus + " × " + deles) : "";
+        var decidido = temPlacar && (g.status === "Encerrado" || g.status === "WO");
+        var selo = decidido ? SELO[meus > deles ? "V" : (meus === deles ? "E" : "D")] : null;
+
         return {
           oppNome: opp.nome, oppInitials: oppBadge.i, oppG: oppBadge.g,
-          center: card.center, centerSub: card.centerSub,
-          chip: card.chip, chipFg: card.chipFg,
+          // "3 × 1 vs SAPOLANDIA" quando já houve placar; só "vs SAPOLANDIA" antes disso.
+          linha: (placar ? placar + " vs " : "vs ") + opp.nome,
+          temSelo: !!selo,
+          seloTexto: selo ? selo.texto : "",
+          seloFg: selo ? selo.fg : "", seloBg: selo ? selo.bg : "", seloBd: selo ? selo.bd : "",
+          // Sem resultado decidido, o lugar do selo mostra data/hora (agendado)
+          // ou o andamento (ao vivo, intervalo, adiado).
+          quando: selo ? "" : (g.status === "Agendado" ? scheduleLabel(g) : card.centerSub),
           open: card.open
         };
       });

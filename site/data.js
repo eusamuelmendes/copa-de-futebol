@@ -424,8 +424,9 @@
         categoria: str(r["Categoria"]),
         titulo: str(r["Título"]),
         url: str(r["URL"]),
-        thumb: str(r["Thumb (URL)"]) || str(r["Thumb"]),
-        jogoId: str(r["JogoID"])
+        thumb: normalizeDriveImageUrl(str(r["Thumb (URL)"]) || str(r["Thumb"])),
+        jogoId: str(r["JogoID"]),
+        noticiaId: str(r["NoticiaID"])
       };
     });
 
