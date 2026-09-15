@@ -1,0 +1,32 @@
+{
+  "name": "Copa SBT Energisa 2026",
+  "short_name": "Copa SBT",
+  "description": "Jogos, classificação, notícias e rádio ao vivo da 10ª Copa SBT Energisa.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#05070F",
+  "theme_color": "#05070F",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
