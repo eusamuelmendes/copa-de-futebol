@@ -47,7 +47,7 @@
         y = Number(y); mo = Number(mo); d = Number(d);
         var isTimeOnly = y === 1899 && mo === 11 && d === 30;
         if (isTimeOnly && h !== undefined) {
-          return '"' + pad2(h) + ":" + pad2(mi) + '"';
+          return '"' + pad2(h) + ":" + pad2(mi) + ":" + pad2(s) + '"';
         }
         var mm = pad2(mo + 1), dd = pad2(d);
         if (h === undefined) return '"' + y + "-" + mm + "-" + dd + '"';
@@ -118,6 +118,15 @@
   // ---- helpers de valor -------------------------------------------------
 
   function str(v) { return v === null || v === undefined ? "" : String(v).trim(); }
+  // Hora/Inicio1T/Inicio2T só usam HH:MM — o valor pode chegar como
+  // "19:30" (texto puro) ou "19:30:00" (célula formatada como hora, agora
+  // que sanitizeGvizDates preserva os segundos); em ambos os casos usamos
+  // só a parte HH:MM.
+  function hhmm(v) {
+    var s = str(v);
+    var m = s.match(/^(\d{1,2}:\d{2})/);
+    return m ? m[1] : s;
+  }
   function num(v, fallback) {
     if (v === null || v === undefined || v === "") return fallback === undefined ? 0 : fallback;
     var n = Number(v);
@@ -193,7 +202,7 @@
     var timeCasaId = str(r["TimeCasaID"]);
     var timeForaId = str(r["TimeForaID"]);
     var data = str(r["Data"]);
-    var hora = str(r["Hora"]);
+    var hora = hhmm(r["Hora"]);
     var status = str(r["Status"]);
 
     if (!timeCasaId) return "TimeCasaID vazio";
@@ -324,15 +333,15 @@
             rodada: str(r["Rodada"]),
             fase: str(r["Fase"]),
             data: str(r["Data"]),
-            hora: str(r["Hora"]),
+            hora: hhmm(r["Hora"]),
             local: str(r["Local"]),
             timeCasaId: str(r["TimeCasaID"]),
             timeForaId: str(r["TimeForaID"]),
             golsCasa: r["GolsCasa"] === null || r["GolsCasa"] === "" ? null : num(r["GolsCasa"], null),
             golsFora: r["GolsFora"] === null || r["GolsFora"] === "" ? null : num(r["GolsFora"], null),
             status: str(r["Status"]) || "Agendado",
-            inicio1T: str(r["Inicio1T"]),
-            inicio2T: str(r["Inicio2T"]),
+            inicio1T: hhmm(r["Inicio1T"]),
+            inicio2T: hhmm(r["Inicio2T"]),
             radioUrl: str(r["RadioURL"]),
             videoAoVivoUrl: str(r["VideoAoVivoURL"]),
             gravacaoUrl: str(r["GravacaoURL"])
