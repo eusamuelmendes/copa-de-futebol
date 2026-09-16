@@ -869,6 +869,9 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 </div>
 <div style="display:flex;align-items:center;gap:8px"><span style="width:7px;height:7px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite"></span><span style="font-size:10px;font-weight:900;letter-spacing:1.6px;color:#FF6B75">AO VIVO</span></div>
 <span style="font-size:15px;font-weight:800">{{ radioNow }}</span>
+<sc-if value="{{ radioError }}">
+<span style="font-size:11.5px;font-weight:700;color:#FF6B75;text-align:center;max-width:280px;line-height:1.5">Não foi possível conectar a essa transmissão. Confira se o link está certo.</span>
+</sc-if>
 </div>
 </sc-if>
 <sc-if value="{{ !hasRadio }}">
@@ -958,7 +961,12 @@ a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
 <div onClick="{{ stop }}" style="width:100%;max-width:920px;display:flex;flex-direction:column;border-radius:18px;border:1px solid rgba(255,255,255,.14);background:#070D1D;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)">
 <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:linear-gradient(120deg,#0C2A63,#123C8F 55%,#0B1B3C)">
 <span style="font-size:10.5px;font-weight:800;letter-spacing:1.4px;color:#8FD0FF">{{ videoLabel }}</span>
+<div style="display:flex;align-items:center;gap:14px">
+<sc-if value="{{ videoEmbedUrl }}">
+<a href="{{ videoExternalUrl }}" target="_blank" rel="noopener" style="cursor:pointer;font-size:10.5px;font-weight:800;letter-spacing:.6px;color:#8FD0FF;text-decoration:none" style-hover="color:#fff">ABRIR NO YOUTUBE ↗</a>
+</sc-if>
 <span onClick="{{ closeVideo }}" style="cursor:pointer;padding:6px 10px;margin:-6px -10px;font-size:11px;font-weight:800;letter-spacing:.8px;color:rgba(255,255,255,.55)" style-hover="color:#fff">FECHAR ✕</span>
+</div>
 </div>
 <div style="position:relative;width:100%;padding-top:56.25%;background:#000">
 <sc-if value="{{ videoEmbedUrl }}">
@@ -1015,6 +1023,7 @@ class Component extends DCLogic {
     nav: 'Início', splash: true, group: null, wide: true,
     playing: false, vol: 70, installed: false, goal: false,
     videoOpen: false, videoUrl: '', videoStart: 0, brokenImages: {},
+    radioError: false,
     newsOpenId: null, moreOpen: null, teamOpenId: null,
     followedTeams: {}, searchOpen: false, searchQuery: '',
     alerts: [], toast: null
@@ -1095,6 +1104,14 @@ class Component extends DCLogic {
     this.setState({ installed: true });
   }
 
+  // Sem isso, uma URL de rádio que falha (link errado, servidor sem HTTPS,
+  // fora do ar) fica 100% silenciosa: o botão de play não faz nada visível e
+  // ninguém descobre por quê. O evento "error" do <audio> é a única forma de
+  // saber que a conexão falhou — .play().catch() só pega recusa de autoplay,
+  // não falha de rede/protocolo.
+  onRadioError() {
+    this.setState({ radioError: true, playing: false });
+  }
   syncAudio() {
     const url = this._lastVals && this._lastVals.radioUrl;
     const el = document.getElementById('cse-radio-audio');
@@ -1103,15 +1120,25 @@ class Component extends DCLogic {
       el.dataset.src = url;
       el.src = url;
       el.volume = this.state.vol / 100;
-      if (this.state.playing) el.play().catch(() => {});
+      if (!el.dataset.errWired) {
+        el.dataset.errWired = '1';
+        el.addEventListener('error', () => this.onRadioError());
+      }
+      this.setState({ radioError: false });
+      if (this.state.playing) el.play().catch(() => this.onRadioError());
     }
   }
   togglePlay() {
     const next = !this.state.playing;
-    this.setState({ playing: next });
     const el = document.getElementById('cse-radio-audio');
-    if (!el) return;
-    if (next) el.play().catch(() => {}); else el.pause();
+    if (!el) { this.setState({ playing: next }); return; }
+    if (next) {
+      this.setState({ playing: true, radioError: false });
+      el.play().catch(() => this.onRadioError());
+    } else {
+      this.setState({ playing: false });
+      el.pause();
+    }
   }
   nudgeVol() {
     const v = this.state.vol >= 100 ? 40 : this.state.vol + 20;
@@ -1276,6 +1303,7 @@ class Component extends DCLogic {
       },
       radio: hasRadio, hasRadio: hasRadio,
       playing: this.state.playing, paused: !this.state.playing,
+      radioError: this.state.radioError,
       eqOpacity: this.state.playing ? 1 : .28,
       volW: this.state.vol + '%',
       togglePlay: () => this.togglePlay(),
