@@ -155,7 +155,9 @@
       meta: "· " + (game.local || "local a definir"),
       cta: style.cta, ctaFg: style.ctaFg,
       cardBg: style.cardBg, cardBd: style.cardBd,
-      open: function () { actions.openMatch(game.id); }
+      open: function () { actions.openMatch(game.id); },
+      canShare: game.golsCasa !== null && game.golsFora !== null && !!actions.shareMatch,
+      share: function (e) { if (e && e.stopPropagation) e.stopPropagation(); if (actions.shareMatch) actions.shareMatch(game.id); }
     };
   }
 
@@ -411,6 +413,50 @@
     var ord = ["1º", "2º", "3º", "4º"];
     return list.slice(0, 4).map(function (s, i) {
       return { pos: ord[i] || (i + 1) + "º", i: s.i, g: s.g, name: s.name, team: s.team, goals: s.goals };
+    });
+  }
+
+  // Ranking completo, com filtro por grupo (aba Mais > Artilharia completa).
+  function buildAllScorers(data, ui, actions) {
+    var counts = {};
+    Object.keys(data.golsPorJogo).forEach(function (jogoId) {
+      data.golsPorJogo[jogoId].forEach(function (g) {
+        if (/contra/i.test(g.tipo) || !g.jogadorId) return;
+        counts[g.jogadorId] = (counts[g.jogadorId] || 0) + 1;
+      });
+    });
+    var grupoFiltro = ui.scorersGrupo && ui.scorersGrupo !== "Todos" ? ui.scorersGrupo : null;
+    var list = Object.keys(counts).map(function (id) {
+      var j = data.jogadorById[id];
+      var team = j ? data.timeById[j.timeId] : null;
+      return { id: id, jogador: j, team: team, goals: counts[id] };
+    }).filter(function (s) {
+      if (!s.jogador || !s.team) return false;
+      if (grupoFiltro && s.team.grupo !== grupoFiltro) return false;
+      return true;
+    });
+    list.sort(function (a, b) { return b.goals - a.goals; });
+    return list.map(function (s, i) {
+      var av = playerAvatar(s.jogador, ui);
+      var classRow = data.classificacao.filter(function (r) { return r.timeId === s.team.id; })[0];
+      var jogos = classRow ? classRow.j : 0;
+      return {
+        pos: (i + 1) + "º", i: av.i, g: av.g,
+        name: s.jogador.nome, team: s.team.nome,
+        grupo: s.team.grupo ? ("GRUPO " + s.team.grupo) : "",
+        jogosLabel: jogos + (jogos === 1 ? " jogo" : " jogos"),
+        goals: s.goals,
+        open: function () { actions.openTeam(s.team.id); }
+      };
+    });
+  }
+
+  function buildScorersGrupoFilters(data, ui, actions) {
+    var groupsList = buildGroupsList(data);
+    if (!groupsList.length) return [];
+    return ["Todos"].concat(groupsList).map(function (g) {
+      var c = chipStyle(g === (ui.scorersGrupo || "Todos"));
+      return { label: g === "Todos" ? "Todos" : "GRUPO " + g, fg: c.fg, bg: c.bg, bd: c.bd, pick: function () { actions.pickScorersGrupo(g); } };
     });
   }
 
@@ -970,6 +1016,202 @@
     ].filter(Boolean);
   }
 
+  // ---- time favorito (Home) --------------------------------------------------
+  // Guardado localmente (localStorage, via toggleFavTeam/setFavTeam no
+  // index.html) — o viewmodel só traduz o TimeID escolhido no card certo:
+  // jogo ao vivo do time, senão o próximo jogo agendado, senão o perfil.
+  function buildFavorito(data, ui, actions) {
+    var teamId = ui.favTeamId;
+    if (!teamId) return null;
+    var team = data.timeById[teamId];
+    if (!team) return null;
+    var badge = teamBadge(team, ui);
+    var classRow = data.classificacao.filter(function (r) { return r.timeId === teamId; })[0];
+    var stats = {
+      jogos: classRow ? classRow.j : 0,
+      "vitórias": classRow ? classRow.v : 0,
+      golsMarcados: classRow ? classRow.gp : 0,
+      golsSofridos: classRow ? classRow.gc : 0
+    };
+    var jogosTime = data.jogos.filter(function (g) { return g.timeCasaId === teamId || g.timeForaId === teamId; });
+    var live = jogosTime.filter(function (g) { return g.status === "Ao vivo" || g.status === "Intervalo"; })[0];
+    if (live) {
+      return { id: team.id, nome: team.nome, isLive: true, card: matchCard(live, data, ui, actions), stats: stats };
+    }
+    var proximo = jogosTime.filter(function (g) { return g.status === "Agendado"; })
+      .sort(function (a, b) { return (a.data + a.hora).localeCompare(b.data + b.hora); })[0];
+    if (proximo) {
+      var isCasa = proximo.timeCasaId === teamId;
+      var oppId = isCasa ? proximo.timeForaId : proximo.timeCasaId;
+      var opp = data.timeById[oppId] || { nome: "A definir", corHex: FALLBACK_HEX };
+      var oppBadge = teamBadge(opp, ui);
+      var hasCountdown = false, dias = 0, horas = 0, mins = 0;
+      var alvo = combineDateTime(proximo.data, proximo.hora);
+      if (alvo) {
+        var diffMin = Math.floor((alvo.getTime() - ui.now.getTime()) / 60000);
+        if (diffMin > 0) {
+          hasCountdown = true;
+          dias = Math.floor(diffMin / 1440);
+          horas = Math.floor((diffMin % 1440) / 60);
+          mins = diffMin % 60;
+        }
+      }
+      return {
+        id: team.id, nome: team.nome, isLive: false,
+        g: badge.g, i: badge.i, oppG: oppBadge.g, oppI: oppBadge.i, oppNome: opp.nome,
+        cdMeta: dayLabel(proximo.data, ui.now) + " · " + (proximo.hora || "--:--"),
+        hasCountdown: hasCountdown, cdDays: dias, cdHours: horas, cdMins: mins,
+        card: { open: function () { actions.openMatch(proximo.id); } },
+        stats: stats
+      };
+    }
+    // sem jogo ao vivo nem agendado: ainda mostra o time, leva pro perfil dele
+    return {
+      id: team.id, nome: team.nome, isLive: false,
+      g: badge.g, i: badge.i, oppG: teamGradient(FALLBACK_HEX), oppI: "", oppNome: "Sem próximo jogo definido",
+      cdMeta: "", hasCountdown: false, cdDays: 0, cdHours: 0, cdMins: 0,
+      card: { open: function () { actions.openTeam(team.id); } },
+      stats: stats
+    };
+  }
+
+  // ---- curiosidades e estatísticas da semana (aba Mais > Artilharia) --------
+  // Tudo derivado de Jogos/Gols/Cartões/Classificação a cada leitura — nunca
+  // escrito na planilha. Cada indicador só aparece com dado real por trás;
+  // em empate, o critério de desempate é o nome do time (determinístico),
+  // já que a regra não define como escolher entre empatados.
+  function timesComJogos(data) {
+    return data.classificacao.filter(function (r) { return r.j > 0 && data.timeById[r.timeId]; });
+  }
+
+  function melhorSequenciaInvicta(data) {
+    var melhor = null;
+    data.times.forEach(function (t) {
+      var jogosTime = data.jogos.filter(function (g) {
+        return (g.timeCasaId === t.id || g.timeForaId === t.id) && g.status === "Encerrado" &&
+          g.golsCasa !== null && g.golsFora !== null;
+      }).sort(function (a, b) { return (a.data + a.hora).localeCompare(b.data + b.hora); });
+      var atual = 0, maior = 0;
+      jogosTime.forEach(function (g) {
+        var isCasa = g.timeCasaId === t.id;
+        var meus = isCasa ? g.golsCasa : g.golsFora;
+        var deles = isCasa ? g.golsFora : g.golsCasa;
+        if (meus >= deles) { atual++; if (atual > maior) maior = atual; }
+        else atual = 0;
+      });
+      if (maior > 0 && (!melhor || maior > melhor.jogos || (maior === melhor.jogos && t.nome < melhor.nome))) {
+        melhor = { nome: t.nome, jogos: maior };
+      }
+    });
+    return melhor;
+  }
+
+  function timeComMenosCartoes(data) {
+    var temCartoes = Object.keys(data.cartoesPorJogo).some(function (k) { return data.cartoesPorJogo[k].length > 0; });
+    if (!temCartoes) return null;
+    var contagem = {};
+    Object.keys(data.cartoesPorJogo).forEach(function (jogoId) {
+      data.cartoesPorJogo[jogoId].forEach(function (c) {
+        if (!c.timeId) return;
+        contagem[c.timeId] = (contagem[c.timeId] || 0) + 1;
+      });
+    });
+    var candidatos = timesComJogos(data).map(function (r) {
+      var team = data.timeById[r.timeId];
+      return { nome: team.nome, cartoes: contagem[r.timeId] || 0 };
+    });
+    if (!candidatos.length) return null;
+    candidatos.sort(function (a, b) { return a.cartoes - b.cartoes || (a.nome < b.nome ? -1 : 1); });
+    return candidatos[0];
+  }
+
+  function melhorDefesa(data) {
+    var candidatos = timesComJogos(data);
+    if (!candidatos.length) return null;
+    candidatos = candidatos.slice().sort(function (a, b) {
+      var team = data.timeById;
+      return a.gc - b.gc || (team[a.timeId].nome < team[b.timeId].nome ? -1 : 1);
+    });
+    var top = candidatos[0];
+    return { nome: data.timeById[top.timeId].nome, golsSofridos: top.gc };
+  }
+
+  function melhorAproveitamento(data) {
+    var candidatos = timesComJogos(data);
+    if (!candidatos.length) return null;
+    candidatos = candidatos.slice().sort(function (a, b) {
+      var pctA = a.p / (a.j * 3), pctB = b.p / (b.j * 3);
+      var team = data.timeById;
+      return pctB - pctA || (team[a.timeId].nome < team[b.timeId].nome ? -1 : 1);
+    });
+    var top = candidatos[0];
+    var pct = Math.round((top.p / (top.j * 3)) * 1000) / 10; // 1 casa decimal
+    return { nome: data.timeById[top.timeId].nome, aproveitamento: String(pct).replace(".", ",") + "%" };
+  }
+
+  function buildCuriosities(data) {
+    var out = [];
+    var seq = melhorSequenciaInvicta(data);
+    if (seq) out.push({ icon: "🔥", label: "Maior sequência invicta", nome: seq.nome, valor: seq.jogos + (seq.jogos === 1 ? " jogo invicto" : " jogos invicto") });
+    var cartoes = timeComMenosCartoes(data);
+    if (cartoes) out.push({ icon: "🟨", label: "Time com menos cartões", nome: cartoes.nome, valor: cartoes.cartoes + (cartoes.cartoes === 1 ? " cartão" : " cartões") });
+    var defesa = melhorDefesa(data);
+    if (defesa) out.push({ icon: "🛡️", label: "Melhor defesa", nome: defesa.nome, valor: defesa.golsSofridos + (defesa.golsSofridos === 1 ? " gol sofrido" : " gols sofridos") });
+    var aprov = melhorAproveitamento(data);
+    if (aprov) out.push({ icon: "📈", label: "Melhor aproveitamento", nome: aprov.nome, valor: aprov.aproveitamento });
+    return out;
+  }
+
+  // "Da semana" = jogos Encerrados com placar nos últimos 7 dias corridos.
+  function jogosDaSemana(data, now) {
+    var limite = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    limite.setDate(limite.getDate() - 7);
+    return data.jogos.filter(function (g) {
+      if (g.status !== "Encerrado" || g.golsCasa === null || g.golsFora === null) return false;
+      var d = parseYMD(g.data);
+      return d && d >= limite;
+    });
+  }
+
+  function buildWeeklyStats(data, ui, actions) {
+    var jogos = jogosDaSemana(data, ui.now);
+    if (!jogos.length) return { bestTeam: null, biggestScore: null };
+
+    var saldoPorTime = {};
+    jogos.forEach(function (g) {
+      [[g.timeCasaId, g.golsCasa, g.golsFora], [g.timeForaId, g.golsFora, g.golsCasa]].forEach(function (t) {
+        if (!t[0] || !data.timeById[t[0]]) return;
+        saldoPorTime[t[0]] = (saldoPorTime[t[0]] || 0) + (t[1] - t[2]);
+      });
+    });
+    var melhorId = null, melhorSaldo = -Infinity;
+    Object.keys(saldoPorTime).forEach(function (id) {
+      var nome = data.timeById[id].nome;
+      if (saldoPorTime[id] > melhorSaldo || (saldoPorTime[id] === melhorSaldo && melhorId && nome < data.timeById[melhorId].nome)) {
+        melhorSaldo = saldoPorTime[id]; melhorId = id;
+      }
+    });
+    var bestTeam = null;
+    if (melhorId && melhorSaldo > 0) {
+      var time = data.timeById[melhorId];
+      bestTeam = { nome: time.nome, saldo: melhorSaldo, badge: teamBadge(time, ui) };
+    }
+
+    var comMargem = jogos.filter(function (g) { return Math.abs(g.golsCasa - g.golsFora) > 0; });
+    var biggestScore = null;
+    if (comMargem.length) {
+      comMargem.sort(function (a, b) { return Math.abs(b.golsCasa - b.golsFora) - Math.abs(a.golsCasa - a.golsFora); });
+      var g = comMargem[0];
+      var timeCasa = data.timeById[g.timeCasaId], timeFora = data.timeById[g.timeForaId];
+      biggestScore = {
+        timeCasaNome: timeCasa ? timeCasa.nome : "?", golsCasa: g.golsCasa,
+        timeForaNome: timeFora ? timeFora.nome : "?", golsFora: g.golsFora
+      };
+    }
+    return { bestTeam: bestTeam, biggestScore: biggestScore };
+  }
+
+  // ---- cabeçalho (contagens e período, calculados da planilha) --------------
   // ---- cabeçalho (contagens e período, calculados da planilha) --------------
 
   function buildHeroDateRange(data) {
@@ -996,6 +1238,10 @@
     var activeGroup = (ui.group && groupsList.indexOf(ui.group) !== -1) ? ui.group : (groupsList[0] || null);
     var standings = buildStandings(data, activeGroup, ui, actions);
     var scorers = buildScorers(data, ui);
+    var allScorers = buildAllScorers(data, ui, actions);
+    var curiosities = buildCuriosities(data);
+    var weeklyStats = buildWeeklyStats(data, ui, actions);
+    var favorito = buildFavorito(data, ui, actions);
     var highlights = buildHighlights(data, ui, actions);
     var newsB = buildNews(data, ui.brokenImages, actions);
     var newsDetail = buildNewsDetail(data, ui.newsOpenId, ui.brokenImages);
@@ -1023,6 +1269,12 @@
       highlights: highlights, hasHighlights: highlights.length > 0,
       groupsTabs: buildGroupsTabs(groupsList, activeGroup, actions),
       scorers: scorers, hasScorers: scorers.length > 0,
+      allScorers: allScorers, hasAllScorers: allScorers.length > 0,
+      scorersGrupoFilters: buildScorersGrupoFilters(data, ui, actions),
+      hasCuriosities: curiosities.length > 0, curiosities: curiosities,
+      weeklyStats: weeklyStats,
+      hasBestTeamOfWeek: !!weeklyStats.bestTeam, hasBiggestScoreOfWeek: !!weeklyStats.biggestScore,
+      hasFavorito: !!favorito, favorito: favorito,
       news: newsB.all, hasNews: newsB.all.length > 0,
       newsHighlights: newsB.highlights, hasNewsHighlights: newsB.highlights.length > 0,
       newsDetail: newsDetail,
