@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=ai-legible&utm_source=comment&utm_medium=referral&utm_id=e782afac-41bb-43d8-aa4d-a550d969d7b0
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="hosting-provider" content="Netlify">
+<meta name="netlify-deploy" content="https://netlify.new/?utm_campaign=ai-legible&amp;utm_source=meta&amp;utm_medium=referral&amp;utm_id=e782afac-41bb-43d8-aa4d-a550d969d7b0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// Aplica o tema salvo antes do primeiro paint, pra não piscar o tema errado.
+(function () {
+  try {
+    var t = localStorage.getItem('cse-theme');
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+<script src="./support.js"></script>
+<script src="./data.js"></script>
+<script src="./viewmodel.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="theme-color" content="#05070F" id="cse-theme-meta">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Copa SBT">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="pwa/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="pwa/icon-192.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="_ds/modernist-ed39cb43-24ce-4f5f-abb5-6cb7d66cd667/styles.css">
+<script src="_ds/modernist-ed39cb43-24ce-4f5f-abb5-6cb7d66cd667/_ds_bundle.js"></script>
+<style>
+:root{
+  --ink-rgb:255,255,255; --ink-solid:#fff;
+  --c-page:#05070F; --c-raised:#070D1D;
+  --ov-rgb:5,7,15; --scrim-rgb:5,7,15;
+}
+:root[data-theme="light"]{
+  --ink-rgb:17,17,17; --ink-solid:#111111;
+  --c-page:#FFFFFF; --c-raised:#F7F8FA;
+  --ov-rgb:255,255,255;
+}
+html,body{margin:0;background:var(--c-page);color:var(--ink-solid);font-family:Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background-color .25s ease,color .25s ease}
+*{-webkit-tap-highlight-color:transparent}
+a{color:#3FA9FF;text-decoration:none}a:hover{color:#8FD0FF}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:rgba(var(--ink-rgb),.16)}
+@keyframes cse-pulse{0%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.82)}100%{opacity:1;transform:scale(1)}}
+@keyframes cse-halo{0%{box-shadow:0 0 0 0 rgba(255,46,63,.45)}100%{box-shadow:0 0 0 14px rgba(255,46,63,0)}}
+@keyframes cse-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes cse-shimmer{from{background-position:-260px 0}to{background-position:260px 0}}
+@keyframes cse-flash{0%{opacity:0}12%{opacity:1}70%{opacity:1}100%{opacity:0}}
+@keyframes cse-pop{0%{transform:scale(.5);opacity:0}55%{transform:scale(1.25)}100%{transform:scale(1);opacity:1}}
+@keyframes cse-sweep{0%{transform:translateX(-120%) skewX(-18deg)}100%{transform:translateX(320%) skewX(-18deg)}}
+@keyframes cse-load{from{transform:translateX(-100%)}to{transform:none}}
+@keyframes cse-sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes cse-eq{0%{height:20%}50%{height:100%}100%{height:32%}}
+</style>
+<script>
+(function(){try{if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}}catch(e){}})();
+</script>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;box-sizing:border-box;background-color:var(--c-page);background-repeat:no-repeat;background-attachment:fixed;background-image:radial-gradient(1200px 720px at 50% -12%,rgba(18,60,143,.55) 0%,rgba(18,60,143,0) 60%),radial-gradient(900px 620px at 100% 105%,rgba(63,169,255,.07) 0%,rgba(63,169,255,0) 55%),linear-gradient(180deg,rgba(var(--ink-rgb),.02) 0%,rgba(var(--ink-rgb),0) 30%)">
+
+<sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+<header style="position:sticky;top:0;z-index:60;background:rgba(var(--ov-rgb),.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(var(--ink-rgb),.1)">
+<div style="max-width:1340px;margin:0 auto;padding:0 clamp(20px,3vw,32px);height:76px;display:flex;align-items:center;gap:clamp(14px,2.4vw,34px)">
+<div onClick="{{ goInicio }}" style="flex:none;display:flex;align-items:center;gap:12px;cursor:pointer">
+<div style="width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;letter-spacing:.5px;background:linear-gradient(140deg,#0B3FA8,#1E6BFF 55%,#3FA9FF);box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.2)">CSE</div>
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="font-size:9px;font-weight:800;letter-spacing:1.8px;color:#7CC0FF">10ª EDIÇÃO · 2026</span>
+<span style="font-size:16px;font-weight:900;letter-spacing:-.4px;line-height:1;text-transform:uppercase">Copa SBT Energisa</span>
+</div>
+</div>
+<nav style="flex:1;display:flex;align-items:center;gap:2px;min-width:0">
+<sc-for list="{{ navList }}" as="n" hint-placeholder-count="5">
+<div onClick="{{ n.go }}" style="position:relative;padding:26px 14px;font-size:11.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:color .15s ease;color: {{ n.fg }}" style-hover="color:var(--ink-solid)">{{ n.label }}
+<span style="position:absolute;left:14px;right:14px;bottom:0;height:2px;background: {{ n.bar }}"></span>
+</div>
+</sc-for>
+</nav>
+<div style="flex:none;display:flex;align-items:center;gap:10px">
+<div onClick="{{ openSearch }}" style="display:flex;align-items:center;gap:8px;padding:9px 13px;border-radius:99px;background:rgba(var(--ink-rgb),.06);border:1px solid rgba(var(--ink-rgb),.1);cursor:pointer" style-hover="background:rgba(var(--ink-rgb),.1)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(var(--ink-rgb),.7)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+<span style="font-size:11px;font-weight:700;color:rgba(var(--ink-rgb),.5)">Buscar time</span>
+</div>
+<div onClick="{{ themeToggle }}" title="Alternar modo claro/escuro" style="width:40px;height:40px;border-radius:12px;background:rgba(var(--ink-rgb),.06);border:1px solid rgba(var(--ink-rgb),.1);display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:rgba(var(--ink-rgb),.1)">
+<sc-if value="{{ isLightTheme }}">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"></path></svg>
+</sc-if>
+<sc-if value="{{ !isLightTheme }}">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"></path></svg>
+</sc-if>
+</div>
+<div onClick="{{ openBell }}" style="position:relative;width:40px;height:40px;border-radius:12px;background:rgba(var(--ink-rgb),.06);border:1px solid rgba(var(--ink-rgb),.1);display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:rgba(var(--ink-rgb),.1)">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 9a6 6 0 10-12 0c0 6-2 7-2 7h16s-2-1-2-7"></path><path d="M10.5 20a2 2 0 003 0"></path></svg>
+<span style="position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:99px;background:#FF2E3F;box-shadow:0 0 0 2px var(--c-page)"></span>
+</div>
+</div>
+</div>
+</header>
+</sc-if>
+
+<sc-if value="{{ isNarrow }}">
+<header style="position:sticky;top:0;z-index:60;padding:calc(14px + env(safe-area-inset-top)) 18px 12px;background:rgba(var(--ov-rgb),.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(var(--ink-rgb),.09)">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+<div style="display:flex;align-items:center;gap:7px">
+<span style="display:inline-block;width:16px;height:2px;background:#3FA9FF"></span>
+<span style="font-size:9px;font-weight:800;letter-spacing:1.8px;color:#7CC0FF">10ª COPA SBT ENERGISA 2026</span>
+</div>
+<div style="font-size:30px;font-weight:900;letter-spacing:-.9px;line-height:.95;text-transform:uppercase">{{ navTitle }}</div>
+</div>
+<div style="flex:none;display:flex;gap:9px">
+<div onClick="{{ openSearch }}" style="width:38px;height:38px;border-radius:12px;background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.1);display:flex;align-items:center;justify-content:center;cursor:pointer">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+</div>
+<div onClick="{{ themeToggle }}" title="Alternar modo claro/escuro" style="width:38px;height:38px;border-radius:12px;background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.1);display:flex;align-items:center;justify-content:center;cursor:pointer">
+<sc-if value="{{ isLightTheme }}">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"></path></svg>
+</sc-if>
+<sc-if value="{{ !isLightTheme }}">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"></path></svg>
+</sc-if>
+</div>
+<div onClick="{{ openBell }}" style="position:relative;width:38px;height:38px;border-radius:12px;background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.1);display:flex;align-items:center;justify-content:center;cursor:pointer">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 9a6 6 0 10-12 0c0 6-2 7-2 7h16s-2-1-2-7"></path><path d="M10.5 20a2 2 0 003 0"></path></svg>
+<span style="position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:99px;background:#FF2E3F;box-shadow:0 0 0 2px var(--c-page)"></span>
+</div>
+</div>
+</div>
+</header>
+</sc-if>
+
+<main style="flex:1;width:100%;max-width:1340px;margin:0 auto;box-sizing:border-box;padding:clamp(18px,2.4vw,30px) clamp(16px,3vw,32px) 172px">
+
+<sc-if value="{{ staleBanner }}">
+<div style="margin-bottom:16px;padding:11px 16px;border-radius:12px;border:1px solid rgba(255,197,63,.35);background:rgba(255,197,63,.1);font-size:12px;font-weight:600;color:#FFC53F;display:flex;align-items:center;gap:8px">
+<span style="flex:none;width:6px;height:6px;border-radius:99px;background:#FFC53F"></span>Não foi possível atualizar agora — mostrando os últimos dados carregados.
+</div>
+</sc-if>
+
+<sc-if value="{{ hasValidationIssues }}">
+<div style="margin-bottom:16px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,46,63,.35);background:rgba(255,46,63,.08);display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#FF6B75">
+<span style="flex:none;width:6px;height:6px;border-radius:99px;background:#FF6B75"></span>
+{{ validationIssuesCount }} jogo(s) da planilha têm erro de formatação e foram ignorados
+</div>
+<div style="display:flex;flex-direction:column;gap:3px;padding-left:14px">
+<sc-for list="{{ validationIssues }}" as="vi" hint-placeholder-count="2">
+<span style="font-size:11px;color:rgba(var(--ink-rgb),.62)"><b style="color:rgba(var(--ink-rgb),.85)">{{ vi.jogoId }}</b> — {{ vi.erro }}</span>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isInicio }}">
+<div style="display:flex;flex-direction:column;gap:clamp(22px,2.6vw,34px);animation:cse-rise .34s ease both">
+
+<div style="position:relative;overflow:hidden;border-radius:22px;border:1px solid rgba(63,169,255,.32);background:linear-gradient(125deg,#0C2A63,#123C8F 46%,#0B1B3C)">
+<div style="position:absolute;top:-90px;right:-80px;width:360px;height:360px;transform:rotate(22deg);background:linear-gradient(160deg,rgba(63,169,255,.45),rgba(63,169,255,0))"></div>
+<div style="position:relative;padding:clamp(18px,2.6vw,32px)">
+
+<div style="display:flex;align-items:center;gap:7px;margin-bottom:clamp(14px,2vw,20px)">
+<span style="display:inline-block;width:16px;height:2px;background:#3FA9FF"></span>
+<span style="font-size:9px;font-weight:800;letter-spacing:1.8px;color:#7CC0FF">{{ heroEyebrow }}</span>
+</div>
+
+<sc-if value="{{ heroMatch }}">
+<div style="display:flex;flex-direction:column;gap:clamp(14px,2vw,20px)">
+<div style="display:flex;align-items:center;gap:8px">
+<sc-if value="{{ heroIsLive }}">
+<span style="flex:none;width:8px;height:8px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite"></span>
+</sc-if>
+<span style="font-size:clamp(11px,1.4vw,13px);font-weight:900;letter-spacing:2.2px;color: {{ heroLabelColor }}">{{ heroLabel }}</span>
+</div>
+<div onClick="{{ heroMatch.open }}" style="display:flex;align-items:center;gap:clamp(10px,2vw,22px);cursor:pointer">
+<div style="flex:1;display:flex;align-items:center;gap:clamp(8px,1.6vw,14px);min-width:0">
+<div style="flex:none;width:clamp(44px,9vw,64px);height:clamp(44px,9vw,64px);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:clamp(15px,3vw,20px);font-weight:900;color:var(--ink-solid);background: {{ heroMatch.ga }};box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)">{{ heroMatch.ia }}</div>
+<div title="{{ heroMatch.na }}" style="font-size:clamp(13px,2.6vw,19px);font-weight:800;letter-spacing:.2px;text-transform:uppercase;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word">{{ heroMatch.na }}</div>
+</div>
+<div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:clamp(58px,10vw,92px)">
+<div style="font-size:clamp(22px,4.6vw,34px);font-weight:900;letter-spacing:-1px;color: {{ heroMatch.centerFg }};animation: {{ heroMatch.centerAnim }}">{{ heroMatch.center }}</div>
+<div style="font-size:10px;font-weight:800;letter-spacing:1.2px;color: {{ heroMatch.subFg }};white-space:nowrap">{{ heroMatch.centerSub }}</div>
+</div>
+<div style="flex:1;display:flex;align-items:center;gap:clamp(8px,1.6vw,14px);justify-content:flex-end;min-width:0">
+<div title="{{ heroMatch.nb }}" style="font-size:clamp(13px,2.6vw,19px);font-weight:800;letter-spacing:.2px;text-transform:uppercase;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;text-align:right">{{ heroMatch.nb }}</div>
+<div style="flex:none;width:clamp(44px,9vw,64px);height:clamp(44px,9vw,64px);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:clamp(15px,3vw,20px);font-weight:900;color:var(--ink-solid);background: {{ heroMatch.gb }};box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)">{{ heroMatch.ib }}</div>
+</div>
+</div>
+<span style="font-size:11px;font-weight:600;color:rgba(var(--ink-rgb),.5)">{{ heroMatch.meta }}</span>
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:2px">
+<div onClick="{{ heroMatch.open }}" style="padding:15px 22px;border-radius:12px;font-size:11.5px;font-weight:900;letter-spacing:1.2px;cursor:pointer;color:var(--c-page);background:var(--ink-solid)" style-active="transform:scale(.98)">{{ heroCtaLabel }} →</div>
+<div onClick="{{ goTabela }}" style="padding:15px 22px;border-radius:12px;font-size:11.5px;font-weight:900;letter-spacing:1.2px;cursor:pointer;color:var(--ink-solid);background:rgba(var(--ink-rgb),.1);border:1px solid rgba(var(--ink-rgb),.18)" style-active="transform:scale(.98)">VER CLASSIFICAÇÃO</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ !heroMatch }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="font-size:clamp(26px,3.8vw,44px);font-weight:900;letter-spacing:-1.4px;line-height:.98;text-transform:uppercase">{{ champName }}</div>
+<p style="margin:0;font-size:clamp(13px,1.1vw,16px);line-height:1.55;color:rgba(var(--ink-rgb),.66);max-width:560px;text-wrap:pretty">{{ champSubtitle }}</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:4px">
+<div onClick="{{ goJogos }}" style="padding:15px 22px;border-radius:12px;font-size:11.5px;font-weight:900;letter-spacing:1.2px;cursor:pointer;color:var(--c-page);background:var(--ink-solid)" style-active="transform:scale(.98)">ACOMPANHAR CAMPEONATO</div>
+<div onClick="{{ goTabela }}" style="padding:15px 22px;border-radius:12px;font-size:11.5px;font-weight:900;letter-spacing:1.2px;cursor:pointer;color:var(--ink-solid);background:rgba(var(--ink-rgb),.1);border:1px solid rgba(var(--ink-rgb),.18)" style-active="transform:scale(.98)">VER CLASSIFICAÇÃO</div>
+</div>
+</div>
+</sc-if>
+
+<div style="display:flex;gap:clamp(20px,3vw,36px);margin-top:clamp(16px,2.4vw,26px);padding-top:clamp(12px,1.8vw,18px);border-top:1px solid rgba(255,255,255,.1)">
+<div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:15px;font-weight:900;letter-spacing:-.3px">{{ statTimes }}</span><span style="font-size:8.5px;font-weight:800;letter-spacing:1.2px;color:rgba(var(--ink-rgb),.5)">TIMES</span></div>
+<div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:15px;font-weight:900;letter-spacing:-.3px">{{ statGrupos }}</span><span style="font-size:8.5px;font-weight:800;letter-spacing:1.2px;color:rgba(var(--ink-rgb),.5)">GRUPOS</span></div>
+<div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:15px;font-weight:900;letter-spacing:-.3px">{{ statPartidas }}</span><span style="font-size:8.5px;font-weight:800;letter-spacing:1.2px;color:rgba(var(--ink-rgb),.5)">PARTIDAS</span></div>
+</div>
+
+</div>
+</div>
+
+<sc-if value="{{ hasRadio }}">
+<div onClick="{{ togglePlay }}" style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;border:1px solid rgba(var(--ink-rgb),.09);background:rgba(var(--ink-rgb),.035);cursor:pointer;transition:border-color .14s ease" style-hover="border-color:rgba(143,208,255,.4)">
+<div style="flex:none;width:44px;height:44px;border-radius:99px;display:flex;align-items:center;justify-content:center;background:linear-gradient(120deg,#1E6BFF,#3FA9FF);box-shadow:0 6px 16px rgba(30,107,255,.3)">
+<sc-if value="{{ playing }}">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="var(--ink-solid)"><rect x="6" y="4.5" width="4.2" height="15" rx="1"></rect><rect x="13.8" y="4.5" width="4.2" height="15" rx="1"></rect></svg>
+</sc-if>
+<sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="var(--ink-solid)"><path d="M7 4.5l13 7.5-13 7.5z"></path></svg>
+</sc-if>
+</div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+<div style="display:flex;align-items:center;gap:8px;min-width:0">
+<span style="font-size:11px;font-weight:900;letter-spacing:1.6px">🎙️ RÁDIO AO VIVO</span>
+<sc-if value="{{ hasLiveGame }}">
+<span style="flex:none;display:flex;align-items:center;gap:4px;padding:2px 7px;border-radius:99px;background:rgba(255,46,63,.14)">
+<span style="width:5px;height:5px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite"></span>
+<span style="font-size:8px;font-weight:900;letter-spacing:1px;color:#FF6B75">AO VIVO</span>
+</span>
+</sc-if>
+</div>
+<span style="font-size:12px;font-weight:600;color:rgba(var(--ink-rgb),.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ radioNow }}</span>
+</div>
+<div style="flex:none;display:flex;align-items:flex-end;gap:3px;height:18px;opacity: {{ eqOpacity }}">
+<span style="width:2.5px;height:40%;background:#3FA9FF;animation:cse-eq .9s ease-in-out infinite alternate"></span>
+<span style="width:2.5px;height:80%;background:#3FA9FF;animation:cse-eq .7s .15s ease-in-out infinite alternate"></span>
+<span style="width:2.5px;height:55%;background:#8FD0FF;animation:cse-eq 1.1s .05s ease-in-out infinite alternate"></span>
+<span style="width:2.5px;height:95%;background:#1E6BFF;animation:cse-eq .8s .25s ease-in-out infinite alternate"></span>
+</div>
+<span style="flex:none;font-size:10.5px;font-weight:900;letter-spacing:1px;color:#8FD0FF">OUVIR AGORA →</span>
+</div>
+<!-- Selo de transmissão oficial — puramente decorativo, não altera togglePlay/playing/radioNow -->
+<div style="display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:14px;background:rgba(var(--ink-rgb),.02);border:1px solid rgba(var(--ink-rgb),.055)">
+<span style="font-size:8.5px;font-weight:900;letter-spacing:1.3px;color:rgba(var(--ink-rgb),.38);white-space:nowrap">🎙️ TRANSMISSÃO OFICIAL</span>
+<span style="flex:1;height:1px;background:rgba(var(--ink-rgb),.07)"></span>
+<div style="flex:none;display:flex;align-items:center;gap:7px">
+<img src="parceiros/massa-fm.jpg" alt="Massa FM 104.1" style="height:20px;width:20px;border-radius:6px;object-fit:cover;display:block">
+<img src="parceiros/radio-104.webp" alt="Rádio 104 Rondonópolis" style="height:20px;width:20px;border-radius:6px;object-fit:cover;display:block">
+</div>
+</div>
+</sc-if>
+
+<!-- Toast de notificação de resultado -->
+<div id="match-toast" style="display:none;position:fixed;bottom:80px;right:20px;left:20px;max-width:400px;margin:0 auto;left:50%;transform:translateX(-50%);background:var(--c-raised);border:1px solid rgba(var(--ink-rgb),.1);border-radius:14px;padding:16px 18px;box-shadow:0 8px 24px rgba(0,0,0,.24);z-index:999;animation:slideUp .3s ease both;font-size:13px;font-weight:800;color:var(--ink-solid)">
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:20px">🏆</span>
+    <div style="flex:1;min-width:0">
+      <div id="toast-content" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
+    </div>
+    <span onclick="document.getElementById('match-toast').style.display='none'" style="flex:none;cursor:pointer;color:rgba(var(--ink-rgb),.4)" style-hover="color:var(--ink-solid)">✕</span>
+  </div>
+</div>
+
+<sc-if value="{{ hasFavorito }}">
+<div style="position:relative;overflow:hidden;border-radius:18px;padding:clamp(16px,2vw,22px) clamp(18px,2.4vw,26px);background:var(--c-raised);border:1px solid rgba(var(--ink-rgb),.1);display:flex;flex-direction:column;gap:15px;animation:cse-rise .34s ease both">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+<div onClick="{{ openFavoritoTeam }}" style="display:flex;align-items:center;gap:9px;cursor:pointer;min-width:0">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="#FFC940" stroke="#FFC940" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+<span style="font-size:10px;font-weight:900;letter-spacing:1.6px;color:rgba(var(--ink-rgb),.5);text-transform:uppercase;white-space:nowrap">SEU TIME</span>
+<span style="font-size:13px;font-weight:800;letter-spacing:.2px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ favorito.nome }}</span>
+</div>
+<span onClick="{{ clearFavorito }}" title="Remover favorito" style="flex:none;width:26px;height:26px;border-radius:99px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(var(--ink-rgb),.4)" style-hover="background:rgba(var(--ink-rgb),.08);color:var(--ink-solid)">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>
+</span>
+</div>
+
+<sc-if value="{{ favorito.isLive }}">
+<div onClick="{{ favorito.card.open }}" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+<div style="flex:1;display:flex;align-items:center;gap:10px;min-width:0">
+<div style="flex:none;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--ink-solid);background: {{ favorito.card.ga }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ favorito.card.ia }}</div>
+<div style="font-size:13px;font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ favorito.card.na }}</div>
+</div>
+<div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:70px">
+<div style="font-size:22px;font-weight:900;letter-spacing:-.6px;color: {{ favorito.card.centerFg }}">{{ favorito.card.center }}</div>
+<div style="display:flex;align-items:center;gap:5px">
+<span style="flex:none;width:6px;height:6px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite"></span>
+<span style="font-size:9px;font-weight:800;letter-spacing:1px;color: {{ favorito.card.subFg }}">{{ favorito.card.centerSub }}</span>
+</div>
+</div>
+<div style="flex:1;display:flex;align-items:center;gap:10px;justify-content:flex-end;min-width:0">
+<div style="font-size:13px;font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right">{{ favorito.card.nb }}</div>
+<div style="flex:none;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--ink-solid);background: {{ favorito.card.gb }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ favorito.card.ib }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ !favorito.isLive }}">
+<div onClick="{{ favorito.card.open }}" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:clamp(14px,2vw,28px);cursor:pointer">
+<div style="flex:1 1 220px;display:flex;align-items:center;gap:10px;min-width:0">
+<div style="flex:none;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--ink-solid);background: {{ favorito.g }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ favorito.i }}</div>
+<span style="flex:none;font-size:11px;font-weight:800;color:rgba(var(--ink-rgb),.42)">×</span>
+<div style="flex:none;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--ink-solid);background: {{ favorito.oppG }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ favorito.oppI }}</div>
+<div style="min-width:0;display:flex;flex-direction:column;gap:2px">
+<span style="font-size:13px;font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ favorito.oppNome }}</span>
+<span style="font-size:10px;font-weight:600;color:rgba(var(--ink-rgb),.42);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ favorito.cdMeta }}</span>
+</div>
+</div>
+<sc-if value="{{ favorito.hasCountdown }}">
+<div style="flex:none;display:flex;align-items:center;gap:7px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:1px;min-width:36px;padding:6px 4px;border-radius:9px;background:rgba(var(--ink-rgb),.06)"><span style="font-size:16px;font-weight:900;letter-spacing:-.4px">{{ favorito.cdDays }}</span><span style="font-size:8px;font-weight:800;letter-spacing:1px;color:rgba(var(--ink-rgb),.45)">DIAS</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:1px;min-width:36px;padding:6px 4px;border-radius:9px;background:rgba(var(--ink-rgb),.06)"><span style="font-size:16px;font-weight:900;letter-spacing:-.4px">{{ favorito.cdHours }}</span><span style="font-size:8px;font-weight:800;letter-spacing:1px;color:rgba(var(--ink-rgb),.45)">HORAS</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:1px;min-width:36px;padding:6px 4px;border-radius:9px;background:rgba(var(--ink-rgb),.06)"><span style="font-size:16px;font-weight:900;letter-spacing:-.4px">{{ favorito.cdMins }}</span><span style="font-size:8px;font-weight:800;letter-spacing:1px;color:rgba(var(--ink-rgb),.45)">MIN</span></div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ favorito.stats }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px;padding-top:6px;border-top:1px solid rgba(var(--ink-rgb),.08)">
+<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0"><span style="font-size:14px;font-weight:900">{{ favorito.stats.jogos }}</span><span style="font-size:8px;font-weight:600;color:rgba(var(--ink-rgb),.42)">JOGOS</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0"><span style="font-size:14px;font-weight:900;color:#3FA9FF">{{ favorito.stats.vitórias }}</span><span style="font-size:8px;font-weight:600;color:rgba(var(--ink-rgb),.42)">VITÓRIAS</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0"><span style="font-size:14px;font-weight:900;color:#3FA9FF">{{ favorito.stats.golsMarcados }}</span><span style="font-size:8px;font-weight:600;color:rgba(var(--ink-rgb),.42)">GOLS MARC.</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0"><span style="font-size:14px;font-weight:900;color:#FF6B75">{{ favorito.stats.golsSofridos }}</span><span style="font-size:8px;font-weight:600;color:rgba(var(--ink-rgb),.42)">GOLS SOF.</span></div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<div style="display:flex;flex-wrap:wrap;gap:clamp(20px,2.4vw,34px);align-items:flex-start">
+
+<div style="flex:1 1 480px;min-width:0;display:flex;flex-direction:column;gap:clamp(20px,2.4vw,30px)">
+<sc-for list="{{ homeSections }}" as="h" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;gap:13px">
+<div style="display:flex;align-items:center;gap:11px">
+<sc-if value="{{ h.live }}">
+<span style="flex:none;width:8px;height:8px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite"></span>
+</sc-if>
+<span style="font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase">{{ h.label }}</span>
+<span style="flex:1;height:1px;background:rgba(var(--ink-rgb),.1)"></span>
+<span onClick="{{ goJogos }}" style="font-size:10px;font-weight:800;letter-spacing:1px;color:#8FD0FF;cursor:pointer" style-hover="color:var(--ink-solid)">VER TODOS</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px">
+<sc-for list="{{ h.items }}" as="m" hint-placeholder-count="2">
+<div onClick="{{ m.open }}" style="position:relative;overflow:hidden;border-radius:18px;cursor:pointer;padding:18px 20px 0;background: {{ m.cardBg }};border:1px solid {{ m.cardBd }};transition:transform .14s ease,border-color .14s ease" style-hover="border-color:rgba(143,208,255,.5)" style-active="transform:scale(.99)">
+<sc-if value="{{ m.isLive }}">
+<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF2E3F,#1E6BFF,#3FA9FF)"></div>
+</sc-if>
+<sc-if value="{{ m.isNext }}">
+<div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:#F2A93B;opacity:.85"></div>
+</sc-if>
+<sc-if value="{{ m.canShare }}">
+<div onClick="{{ m.share }}" title="Compartilhar resultado" style="position:absolute;top:14px;right:16px;z-index:2;width:30px;height:30px;border-radius:99px;display:flex;align-items:center;justify-content:center;background:rgba(var(--ink-rgb),.08);cursor:pointer;transition:background .12s ease" style-hover="background:rgba(var(--ink-rgb),.18)">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>
+</div>
+</sc-if>
+<div style="display:flex;align-items:center;gap:8px">
+<div style="flex:1;display:flex;align-items:center;gap:8px;min-width:0">
+<div style="flex:none;width:clamp(34px,9.5vw,42px);height:clamp(34px,9.5vw,42px);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:clamp(12px,3.2vw,15px);font-weight:900;color:var(--ink-solid);background: {{ m.ga }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ m.ia }}</div>
+<div title="{{ m.na }}" style="font-size:clamp(11.5px,3.6vw,15px);font-weight:800;letter-spacing:.2px;text-transform:uppercase;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word">{{ m.na }}</div>
+</div>
+<div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:clamp(50px,15vw,82px)">
+<div style="font-size:clamp(18px,5.6vw,26px);font-weight:900;letter-spacing:-.8px;color: {{ m.centerFg }};animation: {{ m.centerAnim }}">{{ m.center }}</div>
+<div style="font-size:10px;font-weight:800;letter-spacing:1.2px;color: {{ m.subFg }}">{{ m.centerSub }}</div>
+</div>
+<div style="flex:1;display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0">
+<div title="{{ m.nb }}" style="font-size:clamp(11.5px,3.6vw,15px);font-weight:800;letter-spacing:.2px;text-transform:uppercase;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;text-align:right">{{ m.nb }}</div>
+<div style="flex:none;width:clamp(34px,9.5vw,42px);height:clamp(34px,9.5vw,42px);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:clamp(12px,3.2vw,15px);font-weight:900;color:var(--ink-solid);background: {{ m.gb }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ m.ib }}</div>
+</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:15px;padding:13px 0;border-top:1px solid rgba(var(--ink-rgb),.08)">
+<div style="display:flex;align-items:center;gap:7px;min-width:0">
+<sc-if value="{{ m.isLive }}">
+<span style="flex:none;width:7px;height:7px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite, cse-halo 1.6s ease-out infinite"></span>
+</sc-if>
+<span style="flex:none;white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:1.1px;color: {{ m.chipFg }};text-transform:uppercase">{{ m.chip }}</span>
+<span style="font-size:11px;font-weight:500;color:rgba(var(--ink-rgb),.42);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.meta }}</span>
+</div>
+<span style="flex:none;font-size:11px;font-weight:800;letter-spacing:.8px;color: {{ m.ctaFg }}">{{ m.cta }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+
+<sc-if value="{{ hasHighlights }}">
+<div style="display:flex;flex-direction:column;gap:12px;margin-top:clamp(18px,2vw,26px)">
+<div style="display:flex;align-items:center;gap:11px">
+<span style="font-size:10.5px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(var(--ink-rgb),.5)">Números da copa</span>
+<span style="flex:1;height:1px;background:rgba(var(--ink-rgb),.08)"></span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,212px),1fr));gap:10px">
+<sc-for list="{{ highlights }}" as="hl" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:10px;padding:13px 14px;border-radius:14px;background:rgba(var(--ink-rgb),.035);border:1px solid rgba(var(--ink-rgb),.07)">
+<span style="font-size:9.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:rgba(var(--ink-rgb),.42)">{{ hl.label }}</span>
+<sc-for list="{{ hl.items }}" as="it" hint-placeholder-count="1">
+<div onClick="{{ it.open }}" style="display:flex;align-items:center;gap:9px;cursor:pointer;border-radius:9px;transition:background .12s ease" style-hover="background:rgba(var(--ink-rgb),.05)">
+<span style="flex:none;width:28px;height:28px;border-radius: {{ it.redondo }};background: {{ it.g }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.14);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:900;color:#8FD0FF">{{ it.i }}</span>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column">
+<span style="font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.name }}</span>
+<span style="font-size:9.5px;font-weight:600;color:rgba(var(--ink-rgb),.4)">{{ it.sub }}</span>
+</div>
+<span style="flex:none;font-size:11.5px;font-weight:900;color:#8FD0FF;white-space:nowrap">{{ it.value }}</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+
+<aside style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:clamp(20px,2.4vw,30px)">
+
+<div style="display:flex;flex-direction:column;gap:13px">
+<div style="display:flex;align-items:center;gap:11px">
+<span style="font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase">Classificação · {{ group }}</span>
+<span style="flex:1;height:1px;background:rgba(var(--ink-rgb),.1)"></span>
+</div>
+<div style="overflow:hidden;border-radius:18px;border:1px solid rgba(var(--ink-rgb),.09);background:rgba(var(--ink-rgb),.035)">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 16px;background:rgba(var(--ink-rgb),.05);border-bottom:1px solid rgba(var(--ink-rgb),.09)">
+<span style="width:18px;font-size:9px;font-weight:900;letter-spacing:1px;color:rgba(var(--ink-rgb),.45)">#</span>
+<span style="flex:1;font-size:9px;font-weight:900;letter-spacing:1px;color:rgba(var(--ink-rgb),.45)">TIME</span>
+<span style="width:26px;text-align:center;font-size:9px;font-weight:900;color:rgba(var(--ink-rgb),.45)">J</span>
+<span style="width:30px;text-align:center;font-size:9px;font-weight:900;color:rgba(var(--ink-rgb),.45)">SG</span>
+<span style="width:30px;text-align:center;font-size:9px;font-weight:900;color:#8FD0FF">PTS</span>
+</div>
+<sc-for list="{{ miniStandings }}" as="r" hint-placeholder-count="5">
+<div onClick="{{ r.open }}" style="position:relative;display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(var(--ink-rgb),.06);cursor:pointer;background: {{ r.rowBg }}" style-hover="background:rgba(var(--ink-rgb),.05)">
+<span style="position:absolute;left:0;top:0;bottom:0;width:3px;background: {{ r.zone }}"></span>
+<span style="width:18px;font-size:12.5px;font-weight:900;color: {{ r.posFg }}">{{ r.pos }}</span>
+<span style="flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:900;background: {{ r.g }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ r.i }}</span>
+<span title="{{ r.n }}" style="flex:1;font-size:12.5px;font-weight:800;letter-spacing:.2px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.n }}</span>
+<span style="width:26px;text-align:center;font-size:11.5px;font-weight:600;color:rgba(var(--ink-rgb),.6)">{{ r.j }}</span>
+<span style="width:30px;text-align:center;font-size:11.5px;font-weight:600;color:rgba(var(--ink-rgb),.6)">{{ r.sg }}</span>
+<span style="width:30px;text-align:center;font-size:13px;font-weight:900">{{ r.pts }}</span>
+</div>
+</sc-for>
+<div onClick="{{ goTabela }}" style="padding:13px 16px;text-align:center;font-size:10.5px;font-weight:900;letter-spacing:1.2px;color:#8FD0FF;cursor:pointer" style-hover="color:var(--ink-solid);background:rgba(var(--ink-rgb),.04)">TABELA COMPLETA →</div>
+</div>
+</div>
+
+<sc-if value="{{ hasScorers }}">
+<div style="display:flex;flex-direction:column;gap:13px">
+<div style="display:flex;align-items:center;gap:11px">
+<span style="font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase">Artilharia</span>
+<span style="flex:1;height:1px;background:rgba(var(--ink-rgb),.1)"></span>
+</div>
+<div style="display:flex;flex-direction:column;border-radius:18px;border:1px solid rgba(var(--ink-rgb),.09);overflow:hidden">
+<sc-for list="{{ scorers }}" as="s" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(var(--ink-rgb),.06)">
+<span style="flex:none;width:24px;font-size:11px;font-weight:900;color:rgba(var(--ink-rgb),.4)">{{ s.pos }}</span>
+<span style="flex:none;width:28px;height:28px;border-radius:99px;background: {{ s.g }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#8FD0FF">{{ s.i }}</span>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column">
+<span style="font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span>
+<span style="font-size:10px;font-weight:600;color:rgba(var(--ink-rgb),.42)">{{ s.team }}</span>
+</div>
+<span style="flex:none;font-size:15px;font-weight:900;color:#8FD0FF">{{ s.goals }}</span>
+</div>
+</sc-for>
+<div onClick="{{ goArtilharia }}" style="padding:13px 16px;text-align:center;font-size:10.5px;font-weight:900;letter-spacing:1.2px;color:#8FD0FF;cursor:pointer" style-hover="color:var(--ink-solid);background:rgba(var(--ink-rgb),.04)">RANKING COMPLETO →</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasNewsHighlights }}">
+<div style="display:flex;flex-direction:column;gap:13px">
+<div style="display:flex;align-items:center;gap:11px">
+<span style="font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase">Destaques</span>
+<span style="flex:1;height:1px;background:rgba(var(--ink-rgb),.1)"></span>
+<span onClick="{{ goNoticias }}" style="font-size:10px;font-weight:800;letter-spacing:1px;color:#8FD0FF;cursor:pointer" style-hover="color:var(--ink-solid)">TODAS</span>
+</div>
+<sc-for list="{{ newsHighlights }}" as="n" hint-placeholder-count="3">
+<div onClick="{{ n.open }}" style="display:flex;gap:13px;padding:12px;border-radius:16px;border:1px solid rgba(var(--ink-rgb),.09);background:rgba(var(--ink-rgb),.04);cursor:pointer" style-hover="border-color:rgba(143,208,255,.4)">
+<div style="flex:none;position:relative;overflow:hidden;width:88px;height:74px;border-radius:11px;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box">
+<sc-if value="{{ n.hasImg }}">
+<div style="position:absolute;inset:-6px;background: {{ n.g }};filter:blur(10px) brightness(.55);transform:scale(1.15)"></div>
+<img src="{{ n.imgUrl }}" alt="{{ n.title }}" style="position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block">
+</sc-if>
+<sc-if value="{{ !n.hasImg }}">
+<div style="position:absolute;inset:0;background:linear-gradient(125deg,#0C2A63,#123C8F 55%,#1E6BFF);display:flex;align-items:center;justify-content:center">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><circle cx="8.5" cy="10" r="1.5"></circle><path d="M21 15l-5-5-4 4-3-3-5 5"></path></svg>
+</div>
+</sc-if>
+<sc-if value="{{ n.hasVideo }}">
+<div data-cse-video="{{ n.videoSrc }}" data-kind="{{ n.videoKind }}" data-compact="1" style="position:absolute;inset:0;z-index:2;overflow:hidden"></div>
+</sc-if>
+</div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+<span style="font-size:9px;font-weight:900;letter-spacing:1.4px;color:#8FD0FF">{{ n.tag }}</span>
+<span style="font-size:13px;font-weight:800;line-height:1.3;text-wrap:pretty">{{ n.title }}</span>
+<span style="font-size:10px;font-weight:500;color:rgba(var(--ink-rgb),.42)">{{ n.meta }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+</aside>
+</div>
+
+<!-- Assinatura institucional (Home) — REALIZAÇÃO / PATROCÍNIO / APOIO E MÍDIA.
+     Bloco puramente visual, não interativo, não mexe em nenhuma lógica de
+     jogos/classificação/rádio/notícias. Usa "institutional" (mesmo valor de
+     showSponsors, em campo próprio) para não colidir com o sc-if de
+     "{{ sponsors }}" já usado no rodapé da aba Mais. -->
+<sc-if value="{{ institutional }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(63,169,255,.22);background:linear-gradient(125deg,rgba(12,42,99,.5),rgba(11,27,60,.88));padding:clamp(20px,2.6vw,30px)">
+<div style="display:flex;align-items:center;gap:7px;margin-bottom:clamp(16px,2.2vw,22px)">
+<span style="display:inline-block;width:16px;height:2px;background:#3FA9FF"></span>
+<span style="font-size:9px;font-weight:800;letter-spacing:1.8px;color:#7CC0FF">COPA SBT ENERGISA 2026</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:clamp(16px,2.2vw,22px)">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(20px,3.4vw,44px)">
+<div style="display:flex;flex-direction:column;gap:5px">
+<span style="font-size:8px;font-weight:900;letter-spacing:1.6px;color:rgba(var(--ink-rgb),.4)">REALIZAÇÃO</span>
+<img src="parceiros/sbt.png" alt="SBT TV Rondonópolis" style="height:clamp(36px,7vw,50px);width:auto;object-fit:contain;display:block">
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<span style="font-size:8px;font-weight:900;letter-spacing:1.6px;color:rgba(var(--ink-rgb),.4)">PATROCÍNIO</span>
+<img src="parceiros/energisa.png" alt="Grupo Energisa" style="height:clamp(23px,4.2vw,32px);width:auto;object-fit:contain;display:block">
+</div>
+<span style="font-size:11px;font-weight:700;letter-spacing:.3px;font-style:italic;color:rgba(var(--ink-rgb),.4);margin-left:auto;white-space:nowrap">UMA COPA. UMA EXPERIÊNCIA.</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding-top:clamp(14px,2vw,18px);border-top:1px solid rgba(255,255,255,.08)">
+<span style="font-size:8px;font-weight:900;letter-spacing:1.6px;color:rgba(var(--ink-rgb),.34);white-space:nowrap">APOIO E MÍDIA</span>
+<div style="display:flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:12px;background:rgba(var(--ink-rgb),.045)">
+<img src="parceiros/massa-fm.jpg" alt="Massa FM 104.1" style="height:28px;width:28px;border-radius:7px;object-fit:cover;display:block">
+<span style="font-size:11.5px;font-weight:800;color:rgba(var(--ink-rgb),.6)">Massa FM 104.1</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:12px;background:rgba(var(--ink-rgb),.045)">
+<img src="parceiros/radio-104.webp" alt="Rádio 104 Rondonópolis" style="height:28px;width:28px;border-radius:7px;object-fit:cover;display:block">
+<span style="font-size:11.5px;font-weight:800;color:rgba(var(--ink-rgb),.6)">Rádio 104</span>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isJogos }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding-bottom:16px;border-bottom:1px solid rgba(var(--ink-rgb),.09)">
+<div style="display:flex;gap:7px;flex-wrap:wrap;min-width:0">
+<sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+<div onClick="{{ f.pick }}" style="flex:none;white-space:nowrap;padding:10px 14px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;transition:transform .12s ease;color: {{ f.fg }};background: {{ f.bg }};border:1px solid {{ f.bd }}" style-active="transform:scale(.96)">{{ f.label }}</div>
+</sc-for>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="font-size:9.5px;font-weight:800;letter-spacing:1.6px;color:rgba(var(--ink-rgb),.42)">AGRUPAR POR</span>
+<div style="display:flex;gap:4px;padding:3px;border-radius:11px;background:rgba(var(--ink-rgb),.06)">
+<sc-for list="{{ views }}" as="v" hint-placeholder-count="3">
+<div onClick="{{ v.pick }}" style="padding:7px 13px;border-radius:9px;font-size:11.5px;font-weight:700;cursor:pointer;color: {{ v.fg }};background: {{ v.bg }}">{{ v.label }}</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:clamp(14px,2vw,28px)">
+<sc-if value="{{ rodadaFilters }}">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:7px">
+<span style="font-size:9px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.38)">RODADA</span>
+<sc-for list="{{ rodadaFilters }}" as="rf" hint-placeholder-count="4">
+<div onClick="{{ rf.pick }}" style="flex:none;white-space:nowrap;padding:7px 12px;border-radius:99px;font-size:10.5px;font-weight:800;letter-spacing:.3px;cursor:pointer;color: {{ rf.fg }};background: {{ rf.bg }};border:1px solid {{ rf.bd }}">{{ rf.label }}</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ grupoFilters }}">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:7px">
+<span style="font-size:9px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.38)">GRUPO</span>
+<sc-for list="{{ grupoFilters }}" as="gf" hint-placeholder-count="6">
+<div onClick="{{ gf.pick }}" style="flex:none;white-space:nowrap;padding:7px 12px;border-radius:99px;font-size:10.5px;font-weight:800;letter-spacing:.3px;cursor:pointer;color: {{ gf.fg }};background: {{ gf.bg }};border:1px solid {{ gf.bd }}">{{ gf.label }}</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+
+<sc-if value="{{ loading }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px">
+<sc-for list="{{ skeletons }}" as="s" hint-placeholder-count="4">
+<div style="height:118px;border-radius:18px;border:1px solid rgba(var(--ink-rgb),.06);background:linear-gradient(100deg,rgba(var(--ink-rgb),.04) 20%,rgba(var(--ink-rgb),.11) 50%,rgba(var(--ink-rgb),.04) 80%);background-size:520px 100%;animation:cse-shimmer 1.15s linear infinite"></div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{ !groups.length }}">
+<div style="padding:40px 0;text-align:center;font-size:12.5px;color:rgba(var(--ink-rgb),.4)">Nenhum jogo encontrado com esses filtros.</div>
+</sc-if>
+<div style="display:flex;flex-direction:column;gap:clamp(20px,2.4vw,32px)">
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;gap:13px;animation:cse-rise .34s ease both">
+<div style="display:flex;align-items:center;gap:11px">
+<span style="font-size:11px;font-weight:900;letter-spacing:2px;color:var(--ink-solid);text-transform:uppercase">{{ g.label }}</span>
+<span style="flex:1;height:1px;background:rgba(var(--ink-rgb),.1)"></span>
+<span style="font-size:10.5px;font-weight:700;color:rgba(var(--ink-rgb),.38)">{{ g.count }}</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px">
+<sc-for list="{{ g.items }}" as="m" hint-placeholder-count="2">
+<div onClick="{{ m.open }}" style="position:relative;overflow:hidden;border-radius:18px;cursor:pointer;padding:18px 20px 0;background: {{ m.cardBg }};border:1px solid {{ m.cardBd }};transition:transform .14s ease,border-color .14s ease" style-hover="border-color:rgba(143,208,255,.5)" style-active="transform:scale(.99)">
+<sc-if value="{{ m.isLive }}">
+<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FF2E3F,#1E6BFF,#3FA9FF)"></div>
+</sc-if>
+<sc-if value="{{ m.isNext }}">
+<div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:#F2A93B;opacity:.85"></div>
+</sc-if>
+<sc-if value="{{ m.canShare }}">
+<div onClick="{{ m.share }}" title="Compartilhar resultado" style="position:absolute;top:14px;right:16px;z-index:2;width:30px;height:30px;border-radius:99px;display:flex;align-items:center;justify-content:center;background:rgba(var(--ink-rgb),.08);cursor:pointer;transition:background .12s ease" style-hover="background:rgba(var(--ink-rgb),.18)">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink-solid)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>
+</div>
+</sc-if>
+<div style="display:flex;align-items:center;gap:8px">
+<div style="flex:1;display:flex;align-items:center;gap:8px;min-width:0">
+<div style="flex:none;width:clamp(34px,9.5vw,42px);height:clamp(34px,9.5vw,42px);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:clamp(12px,3.2vw,15px);font-weight:900;color:var(--ink-solid);background: {{ m.ga }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ m.ia }}</div>
+<div title="{{ m.na }}" style="font-size:clamp(11.5px,3.6vw,15px);font-weight:800;letter-spacing:.2px;text-transform:uppercase;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word">{{ m.na }}</div>
+</div>
+<div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:clamp(50px,15vw,82px)">
+<div style="font-size:clamp(18px,5.6vw,26px);font-weight:900;letter-spacing:-.8px;color: {{ m.centerFg }};animation: {{ m.centerAnim }}">{{ m.center }}</div>
+<div style="font-size:10px;font-weight:800;letter-spacing:1.2px;color: {{ m.subFg }}">{{ m.centerSub }}</div>
+</div>
+<div style="flex:1;display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0">
+<div title="{{ m.nb }}" style="font-size:clamp(11.5px,3.6vw,15px);font-weight:800;letter-spacing:.2px;text-transform:uppercase;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;text-align:right">{{ m.nb }}</div>
+<div style="flex:none;width:clamp(34px,9.5vw,42px);height:clamp(34px,9.5vw,42px);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:clamp(12px,3.2vw,15px);font-weight:900;color:var(--ink-solid);background: {{ m.gb }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ m.ib }}</div>
+</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:15px;padding:13px 0;border-top:1px solid rgba(var(--ink-rgb),.08)">
+<div style="display:flex;align-items:center;gap:7px;min-width:0">
+<sc-if value="{{ m.isLive }}">
+<span style="flex:none;width:7px;height:7px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite, cse-halo 1.6s ease-out infinite"></span>
+</sc-if>
+<span style="flex:none;white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:1.1px;color: {{ m.chipFg }};text-transform:uppercase">{{ m.chip }}</span>
+<span style="font-size:11px;font-weight:500;color:rgba(var(--ink-rgb),.42);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.meta }}</span>
+</div>
+<span style="flex:none;font-size:11px;font-weight:800;letter-spacing:.8px;color: {{ m.ctaFg }}">{{ m.cta }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isTabela }}">
+<div style="display:flex;flex-direction:column;gap:20px;animation:cse-rise .34s ease both">
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:clamp(16px,2vw,24px)">
+<sc-for list="{{ groupBlocks }}" as="gb" hint-placeholder-count="6">
+<div style="display:flex;flex-direction:column;gap:11px">
+<span style="font-size:11px;font-weight:900;letter-spacing:2px;color:var(--ink-solid);text-transform:uppercase">{{ gb.label }}</span>
+<div style="overflow:hidden;border-radius:18px;border:1px solid rgba(var(--ink-rgb),.09);background:rgba(var(--ink-rgb),.03)">
+<div style="display:flex;align-items:center;gap:clamp(6px,1vw,12px);padding:11px clamp(12px,2vw,18px);background:rgba(var(--ink-rgb),.05);border-bottom:1px solid rgba(var(--ink-rgb),.09)">
+<span style="width:16px;font-size:9px;font-weight:900;letter-spacing:1px;color:rgba(var(--ink-rgb),.45)">#</span>
+<span style="flex:1;min-width:0;font-size:9px;font-weight:900;letter-spacing:1px;color:rgba(var(--ink-rgb),.45)">TIME</span>
+<span style="width:clamp(20px,5vw,26px);text-align:center;font-size:9px;font-weight:900;color:rgba(var(--ink-rgb),.45)">J</span>
+<span style="width:clamp(38px,10vw,48px);text-align:center;font-size:9px;font-weight:900;color:rgba(var(--ink-rgb),.45)">V-E-D</span>
+<span style="width:clamp(24px,6vw,30px);text-align:center;font-size:9px;font-weight:900;color:rgba(var(--ink-rgb),.45)">SG</span>
+<span style="width:clamp(26px,7vw,34px);text-align:center;font-size:9px;font-weight:900;color:#8FD0FF">PTS</span>
+</div>
+<sc-for list="{{ gb.teams }}" as="r" hint-placeholder-count="4">
+<div onClick="{{ r.open }}" style="position:relative;display:flex;align-items:center;gap:clamp(5px,1vw,12px);padding:12px clamp(10px,2vw,18px);border-bottom:1px solid rgba(var(--ink-rgb),.06);cursor:pointer;background: {{ r.rowBg }}" style-hover="background:rgba(var(--ink-rgb),.05)">
+<span style="position:absolute;left:0;top:0;bottom:0;width:3px;background: {{ r.zone }}"></span>
+<span style="width:16px;font-size:12px;font-weight:900;color: {{ r.posFg }}">{{ r.pos }}</span>
+<div style="flex:1;min-width:0;display:flex;align-items:center;gap:8px">
+<span style="flex:none;width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;background: {{ r.g }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16)">{{ r.i }}</span>
+<span title="{{ r.n }}" style="flex:1;min-width:0;font-size:12px;font-weight:800;letter-spacing:.1px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.n }}</span>
+</div>
+<span style="width:clamp(20px,5vw,26px);text-align:center;font-size:11px;font-weight:600;color:rgba(var(--ink-rgb),.62)">{{ r.j }}</span>
+<span style="width:clamp(38px,10vw,48px);text-align:center;font-size:10.5px;font-weight:700;color:rgba(var(--ink-rgb),.55);white-space:nowrap">{{ r.ved }}</span>
+<span style="width:clamp(24px,6vw,30px);text-align:center;font-size:11px;font-weight:600;color:rgba(var(--ink-rgb),.62)">{{ r.sg }}</span>
+<span style="width:clamp(26px,7vw,34px);text-align:center;font-size:12.5px;font-weight:900">{{ r.pts }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:clamp(12px,2vw,28px);padding:16px 18px;border-radius:14px;border:1px solid rgba(var(--ink-rgb),.09)">
+<div style="display:flex;align-items:center;gap:9px"><span style="width:14px;height:3px;background:#3FA9FF"></span><span style="font-size:11.5px;font-weight:600;color:rgba(var(--ink-rgb),.62)">{{ classifyLabel }}</span></div>
+<div style="display:flex;align-items:center;gap:9px"><span style="width:14px;height:3px;background:rgba(var(--ink-rgb),.18)"></span><span style="font-size:11.5px;font-weight:600;color:rgba(var(--ink-rgb),.62)">Fora da zona</span></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isNoticias }}">
+<div style="display:flex;flex-direction:column;gap:20px;animation:cse-rise .34s ease both">
+<sc-if value="{{ hasNews }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(14px,1.8vw,22px)">
+<sc-for list="{{ news }}" as="n" hint-placeholder-count="3">
+<div onClick="{{ n.open }}" style="overflow:hidden;border-radius:18px;border:1px solid rgba(var(--ink-rgb),.09);background:rgba(var(--ink-rgb),.04);cursor:pointer;transition:border-color .14s ease" style-hover="border-color:rgba(143,208,255,.45)">
+<div style="position:relative;overflow:hidden;height:190px;display:flex;align-items:flex-end;padding:14px">
+<sc-if value="{{ n.hasImg }}">
+<div style="position:absolute;inset:-10px;background: {{ n.g }};filter:blur(16px) brightness(.55);transform:scale(1.15)"></div>
+<img src="{{ n.imgUrl }}" alt="{{ n.title }}" style="position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block">
+</sc-if>
+<sc-if value="{{ !n.hasImg }}">
+<div style="position:absolute;inset:0;background:linear-gradient(125deg,#0C2A63,#123C8F 55%,#1E6BFF);display:flex;align-items:center;justify-content:center">
+<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><circle cx="8.5" cy="10" r="1.5"></circle><path d="M21 15l-5-5-4 4-3-3-5 5"></path></svg>
+</div>
+</sc-if>
+<sc-if value="{{ n.hasVideo }}">
+<div data-cse-video="{{ n.videoSrc }}" data-kind="{{ n.videoKind }}" style="position:absolute;inset:0;z-index:2;overflow:hidden"></div>
+</sc-if>
+</div>
+<div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px">
+<span style="font-size:9px;font-weight:900;letter-spacing:1.4px;color:#8FD0FF">{{ n.tag }}</span>
+<span style="font-size:16px;font-weight:800;line-height:1.28;text-wrap:pretty">{{ n.title }}</span>
+<span style="font-size:11px;font-weight:500;color:rgba(var(--ink-rgb),.42)">{{ n.meta }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ !hasNews }}">
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:60px 20px;text-align:center">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(var(--ink-rgb),.3)" stroke-width="1.6"><path d="M4 5h12v14H5a1 1 0 01-1-1V5z"></path><path d="M16 9h4v8.5a1.5 1.5 0 01-3 0V9z"></path></svg>
+<span style="font-size:13px;font-weight:700;color:rgba(var(--ink-rgb),.55)">Nenhuma notícia publicada ainda</span>
+<span style="font-size:11.5px;color:rgba(var(--ink-rgb),.35);max-width:360px">As novidades da competição aparecem aqui em breve.</span>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isMais }}">
+<div style="display:flex;flex-direction:column;gap:20px;animation:cse-rise .34s ease both">
+<div style="display:flex;align-items:center;gap:11px">
+<span style="font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase">Central da Copa</span>
+<span style="flex:1;height:1px;background:rgba(var(--ink-rgb),.1)"></span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:14px">
+<sc-for list="{{ moreItems }}" as="s" hint-placeholder-count="6">
+<div onClick="{{ s.open }}" style="position:relative;overflow:hidden;display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:18px;border:1px solid rgba(var(--ink-rgb),.09);background:rgba(var(--ink-rgb),.035);cursor:pointer;transition:transform .14s ease,border-color .14s ease" style-hover="border-color: {{ s.accent }};transform:translateY(-2px)" style-active="transform:scale(.97)">
+<div style="position:absolute;top:-30px;right:-30px;width:80px;height:80px;border-radius:99px;background: {{ s.accent }};opacity:.12"></div>
+<div style="position:relative;flex:none;width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:19px;background: {{ s.accent }}22;box-shadow:inset 0 0 0 1px {{ s.accent }}40">{{ s.icon }}</div>
+<div style="position:relative;display:flex;flex-direction:column;gap:4px">
+<span style="font-size:14.5px;font-weight:800;letter-spacing:-.1px">{{ s.t }}</span>
+<span style="font-size:11.5px;font-weight:500;line-height:1.45;color:rgba(var(--ink-rgb),.5)">{{ s.d }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:20px;border-radius:16px;border:1px solid rgba(63,169,255,.3);background:linear-gradient(120deg,rgba(30,107,255,.2),rgba(11,27,60,.9))">
+<div style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="font-size:10px;font-weight:900;letter-spacing:1.8px;color:#8FD0FF">INSTALE NO CELULAR</span>
+<span style="font-size:13px;font-weight:500;line-height:1.55;color:rgba(var(--ink-rgb),.74)">Adicione a Copa à tela inicial e ela abre em tela cheia, sem barra do navegador — com ícone próprio.</span>
+</div>
+<div onClick="{{ install }}" style="flex:none;padding:14px 20px;border-radius:12px;font-size:11.5px;font-weight:900;letter-spacing:1.2px;cursor:pointer;color:var(--c-page);background:var(--ink-solid)" style-active="transform:scale(.98)">{{ installLabel }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ sponsors }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:clamp(26px,3vw,44px);padding-top:20px;border-top:1px solid rgba(var(--ink-rgb),.09);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+<span style="font-size:8.5px;font-weight:800;letter-spacing:1.6px;color:rgba(var(--ink-rgb),.3);line-height:1.5">UMA REALIZAÇÃO<br>SBT TV Rondonópolis</span>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2.2vw,26px)">
+<div style="display:flex;align-items:center;gap:7px">
+<img src="parceiros/sbt.png" alt="SBT" style="height:17px;width:17px;border-radius:5px;object-fit:cover;display:block;opacity:.82">
+<span style="font-size:13px;font-weight:800;letter-spacing:-.1px;color:rgba(var(--ink-rgb),.68)">SBT</span>
+</div>
+<div style="display:flex;align-items:center;gap:7px">
+<img src="parceiros/energisa.png" alt="Energisa" style="height:15px;width:auto;object-fit:contain;display:block;opacity:.82">
+</div>
+<span style="font-size:8px;font-weight:800;letter-spacing:1.1px;color:rgba(var(--ink-rgb),.32)">APOIO / MÍDIA</span>
+<span style="font-size:12.5px;font-weight:700;letter-spacing:-.1px;color:rgba(var(--ink-rgb),.5)">Massa FM · 104 FM</span>
+</div>
+</div>
+</sc-if>
+
+</main>
+
+<div style="position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;flex-direction:column">
+
+<sc-if value="{{ hasRadio }}">
+<audio id="cse-radio-audio" preload="none" style="display:none"></audio>
+<div style="background:rgba(var(--ov-rgb),.95);backdrop-filter:blur(18px);border-top:1px solid rgba(var(--ink-rgb),.12)">
+<div style="max-width:1340px;margin:0 auto;padding:clamp(9px,1.2vw,13px) clamp(12px,3vw,32px);display:flex;align-items:center;gap:clamp(11px,1.8vw,22px)">
+<div onClick="{{ togglePlay }}" style="flex:none;width:clamp(42px,4vw,50px);height:clamp(42px,4vw,50px);border-radius:99px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:linear-gradient(120deg,#1E6BFF,#3FA9FF);box-shadow:0 6px 20px rgba(30,107,255,.35)" style-active="transform:scale(.95)">
+<sc-if value="{{ playing }}">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="var(--ink-solid)"><rect x="6" y="4.5" width="4.2" height="15" rx="1"></rect><rect x="13.8" y="4.5" width="4.2" height="15" rx="1"></rect></svg>
+</sc-if>
+<sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--ink-solid)"><path d="M7 4.5l13 7.5-13 7.5z"></path></svg>
+</sc-if>
+</div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+<div style="display:flex;align-items:center;gap:8px;min-width:0">
+<span style="flex:none;width:7px;height:7px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite"></span>
+<span style="flex:none;font-size:9px;font-weight:900;letter-spacing:1.6px;color:#FF6B75">AO VIVO</span>
+<span style="font-size:9px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.42);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">MASSA FM 104,9 · RONDONÓPOLIS</span>
+</div>
+<span style="font-size:13.5px;font-weight:800;letter-spacing:-.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ radioNow }}</span>
+</div>
+<div style="flex:none;display:flex;align-items:flex-end;gap:3px;height:24px;opacity: {{ eqOpacity }}">
+<span style="width:3px;height:40%;background:#3FA9FF;animation:cse-eq .9s ease-in-out infinite alternate"></span>
+<span style="width:3px;height:80%;background:#3FA9FF;animation:cse-eq .7s .15s ease-in-out infinite alternate"></span>
+<span style="width:3px;height:55%;background:#8FD0FF;animation:cse-eq 1.1s .05s ease-in-out infinite alternate"></span>
+<span style="width:3px;height:95%;background:#1E6BFF;animation:cse-eq .8s .25s ease-in-out infinite alternate"></span>
+<span style="width:3px;height:35%;background:#3FA9FF;animation:cse-eq 1s .35s ease-in-out infinite alternate"></span>
+</div>
+<sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+<div style="flex:none;display:flex;align-items:center;gap:10px;padding-left:8px">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(var(--ink-rgb),.62)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"></path><path d="M16 9a4 4 0 010 6"></path></svg>
+<div onClick="{{ nudgeVol }}" style="width:110px;height:4px;background:rgba(var(--ink-rgb),.14);cursor:pointer">
+<div style="height:100%;width: {{ volW }};background:linear-gradient(90deg,#1E6BFF,#3FA9FF)"></div>
+</div>
+</div>
+<div style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px;padding-left:6px;border-left:1px solid rgba(var(--ink-rgb),.1);padding-left:20px">
+<span style="font-size:9px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.38)">TRANSMISSÃO</span>
+<span style="font-size:13px;font-weight:900;color:#8FD0FF">AO VIVO</span>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isNarrow }}">
+<div style="padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(var(--ov-rgb),.96);border-top:1px solid rgba(var(--ink-rgb),.09);backdrop-filter:blur(16px);display:grid;grid-template-columns:repeat(5,1fr);gap:2px">
+<div onClick="{{ goInicio }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 0;cursor:pointer;color: {{ navInicio.fg }}">
+<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path></svg>
+<span style="font-size:9px;font-weight:800;letter-spacing:.4px">INÍCIO</span>
+<span style="width:16px;height:2px;border-radius:9px;background: {{ navInicio.bar }}"></span>
+</div>
+<div onClick="{{ goJogos }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 0;cursor:pointer;color: {{ navJogos.fg }}">
+<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3l3 4.5-3 3-3-3L12 3zM3.5 9.5l4.5 1.5.8 4.2-3.6 2.3M20.5 9.5L16 11l-.8 4.2 3.6 2.3"></path></svg>
+<span style="font-size:9px;font-weight:800;letter-spacing:.4px">JOGOS</span>
+<span style="width:16px;height:2px;border-radius:9px;background: {{ navJogos.bar }}"></span>
+</div>
+<div onClick="{{ goTabela }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 0;cursor:pointer;color: {{ navTabela.fg }}">
+<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 01-10 0V4z"></path><path d="M17 5h3v2a3 3 0 01-3 3M7 5H4v2a3 3 0 003 3"></path><path d="M12 14v3M8.5 20h7"></path></svg>
+<span style="font-size:9px;font-weight:800;letter-spacing:.4px">TABELA</span>
+<span style="width:16px;height:2px;border-radius:9px;background: {{ navTabela.bar }}"></span>
+</div>
+<div onClick="{{ goNoticias }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 0;cursor:pointer;color: {{ navNoticias.fg }}">
+<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h12v14H5a1 1 0 01-1-1V5z"></path><path d="M16 9h4v8.5a1.5 1.5 0 01-3 0V9z"></path><path d="M7 8.5h6M7 12h6M7 15.5h4"></path></svg>
+<span style="font-size:9px;font-weight:800;letter-spacing:.4px">NOTÍCIAS</span>
+<span style="width:16px;height:2px;border-radius:9px;background: {{ navNoticias.bar }}"></span>
+</div>
+<div onClick="{{ goMais }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:7px 0;cursor:pointer;color: {{ navMais.fg }}">
+<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20c1.4-3.4 4.2-5 7.5-5s6.1 1.6 7.5 5"></path></svg>
+<span style="font-size:9px;font-weight:800;letter-spacing:.4px">MAIS</span>
+<span style="width:16px;height:2px;border-radius:9px;background: {{ navMais.bar }}"></span>
+</div>
+</div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ detail }}">
+<div id="cse-detail-modal" onClick="{{ closeDetail }}" style="position:fixed;inset:0;z-index:110;background:rgba(var(--scrim-rgb),.74);backdrop-filter:blur(6px);display:flex;justify-content:center;align-items: {{ sheetAlign }};padding: {{ sheetPad }}">
+<div onClick="{{ stop }}" style="width:100%;max-width:760px;max-height:86vh;display:flex;flex-direction:column;border-radius: {{ sheetRadius }};border:1px solid rgba(var(--ink-rgb),.14);background:linear-gradient(180deg,#0B1B3C,var(--c-raised) 40%);animation:cse-sheet .3s cubic-bezier(.2,.9,.3,1) both;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)">
+<div style="flex:none;padding:16px clamp(18px,2.4vw,28px) 20px;background:linear-gradient(120deg,#0C2A63,#123C8F 55%,#0B1B3C)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+<span style="font-size:10px;font-weight:800;letter-spacing:1.6px;color:#8FD0FF">{{ detail.roundLabel }}</span>
+<div style="flex:none;display:flex;align-items:center;gap:14px">
+<sc-if value="{{ detail.canShare }}">
+<span onClick="{{ detail.share }}" title="Compartilhar resultado" style="cursor:pointer;padding:6px 10px;margin:-6px -10px;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.6px;color:rgba(var(--ink-rgb),.7)" style-hover="color:var(--ink-solid)">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>
+COMPARTILHAR
+</span>
+</sc-if>
+<span onClick="{{ closeDetail }}" style="cursor:pointer;padding:6px 10px;margin:-6px -10px;font-size:11px;font-weight:800;letter-spacing:.8px;color:rgba(var(--ink-rgb),.55)" style-hover="color:var(--ink-solid)">FECHAR ✕</span>
+</div>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0">
+<div style="width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;background: {{ detail.ga }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.18)">{{ detail.ia }}</div>
+<span style="font-size:12.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;text-align:center">{{ detail.na }}</span>
+</div>
+<div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:5px">
+<div style="font-size:clamp(36px,4vw,48px);font-weight:900;letter-spacing:-1.8px;line-height:1">{{ detail.center }}</div>
+<div style="display:flex;align-items:center;gap:6px">
+<span style="width:6px;height:6px;border-radius:99px;background: {{ detail.subFg }}"></span>
+<span style="font-size:10.5px;font-weight:800;letter-spacing:1.2px;color: {{ detail.subFg }}">{{ detail.statusLong }}</span>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0">
+<div style="width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;background: {{ detail.gb }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.18)">{{ detail.ib }}</div>
+<span style="font-size:12.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;text-align:center">{{ detail.nb }}</span>
+</div>
+</div>
+<div style="margin-top:16px;font-size:11px;font-weight:500;color:rgba(var(--ink-rgb),.58);text-align:center">{{ detail.meta }}</div>
+<sc-if value="{{ detail.hasWatch }}">
+<div onClick="{{ detail.watchAction }}" style="margin:14px auto 0;width:fit-content;padding:10px 18px;border-radius:99px;font-size:11px;font-weight:900;letter-spacing:1px;cursor:pointer;color:var(--c-page);background:var(--ink-solid);display:flex;align-items:center;gap:8px" style-active="transform:scale(.97)">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="var(--c-page)"><path d="M7 4.5l13 7.5-13 7.5z"></path></svg>{{ detail.watchLabel }}
+</div>
+</sc-if>
+</div>
+
+<div style="flex:none;display:flex;gap:6px;padding:14px clamp(18px,2.4vw,28px);border-bottom:1px solid rgba(var(--ink-rgb),.09)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<div onClick="{{ t.pick }}" style="flex:1;text-align:center;padding:10px 0;border-radius:10px;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;color: {{ t.fg }};background: {{ t.bg }}">{{ t.label }}</div>
+</sc-for>
+</div>
+
+<div style="flex:1;overflow:auto;padding:18px clamp(18px,2.4vw,28px) 28px">
+<sc-if value="{{ tabEventos }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ events }}" as="e" hint-placeholder-count="4">
+<div onClick="{{ e.onClick }}" style="display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid rgba(var(--ink-rgb),.07);cursor: {{ e.cursor }}">
+<span style="flex:none;width:38px;font-size:13px;font-weight:900;color:#3FA9FF">{{ e.min }}</span>
+<span style="flex:none;width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;background:rgba(var(--ink-rgb),.07)">{{ e.icon }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:13.5px;font-weight:700">{{ e.player }}</div>
+<div style="font-size:10.5px;font-weight:500;color:rgba(var(--ink-rgb),.45)">{{ e.note }}</div>
+</div>
+<span style="flex:none;font-size:10.5px;font-weight:800;letter-spacing:.8px;color:rgba(var(--ink-rgb),.5)">{{ e.team }}</span>
+</div>
+</sc-for>
+<sc-if value="{{ !hasEvents }}">
+<div style="padding:18px 0;font-size:12px;color:rgba(var(--ink-rgb),.4)">Nenhum evento registrado ainda para esta partida.</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabStats }}">
+<div style="display:flex;flex-direction:column;gap:17px">
+<sc-for list="{{ stats }}" as="s" hint-placeholder-count="5">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:800">
+<span>{{ s.a }}</span>
+<span style="font-size:10px;font-weight:800;letter-spacing:1.3px;color:rgba(var(--ink-rgb),.45);text-transform:uppercase">{{ s.label }}</span>
+<span>{{ s.b }}</span>
+</div>
+<div style="display:flex;gap:4px;height:6px">
+<div style="flex: {{ s.fa }};border-radius:9px;background:linear-gradient(90deg,#3FA9FF,#1E6BFF)"></div>
+<div style="flex: {{ s.fb }};border-radius:9px;background:rgba(var(--ink-rgb),.14)"></div>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabLineup }}">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.45)">ELENCO</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:0 26px">
+<sc-for list="{{ lineup }}" as="p" hint-placeholder-count="6">
+<div style="display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid rgba(var(--ink-rgb),.07)">
+<span style="flex:none;width:30px;height:30px;border-radius:99px;background: {{ p.fg }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.14);color:#8FD0FF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900">{{ p.fi }}</span>
+<span style="flex:none;min-width:22px;font-size:11.5px;font-weight:900;color:rgba(var(--ink-rgb),.45)">{{ p.n }}</span>
+<span style="flex:1;font-size:13px;font-weight:700">{{ p.name }}</span>
+<span style="font-size:10.5px;font-weight:800;letter-spacing:.8px;color:rgba(var(--ink-rgb),.42)">{{ p.pos }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ newsDetail }}">
+<div id="cse-news-modal" onClick="{{ closeNews }}" style="position:fixed;inset:0;z-index:115;background:rgba(var(--scrim-rgb),.74);backdrop-filter:blur(6px);display:flex;justify-content:center;align-items: {{ sheetAlign }};padding: {{ sheetPad }}">
+<div onClick="{{ stop }}" style="width:100%;max-width:640px;max-height:86vh;display:flex;flex-direction:column;border-radius: {{ sheetRadius }};border:1px solid rgba(var(--ink-rgb),.14);background:linear-gradient(180deg,#0B1B3C,var(--c-raised) 40%);animation:cse-sheet .3s cubic-bezier(.2,.9,.3,1) both;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)">
+<div style="flex:none;position:relative;overflow:hidden;height:220px;background:var(--c-raised)">
+<sc-if value="{{ newsDetail.hasImg }}">
+<div style="position:absolute;inset:-14px;background: {{ newsDetail.g }};filter:blur(20px) brightness(.5);transform:scale(1.15)"></div>
+<img src="{{ newsDetail.imgUrl }}" alt="{{ newsDetail.title }}" style="position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block">
+</sc-if>
+<sc-if value="{{ !newsDetail.hasImg }}">
+<div style="position:absolute;inset:0;background:linear-gradient(125deg,#0C2A63,#123C8F 55%,#1E6BFF);display:flex;align-items:center;justify-content:center">
+<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><circle cx="8.5" cy="10" r="1.5"></circle><path d="M21 15l-5-5-4 4-3-3-5 5"></path></svg>
+</div>
+</sc-if>
+<sc-if value="{{ newsDetail.hasVideo }}">
+<div data-cse-video="{{ newsDetail.videoSrc }}" data-kind="{{ newsDetail.videoKind }}" style="position:absolute;inset:0;z-index:2;overflow:hidden"></div>
+</sc-if>
+<span onClick="{{ closeNews }}" style="position:absolute;top:12px;right:12px;z-index:2;cursor:pointer;padding:8px 12px;font-size:11px;font-weight:800;letter-spacing:.8px;color:var(--ink-solid);background:rgba(var(--ov-rgb),.55);border-radius:99px;backdrop-filter:blur(6px)" style-hover="background:rgba(var(--ov-rgb),.8)">← VOLTAR</span>
+</div>
+<div style="flex:1;overflow:auto;padding:22px clamp(18px,2.4vw,28px) 28px;display:flex;flex-direction:column;gap:10px">
+<span style="font-size:10px;font-weight:900;letter-spacing:1.6px;color:#8FD0FF">{{ newsDetail.tag }}</span>
+<span style="font-size:clamp(19px,2.4vw,26px);font-weight:900;line-height:1.2">{{ newsDetail.title }}</span>
+<span style="font-size:11px;font-weight:600;color:rgba(var(--ink-rgb),.42)">{{ newsDetail.meta }}</span>
+<p style="margin:14px 0 0;font-size:14px;line-height:1.7;color:rgba(var(--ink-rgb),.82);white-space:pre-wrap">{{ newsDetail.texto }}</p>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ moreOpen }}">
+<div id="cse-more-modal" onClick="{{ closeMore }}" style="position:fixed;inset:0;z-index:120;background:rgba(var(--scrim-rgb),.74);backdrop-filter:blur(6px);display:flex;justify-content:center;align-items: {{ sheetAlign }};padding: {{ sheetPad }}">
+<div onClick="{{ stop }}" style="width:100%;max-width:920px;max-height:86vh;display:flex;flex-direction:column;border-radius: {{ sheetRadius }};border:1px solid rgba(var(--ink-rgb),.14);background:linear-gradient(180deg,#0B1B3C,var(--c-raised) 40%);animation:cse-sheet .3s cubic-bezier(.2,.9,.3,1) both;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)">
+<div style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(18px,2.4vw,28px);background:linear-gradient(120deg,#0C2A63,#123C8F 55%,#0B1B3C)">
+<span style="font-size:13px;font-weight:900;letter-spacing:.3px">{{ moreTitle }}</span>
+<span onClick="{{ closeMore }}" style="cursor:pointer;padding:6px 10px;margin:-6px -10px;font-size:11px;font-weight:800;letter-spacing:.8px;color:rgba(var(--ink-rgb),.55)" style-hover="color:var(--ink-solid)">FECHAR ✕</span>
+</div>
+<div style="flex:1;overflow:auto;padding:20px clamp(18px,2.4vw,28px) 28px">
+
+<sc-if value="{{ isMoreTimes }}">
+<sc-if value="{{ hasTeamProfile }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<span onClick="{{ closeTeam }}" style="cursor:pointer;font-size:11px;font-weight:800;color:#8FD0FF;letter-spacing:.6px" style-hover="color:var(--ink-solid)">← VER TODOS OS TIMES</span>
+<div style="display:flex;align-items:center;gap:14px">
+<div style="flex:none;width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;background: {{ teamProfile.g }}">{{ teamProfile.i }}</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0">
+<span style="font-size:18px;font-weight:900">{{ teamProfile.nome }}</span>
+<span style="font-size:10.5px;font-weight:800;letter-spacing:.8px;color:#8FD0FF">{{ teamProfile.grupo }}</span>
+</div>
+<div onClick="{{ toggleFavTeam }}" title="Marcar como time favorito" style="flex:none;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(var(--ink-rgb),.06);border:1px solid rgba(var(--ink-rgb),.1)" style-hover="background:rgba(var(--ink-rgb),.1)">
+<sc-if value="{{ isFavThisTeam }}">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="#FFC940" stroke="#FFC940" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+</sc-if>
+<sc-if value="{{ !isFavThisTeam }}">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="rgba(var(--ink-rgb),.55)" stroke-width="1.6" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+</sc-if>
+</div>
+</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<div style="flex:1 1 70px;padding:12px;border-radius:12px;background:rgba(var(--ink-rgb),.05);text-align:center"><div style="font-size:18px;font-weight:900">{{ teamProfile.v }}</div><div style="font-size:9px;font-weight:800;color:rgba(var(--ink-rgb),.45)">VITÓRIAS</div></div>
+<div style="flex:1 1 70px;padding:12px;border-radius:12px;background:rgba(var(--ink-rgb),.05);text-align:center"><div style="font-size:18px;font-weight:900">{{ teamProfile.e }}</div><div style="font-size:9px;font-weight:800;color:rgba(var(--ink-rgb),.45)">EMPATES</div></div>
+<div style="flex:1 1 70px;padding:12px;border-radius:12px;background:rgba(var(--ink-rgb),.05);text-align:center"><div style="font-size:18px;font-weight:900">{{ teamProfile.d }}</div><div style="font-size:9px;font-weight:800;color:rgba(var(--ink-rgb),.45)">DERROTAS</div></div>
+<div style="flex:1 1 70px;padding:12px;border-radius:12px;background:rgba(63,169,255,.12);text-align:center"><div style="font-size:18px;font-weight:900;color:#8FD0FF">{{ teamProfile.aproveitamento }}</div><div style="font-size:9px;font-weight:800;color:rgba(var(--ink-rgb),.45)">APROVEITAMENTO</div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.45)">JOGOS</span>
+<sc-for list="{{ teamProfile.games }}" as="gm" hint-placeholder-count="3">
+<div onClick="{{ gm.open }}" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:rgba(var(--ink-rgb),.04);cursor:pointer" style-hover="background:rgba(var(--ink-rgb),.07)">
+<div style="flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;background: {{ gm.oppG }}">{{ gm.oppInitials }}</div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+<div style="font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ gm.linha }}</div>
+<sc-if value="{{ gm.hasH2H }}">
+<div style="font-size:10px;font-weight:700;color:rgba(var(--ink-rgb),.45);white-space:nowrap">Histórico: {{ gm.h2hSummary }}</div>
+</sc-if>
+</div>
+<sc-if value="{{ gm.temSelo }}">
+<span style="flex:none;padding:4px 9px;border-radius:99px;font-size:9.5px;font-weight:900;letter-spacing:.7px;color: {{ gm.seloFg }};background: {{ gm.seloBg }};border:1px solid {{ gm.seloBd }}">{{ gm.seloTexto }}</span>
+</sc-if>
+<sc-if value="{{ !gm.temSelo }}">
+<span style="flex:none;font-size:10.5px;font-weight:800;letter-spacing:.4px;color:rgba(var(--ink-rgb),.45)">{{ gm.quando }}</span>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.45)">ELENCO</span>
+<sc-if value="{{ teamProfile.hasSquad }}">
+<sc-for list="{{ teamProfile.squad }}" as="p" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid rgba(var(--ink-rgb),.07)">
+<span style="flex:none;width:30px;height:30px;border-radius:99px;background: {{ p.fg }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.14);color:#8FD0FF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900">{{ p.fi }}</span>
+<span style="flex:none;min-width:20px;font-size:11px;font-weight:900;color:rgba(var(--ink-rgb),.45)">{{ p.n }}</span>
+<span style="flex:1;font-size:13px;font-weight:700">{{ p.name }}</span>
+<span style="font-size:10.5px;font-weight:800;color:rgba(var(--ink-rgb),.42)">{{ p.pos }}</span>
+</div>
+</sc-for>
+</sc-if>
+<sc-if value="{{ !teamProfile.hasSquad }}">
+<div style="padding:16px 0;font-size:12px;color:rgba(var(--ink-rgb),.4)">Elenco ainda não divulgado.</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ !hasTeamProfile }}">
+<div style="display:flex;flex-direction:column;gap:22px">
+<sc-for list="{{ teamsGrouped }}" as="grp" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font-size:11px;font-weight:900;letter-spacing:1.4px;color:#8FD0FF">{{ grp.label }}</span>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">
+<sc-for list="{{ grp.teams }}" as="t" hint-placeholder-count="4">
+<div onClick="{{ t.open }}" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:rgba(var(--ink-rgb),.04);cursor:pointer" style-hover="background:rgba(var(--ink-rgb),.08)">
+<div style="flex:none;width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;background: {{ t.g }}">{{ t.i }}</div>
+<span style="font-size:12px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.nome }}</span>
+<sc-if value="{{ t.badges }}">
+<span style="flex:none;font-size:13px;white-space:nowrap">{{ t.badges }}</span>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ !hasTeams }}">
+<div style="padding:30px 0;text-align:center;font-size:12px;color:rgba(var(--ink-rgb),.4)">Times ainda não divulgados.</div>
+</sc-if>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isMoreArtilharia }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<sc-if value="{{ scorersGrupoFilters }}">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:7px">
+<span style="font-size:9px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.38)">GRUPO</span>
+<sc-for list="{{ scorersGrupoFilters }}" as="sf" hint-placeholder-count="4">
+<div onClick="{{ sf.pick }}" style="flex:none;white-space:nowrap;padding:7px 12px;border-radius:99px;font-size:10.5px;font-weight:800;letter-spacing:.3px;cursor:pointer;color: {{ sf.fg }};background: {{ sf.bg }};border:1px solid {{ sf.bd }}">{{ sf.label }}</div>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- Curiosidades -->
+<sc-if value="{{ hasCuriosities }}">
+<div style="border-radius:14px;border:1px solid rgba(var(--ink-rgb),.1);background:rgba(var(--ink-rgb),.04);overflow:hidden">
+<div style="padding:14px 16px;border-bottom:1px solid rgba(var(--ink-rgb),.1);font-size:10px;font-weight:900;letter-spacing:1.2px;color:rgba(var(--ink-rgb),.45)">📊 CURIOSIDADES DO CAMPEONATO</div>
+<sc-for list="{{ curiosities }}" as="c" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(var(--ink-rgb),.06)">
+<span style="flex:none;font-size:18px">{{ c.icon }}</span>
+<div style="flex:1">
+<div style="font-size:11px;font-weight:600;color:rgba(var(--ink-rgb),.42)">{{ c.label }}</div>
+<div style="font-size:12px;font-weight:800;margin-top:2px">{{ c.nome }}</div>
+</div>
+<div style="flex:none;font-size:10px;font-weight:700;color:#8FD0FF;text-align:right">{{ c.valor }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- Leaderboard extra: Melhor time da semana + Maior goleada -->
+<sc-if value="{{ hasBestTeamOfWeek }}{{ hasBiggestScoreOfWeek }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;padding:12px 0">
+<sc-if value="{{ hasBestTeamOfWeek }}">
+<div style="border-radius:12px;border:1px solid rgba(var(--ink-rgb),.1);background:rgba(var(--ink-rgb),.04);padding:14px">
+<div style="font-size:9px;font-weight:900;letter-spacing:1.2px;color:rgba(var(--ink-rgb),.42);margin-bottom:8px">🏆 MELHOR TIME DA SEMANA</div>
+<div style="display:flex;align-items:center;gap:10px">
+<div style="flex:none;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;background: {{ weeklyStats.bestTeam.badge.g }}">{{ weeklyStats.bestTeam.badge.i }}</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ weeklyStats.bestTeam.nome }}</div>
+<div style="font-size:10px;font-weight:600;color:rgba(var(--ink-rgb),.42)">+{{ weeklyStats.bestTeam.saldo }} de saldo</div>
+</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ hasBiggestScoreOfWeek }}">
+<div style="border-radius:12px;border:1px solid rgba(var(--ink-rgb),.1);background:rgba(var(--ink-rgb),.04);padding:14px">
+<div style="font-size:9px;font-weight:900;letter-spacing:1.2px;color:rgba(var(--ink-rgb),.42);margin-bottom:8px">⚡ MAIOR GOLEADA DA SEMANA</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:14px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+<div style="font-size:12px;font-weight:800">{{ weeklyStats.biggestScore.timeCasaNome }}</div>
+<div style="font-size:16px;font-weight:900;letter-spacing:-.4px">{{ weeklyStats.biggestScore.golsCasa }}</div>
+</div>
+<div style="flex:none;font-size:11px;font-weight:800;color:rgba(var(--ink-rgb),.42)">×</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+<div style="font-size:12px;font-weight:800">{{ weeklyStats.biggestScore.timeForaNome }}</div>
+<div style="font-size:16px;font-weight:900;letter-spacing:-.4px">{{ weeklyStats.biggestScore.golsFora }}</div>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasAllScorers }}">
+<div style="display:flex;flex-direction:column;border-radius:16px;border:1px solid rgba(var(--ink-rgb),.09);overflow:hidden">
+<sc-for list="{{ allScorers }}" as="s" hint-placeholder-count="8">
+<div onClick="{{ s.open }}" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(var(--ink-rgb),.06);cursor:pointer" style-hover="background:rgba(var(--ink-rgb),.04)">
+<span style="flex:none;width:26px;font-size:12px;font-weight:900;color:rgba(var(--ink-rgb),.4)">{{ s.pos }}</span>
+<span style="flex:none;width:32px;height:32px;border-radius:99px;background: {{ s.g }};box-shadow:inset 0 0 0 1px rgba(var(--ink-rgb),.16);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#8FD0FF">{{ s.i }}</span>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column">
+<span style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span>
+<span style="font-size:10.5px;font-weight:600;color:rgba(var(--ink-rgb),.42);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.team }} · {{ s.grupo }} · {{ s.jogosLabel }}</span>
+</div>
+<span style="flex:none;font-size:17px;font-weight:900;color:#8FD0FF">{{ s.goals }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ !hasAllScorers }}">
+<div style="padding:30px 0;text-align:center;font-size:12px;color:rgba(var(--ink-rgb),.4)">Ainda não há gols registrados nesta edição.</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isMoreNotif }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="padding:14px 16px;border-radius:12px;background:rgba(63,169,255,.08);border:1px solid rgba(63,169,255,.25);font-size:12px;line-height:1.6;color:rgba(var(--ink-rgb),.7)">Enquanto esta página estiver aberta no navegador, um aviso aparece na tela quando o placar de um time que você segue mudar. Fechar o site interrompe os avisos — não é possível notificar com o app fechado nesta versão.</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.45)">TIMES QUE VOCÊ SEGUE</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ followTeams }}" as="ft" hint-placeholder-count="6">
+<div onClick="{{ ft.toggle }}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:99px;cursor:pointer;color: {{ ft.onFg }};background: {{ ft.onBg }};border:1px solid {{ ft.onBd }}">
+<div style="flex:none;width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:900;background: {{ ft.g }}">{{ ft.i }}</div>
+<span style="font-size:11.5px;font-weight:700">{{ ft.nome }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:10px;font-weight:800;letter-spacing:1.4px;color:rgba(var(--ink-rgb),.45)">ALERTAS DESTA SESSÃO</span>
+<sc-if value="{{ hasAlerts }}">
+<sc-for list="{{ alerts }}" as="al" hint-placeholder-count="2">
+<div style="padding:10px 12px;border-radius:10px;background:rgba(var(--ink-rgb),.04);font-size:12.5px;font-weight:600">⚽ {{ al.text }}</div>
+</sc-for>
+</sc-if>
+<sc-if value="{{ !hasAlerts }}">
+<div style="padding:16px 0;font-size:12px;color:rgba(var(--ink-rgb),.4)">Nenhum alerta ainda nesta sessão.</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isMoreMidia }}">
+<sc-if value="{{ hasMediaItems }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<sc-for list="{{ mediaItems }}" as="mi" hint-placeholder-count="3">
+<div style="border-radius:14px;overflow:hidden;background:rgba(var(--ink-rgb),.04);border:1px solid rgba(var(--ink-rgb),.09)">
+<div onClick="{{ mi.open }}" style="height:140px;display:flex;align-items:flex-end;padding:12px;background: {{ mi.g }};cursor:pointer">
+<span style="font-size:9px;font-weight:900;letter-spacing:1.2px;color:#8FD0FF;background:rgba(var(--ov-rgb),.55);padding:4px 8px;border-radius:99px">{{ mi.tag }}</span>
+</div>
+<div style="padding:12px 14px">
+<div style="font-size:13px;font-weight:800">{{ mi.title }}</div>
+<sc-if value="{{ mi.hasChapters }}">
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+<sc-for list="{{ mi.chapters }}" as="ch" hint-placeholder-count="2">
+<span onClick="{{ ch.open }}" style="cursor:pointer;font-size:10.5px;font-weight:700;padding:6px 10px;border-radius:99px;background:rgba(var(--ink-rgb),.07);color:#8FD0FF" style-hover="background:rgba(var(--ink-rgb),.14)">▶ {{ ch.label }}</span>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ !hasMediaItems }}">
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 20px;text-align:center">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(var(--ink-rgb),.3)" stroke-width="1.6"><path d="M4 7h16v13H4z"></path><path d="M9 3h6v4H9z"></path></svg>
+<span style="font-size:13px;font-weight:700;color:rgba(var(--ink-rgb),.55)">Conteúdo em breve</span>
+<span style="font-size:11.5px;color:rgba(var(--ink-rgb),.35);max-width:340px">As gravações das partidas aparecem aqui em breve.</span>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isMoreRadio }}">
+<sc-if value="{{ hasRadio }}">
+<div style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:20px 0">
+<div onClick="{{ togglePlay }}" style="width:84px;height:84px;border-radius:99px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:linear-gradient(120deg,#1E6BFF,#3FA9FF);box-shadow:0 10px 30px rgba(30,107,255,.4)" style-active="transform:scale(.96)">
+<sc-if value="{{ playing }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="var(--ink-solid)"><rect x="6" y="4.5" width="4.2" height="15" rx="1"></rect><rect x="13.8" y="4.5" width="4.2" height="15" rx="1"></rect></svg></sc-if>
+<sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}"><svg width="28" height="28" viewBox="0 0 24 24" fill="var(--ink-solid)"><path d="M7 4.5l13 7.5-13 7.5z"></path></svg></sc-if>
+</div>
+<div style="display:flex;align-items:center;gap:8px"><span style="width:7px;height:7px;border-radius:99px;background:#FF2E3F;animation:cse-pulse 1.1s ease-in-out infinite"></span><span style="font-size:10px;font-weight:900;letter-spacing:1.6px;color:#FF6B75">AO VIVO</span></div>
+<span style="font-size:15px;font-weight:800">{{ radioNow }}</span>
+<sc-if value="{{ radioError }}">
+<span style="font-size:11.5px;font-weight:700;color:#FF6B75;text-align:center;max-width:280px;line-height:1.5">Não foi possível conectar a essa transmissão. Confira se o link está certo.</span>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ !hasRadio }}">
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 20px;text-align:center">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgba(var(--ink-rgb),.3)" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M9 15V9l6 3-6 3z"></path></svg>
+<span style="font-size:13px;font-weight:700;color:rgba(var(--ink-rgb),.55)">Transmissão em breve</span>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isMoreRegulamento }}">
+<sc-if value="{{ hasRegulamento }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<sc-for list="{{ regulamentoBlocks }}" as="b" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:14px;font-weight:900">{{ b.titulo }}</span>
+<p style="margin:0;font-size:13px;line-height:1.7;color:rgba(var(--ink-rgb),.72);white-space:pre-wrap">{{ b.conteudo }}</p>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ !hasRegulamento }}">
+<div style="padding:50px 20px;text-align:center;font-size:12.5px;color:rgba(var(--ink-rgb),.4)">Regulamento ainda não divulgado.</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isMoreContato }}">
+<sc-if value="{{ hasContato }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<sc-for list="{{ contatoBlocks }}" as="b" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:14px;font-weight:900">{{ b.titulo }}</span>
+<p style="margin:0;font-size:13px;line-height:1.7;color:rgba(var(--ink-rgb),.72);white-space:pre-wrap">{{ b.conteudo }}</p>
+</div>
+</sc-for>
+<sc-if value="{{ hasContatoLinks }}">
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ contatoLinks }}" as="cl" hint-placeholder-count="2">
+<a href="{{ cl.href }}" style="font-size:12px;font-weight:800;padding:9px 14px;border-radius:99px;background:rgba(63,169,255,.14);color:#8FD0FF" style-hover="background:rgba(63,169,255,.24)">{{ cl.label }}</a>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ !hasContato }}">
+<div style="padding:50px 20px;text-align:center;font-size:12.5px;color:rgba(var(--ink-rgb),.4)">Informações de contato em breve.</div>
+</sc-if>
+</sc-if>
+
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ searchOpen }}">
+<div id="cse-search-modal" onClick="{{ closeSearch }}" style="position:fixed;inset:0;z-index:125;background:rgba(var(--scrim-rgb),.74);backdrop-filter:blur(6px);display:flex;justify-content:center;align-items:flex-start;padding:clamp(16px,8vw,90px) 16px">
+<div onClick="{{ stop }}" style="width:100%;max-width:480px;border-radius:18px;border:1px solid rgba(var(--ink-rgb),.14);background:#0B1B3C;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:cse-sheet .25s cubic-bezier(.2,.9,.3,1) both">
+<div style="padding:14px 16px;border-bottom:1px solid rgba(var(--ink-rgb),.09);display:flex;align-items:center;gap:10px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(var(--ink-rgb),.5)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+<input value="{{ searchQuery }}" onInput="{{ onSearchInput }}" placeholder="Buscar time..." style="flex:1;min-width:0;border:none;outline:none;background:transparent;color:var(--ink-solid);font-size:14px;font-family:inherit">
+<span onClick="{{ closeSearch }}" style="cursor:pointer;font-size:11px;font-weight:800;color:rgba(var(--ink-rgb),.5)" style-hover="color:var(--ink-solid)">FECHAR</span>
+</div>
+<div style="max-height:50vh;overflow:auto;padding:8px">
+<sc-for list="{{ searchResults }}" as="r" hint-placeholder-count="3">
+<div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:11px;cursor:pointer" style-hover="background:rgba(var(--ink-rgb),.06)">
+<div style="flex:none;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;background: {{ r.g }}">{{ r.i }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">{{ r.nome }}</div><div style="font-size:10.5px;color:rgba(var(--ink-rgb),.42)">GRUPO {{ r.grupo }}</div></div>
+</div>
+</sc-for>
+<sc-if value="{{ !hasSearchResults }}">
+<div style="padding:24px 12px;text-align:center;font-size:12px;color:rgba(var(--ink-rgb),.4)">{{ searchEmptyMsg }}</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ toast }}">
+<div style="position:fixed;top:calc(16px + env(safe-area-inset-top));right:16px;z-index:145;max-width:320px;padding:12px 16px;border-radius:12px;background:rgba(11,27,60,.95);border:1px solid rgba(63,169,255,.4);box-shadow:0 12px 30px rgba(0,0,0,.4);backdrop-filter:blur(10px);animation:cse-rise .3s ease both">
+<div style="display:flex;align-items:center;gap:8px;font-size:11px;font-weight:900;letter-spacing:1px;color:#8FD0FF;margin-bottom:4px">⚽ GOL</div>
+<div style="font-size:13px;font-weight:700">{{ toast }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ videoOpen }}">
+<div id="cse-video-modal" onClick="{{ closeVideo }}" style="position:fixed;inset:0;z-index:130;background:rgba(var(--scrim-rgb),.85);backdrop-filter:blur(6px);display:flex;justify-content:center;align-items:center;padding:clamp(12px,3vw,32px)">
+<div onClick="{{ stop }}" style="width:100%;max-width:920px;display:flex;flex-direction:column;border-radius:18px;border:1px solid rgba(var(--ink-rgb),.14);background:var(--c-raised);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:linear-gradient(120deg,#0C2A63,#123C8F 55%,#0B1B3C)">
+<span style="font-size:10.5px;font-weight:800;letter-spacing:1.4px;color:#8FD0FF">{{ videoLabel }}</span>
+<div style="display:flex;align-items:center;gap:14px">
+<sc-if value="{{ videoEmbedUrl }}">
+<a href="{{ videoExternalUrl }}" target="_blank" rel="noopener" style="cursor:pointer;font-size:10.5px;font-weight:800;letter-spacing:.6px;color:#8FD0FF;text-decoration:none" style-hover="color:var(--ink-solid)">ABRIR NO YOUTUBE ↗</a>
+</sc-if>
+<span onClick="{{ closeVideo }}" style="cursor:pointer;padding:6px 10px;margin:-6px -10px;font-size:11px;font-weight:800;letter-spacing:.8px;color:rgba(var(--ink-rgb),.55)" style-hover="color:var(--ink-solid)">FECHAR ✕</span>
+</div>
+</div>
+<div style="position:relative;width:100%;padding-top:56.25%;background:#000">
+<sc-if value="{{ videoEmbedUrl }}">
+<iframe src="{{ videoEmbedUrl }}" style="position:absolute;inset:0;width:100%;height:100%;border:none" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+</sc-if>
+<sc-if value="{{ !videoEmbedUrl }}">
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center">
+<span style="font-size:12.5px;color:rgba(var(--ink-rgb),.6);line-height:1.6">Esse link não é de um vídeo incorporável aqui. Abra em uma nova aba:</span>
+<a href="{{ videoExternalUrl }}" target="_blank" rel="noopener" style="padding:12px 20px;border-radius:11px;font-size:11.5px;font-weight:900;letter-spacing:1px;color:var(--c-page);background:var(--ink-solid)">ASSISTIR ↗</a>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ goal }}">
+<div style="position:fixed;inset:0;z-index:150;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 50%,rgba(30,107,255,.92),rgba(var(--ov-rgb),.88));animation:cse-flash 1.8s ease both;pointer-events:none">
+<div style="position:relative;overflow:hidden;padding:0 8px">
+<div style="font-size:clamp(56px,9vw,124px);font-weight:900;letter-spacing:-3px;animation:cse-pop .5s cubic-bezier(.2,1.6,.4,1) both">GOL!</div>
+<div style="position:absolute;inset:0;width:90px;background:linear-gradient(90deg,rgba(var(--ink-rgb),0),rgba(var(--ink-rgb),.75),rgba(var(--ink-rgb),0));animation:cse-sweep 1.1s .25s ease-out both"></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ splash }}">
+<div onClick="{{ hideSplash }}" style="position:fixed;inset:0;z-index:200;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(900px 560px at 50% 18%,#123C8F 0%,var(--c-page) 72%)">
+<div style="position:absolute;top:-60px;left:-90px;width:420px;height:420px;transform:rotate(18deg);background:linear-gradient(160deg,rgba(30,107,255,.42),rgba(30,107,255,0))"></div>
+<div style="position:absolute;bottom:40px;right:-120px;width:380px;height:380px;transform:rotate(-14deg);background:linear-gradient(200deg,rgba(63,169,255,.32),rgba(63,169,255,0))"></div>
+<div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;animation:cse-pop .7s cubic-bezier(.2,1.4,.4,1) both">
+<div style="width:86px;height:86px;border-radius:50%;background:conic-gradient(from 200deg,#FF2E3F,#FFC53F,#2ED06A,#3FA9FF,#7C5CFF,#FF2E3F);display:flex;align-items:center;justify-content:center">
+<div style="width:66px;height:66px;border-radius:50%;background:var(--c-page);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;letter-spacing:1px;color:rgba(var(--ink-rgb),.78)">LOGO</div>
+</div>
+<div style="font-size:10px;font-weight:800;letter-spacing:2.6px;color:#8FD0FF">10ª EDIÇÃO · RONDONÓPOLIS</div>
+<div style="text-align:center;font-size:clamp(38px,6vw,76px);font-weight:900;letter-spacing:-2.4px;line-height:.88;text-transform:uppercase">Copa SBT<br>Energisa</div>
+<div style="font-size:clamp(48px,7vw,92px);font-weight:900;letter-spacing:-3px;line-height:.88;color:#3FA9FF">2026</div>
+</div>
+<div style="position:absolute;bottom:70px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:13px">
+<div style="width:190px;height:3px;background:rgba(var(--ink-rgb),.14);overflow:hidden">
+<div style="width:100%;height:100%;background:linear-gradient(90deg,#1E6BFF,#3FA9FF);animation:cse-load 2.2s linear both"></div>
+</div>
+<span style="font-size:9px;font-weight:800;letter-spacing:1.8px;color:rgba(var(--ink-rgb),.4)">TOQUE PARA ENTRAR</span>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showSponsors&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conteúdo&quot;},&quot;showRadio&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conteúdo&quot;},&quot;showDemo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;},&quot;liveDemo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;},&quot;defaultFilter&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Todos&quot;,&quot;Hoje&quot;,&quot;Ao vivo&quot;,&quot;Próximos&quot;,&quot;Encerrados&quot;],&quot;default&quot;:&quot;Todos&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Comportamento&quot;}}">
+class Component extends DCLogic {
+  state = {
+    filter: null, filterGrupo: 'Todos', filterRodada: 'Todas',
+    view: 'Rodada', loading: false, openId: null, tab: null,
+    nav: 'Início', splash: true, group: null, wide: true,
+    playing: false, vol: 70, installed: false, goal: false,
+    videoOpen: false, videoUrl: '', videoStart: 0, brokenImages: {},
+    newsOpenId: null, moreOpen: null, teamOpenId: null,
+    followedTeams: {}, searchOpen: false, searchQuery: '',
+    alerts: [], toast: null,
+    theme: 'dark', favTeamId: null, scorersGrupo: 'Todos', sharing: null,
+    radioError: false
+  };
+  triedImages = {};
+  prevScores = {};
+
+  componentDidMount() {
+    this.measure();
+    this.onResize = () => this.measure();
+    window.addEventListener('resize', this.onResize);
+    let seen = false;
+    try { seen = sessionStorage.getItem('cse-splash-2026') === '1'; } catch (e) {}
+    if (seen) this.setState({ splash: false });
+    else {
+      this.st = setTimeout(() => {
+        try { sessionStorage.setItem('cse-splash-2026', '1'); } catch (e) {}
+        this.setState({ splash: false });
+      }, 2400);
+    }
+    this.onPrompt = e => { e.preventDefault(); this.prompt = e; this.forceUpdate(); };
+    window.addEventListener('beforeinstallprompt', this.onPrompt);
+
+    try {
+      const raw = localStorage.getItem('cse-followed-teams');
+      if (raw) this.setState({ followedTeams: JSON.parse(raw) });
+    } catch (e) {}
+
+    try {
+      const t = localStorage.getItem('cse-theme');
+      if (t === 'light' || t === 'dark') this.setState({ theme: t });
+    } catch (e) {}
+    try {
+      const fav = localStorage.getItem('cse-fav-team');
+      if (fav) this.setState({ favTeamId: fav });
+    } catch (e) {}
+
+    this.prevGoalsTotal = null;
+    this.unsub = CopaData.subscribe(state => {
+      const total = state.data ? state.data.jogos.reduce((s, g) => s + (g.golsCasa || 0) + (g.golsFora || 0), 0) : null;
+      if (this.prevGoalsTotal !== null && total !== null && total > this.prevGoalsTotal) {
+        clearTimeout(this.gt);
+        this.setState({ goal: true });
+        this.gt = setTimeout(() => this.setState({ goal: false }), 1800);
+      }
+      if (total !== null) this.prevGoalsTotal = total;
+      this.forceUpdate();
+      this.preloadNewsImages(state.data);
+      this.detectScoreChanges(state.data);
+      this.detectGameEnds(state.data);
+    });
+    CopaData.start();
+    this.syncAudio();
+    if (window.CSEVideo) window.CSEVideo.sync();
+  }
+  componentDidUpdate() {
+    this.syncAudio();
+    if (window.CSEVideo) window.CSEVideo.sync();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('beforeinstallprompt', this.onPrompt);
+    clearTimeout(this.lt); clearTimeout(this.gt); clearTimeout(this.st);
+    if (this.unsub) this.unsub();
+  }
+
+  measure() {
+    const w = window.innerWidth >= 1024;
+    if (w !== this.state.wide) this.setState({ wide: w });
+  }
+
+  toggleTheme() {
+    const next = this.state.theme === 'light' ? 'dark' : 'light';
+    this.setState({ theme: next });
+    try { localStorage.setItem('cse-theme', next); } catch (e) {}
+    try {
+      document.documentElement.setAttribute('data-theme', next);
+      const meta = document.getElementById('cse-theme-meta');
+      if (meta) meta.setAttribute('content', next === 'light' ? '#FFFFFF' : '#05070F');
+    } catch (e) {}
+  }
+
+  setFavTeam(teamId) {
+    const next = this.state.favTeamId === teamId ? null : teamId;
+    this.setState({ favTeamId: next });
+    try {
+      if (next) localStorage.setItem('cse-fav-team', next);
+      else localStorage.removeItem('cse-fav-team');
+    } catch (e) {}
+  }
+
+  go(n) { this.setState({ nav: n, openId: null }); try { window.scrollTo(0, 0); } catch (e) {} }
+
+  pickFilter(f) {
+    this.setState({ filter: f, loading: true });
+    clearTimeout(this.lt);
+    this.lt = setTimeout(() => this.setState({ loading: false }), 620);
+  }
+  pickView(v) {
+    this.setState({ view: v, loading: true });
+    clearTimeout(this.lt);
+    this.lt = setTimeout(() => this.setState({ loading: false }), 620);
+  }
+  pickGrupo(g) { this.setState({ filterGrupo: g }); }
+  pickRodada(r) { this.setState({ filterRodada: r }); }
+  install() {
+    if (this.prompt) { this.prompt.prompt(); this.prompt = null; this.setState({ installed: true }); return; }
+    this.setState({ installed: true });
+  }
+
+  // Sem isso, uma URL de rádio que falha (link errado, servidor sem HTTPS,
+  // fora do ar) fica 100% silenciosa: o botão de play não faz nada visível e
+  // ninguém descobre por quê. O evento "error" do <audio> é a única forma de
+  // saber que a conexão falhou — .play().catch() só pega recusa de autoplay,
+  // não falha de rede/protocolo.
+  onRadioError() {
+    this.setState({ radioError: true, playing: false });
+  }
+  syncAudio() {
+    const url = this._lastVals && this._lastVals.radioUrl;
+    const el = document.getElementById('cse-radio-audio');
+    if (!el || !url) return;
+    if (el.dataset.src !== url) {
+      el.dataset.src = url;
+      el.src = url;
+      el.volume = this.state.vol / 100;
+      if (!el.dataset.errWired) {
+        el.dataset.errWired = '1';
+        el.addEventListener('error', () => this.onRadioError());
+      }
+      this.setState({ radioError: false });
+      if (this.state.playing) el.play().catch(() => this.onRadioError());
+    }
+  }
+  togglePlay() {
+    const next = !this.state.playing;
+    const el = document.getElementById('cse-radio-audio');
+    if (!el) { this.setState({ playing: next }); return; }
+    if (next) {
+      this.setState({ playing: true, radioError: false });
+      el.play().catch(() => this.onRadioError());
+    } else {
+      this.setState({ playing: false });
+      el.pause();
+    }
+  }
+  nudgeVol() {
+    const v = this.state.vol >= 100 ? 40 : this.state.vol + 20;
+    this.setState({ vol: v });
+    const el = document.getElementById('cse-radio-audio');
+    if (el) el.volume = v / 100;
+  }
+
+  openVideoAt(url, tempoNoVideo) {
+    const seconds = CopaViewModel.timeToSeconds(tempoNoVideo);
+    this.setState({ videoOpen: true, videoUrl: url, videoStart: seconds });
+  }
+  closeVideo() { this.setState({ videoOpen: false }); }
+
+  // Gera a imagem de resultado (story 1080x1920) e abre o menu de
+  // compartilhar do sistema (Web Share API); sem suporte, baixa o PNG.
+  shareMatch(gameId) {
+    const dataState = CopaData.getState();
+    const data = dataState.data;
+    if (!data) return;
+    const game = data.jogoById[gameId];
+    if (!game) return;
+    const teamA = data.timeById[game.timeCasaId] || { nome: 'A definir', corHex: '#3FA9FF' };
+    const teamB = data.timeById[game.timeForaId] || { nome: 'A definir', corHex: '#3FA9FF' };
+    this.setState({ sharing: gameId });
+    window.CSEShare.build(game, teamA, teamB, data.config).then(blob => {
+      this.setState({ sharing: null });
+      return window.CSEShare.deliver(blob, teamA.nome + ' x ' + teamB.nome, data.config.nomeCampeonato);
+    }).catch(err => {
+      console.error('[share]', err);
+      this.setState({ sharing: null });
+      this.showToast('Não foi possível gerar a imagem agora.');
+    });
+  }
+
+  // Testa no navegador cada imagem vinda do Drive — foto de notícia, escudo de
+  // time e foto de jogador (CSS background-image sozinho não avisa quando uma
+  // URL falha). Se der erro (link sem permissão pública, 404, etc.), aquele
+  // ponto cai sozinho na alternativa visual — nunca fica um quadro quebrado.
+  preloadNewsImages(data) {
+    if (!data) return;
+    const urls = []
+      .concat(data.noticias.map(n => n.imagem))
+      .concat(data.times.map(t => t.escudo))
+      .concat(data.jogadores.map(j => j.foto));
+    urls.forEach(url => {
+      if (!url || this.triedImages[url]) return;
+      this.triedImages[url] = true;
+      const img = new Image();
+      img.onerror = () => this.markImageBroken(url);
+      img.src = url;
+    });
+  }
+  markImageBroken(url) {
+    if (this.state.brokenImages[url]) return;
+    this.setState({ brokenImages: Object.assign({}, this.state.brokenImages, { [url]: true }) });
+  }
+
+  openNews(id) { this.setState({ newsOpenId: id }); }
+  closeNews() { this.setState({ newsOpenId: null }); }
+
+  openMore(key) { this.setState({ moreOpen: key, teamOpenId: null }); }
+  closeMore() { this.setState({ moreOpen: null, teamOpenId: null }); }
+  openTeam(id) { this.setState({ moreOpen: 'Times', teamOpenId: id }); }
+  closeTeam() { this.setState({ teamOpenId: null }); }
+
+  toggleFollow(teamId) {
+    const next = Object.assign({}, this.state.followedTeams);
+    if (next[teamId]) delete next[teamId]; else next[teamId] = true;
+    this.setState({ followedTeams: next });
+    try { localStorage.setItem('cse-followed-teams', JSON.stringify(next)); } catch (e) {}
+  }
+
+  openSearch() { this.setState({ searchOpen: true, searchQuery: '' }); }
+  closeSearch() { this.setState({ searchOpen: false }); }
+  onSearchInput(e) { this.setState({ searchQuery: e.target.value }); }
+  openSearchResult(teamId) { this.setState({ searchOpen: false, moreOpen: 'Times', teamOpenId: teamId }); }
+
+  showToast(text) {
+    clearTimeout(this.toastTimer);
+    this.setState({ toast: text });
+    this.toastTimer = setTimeout(() => this.setState({ toast: null }), 5000);
+  }
+  // Compara o placar de cada jogo com a última vez que essa função rodou.
+  // Só dispara alerta se o jogo já era conhecido (evita "mudança" falsa no
+  // primeiro carregamento) e se pelo menos um dos dois times está entre os
+  // que a pessoa escolheu seguir.
+  detectScoreChanges(data) {
+    if (!data) return;
+    const followed = this.state.followedTeams;
+    const hasFollowed = Object.keys(followed).some(k => followed[k]);
+    let alerts = null;
+    data.jogos.forEach(g => {
+      const key = g.golsCasa + '-' + g.golsFora;
+      const prev = this.prevScores[g.id];
+      this.prevScores[g.id] = key;
+      if (prev === undefined || prev === key) return;
+      if (!hasFollowed || (!followed[g.timeCasaId] && !followed[g.timeForaId])) return;
+      const teamA = data.timeById[g.timeCasaId], teamB = data.timeById[g.timeForaId];
+      const msg = (teamA ? teamA.nome : '?') + ' ' + (g.golsCasa ?? 0) + ' × ' + (g.golsFora ?? 0) + ' ' + (teamB ? teamB.nome : '?');
+      alerts = alerts || this.state.alerts.slice();
+      alerts.unshift({ id: g.id + ':' + Date.now(), text: msg });
+      this.showToast(msg);
+    });
+    if (alerts) this.setState({ alerts: alerts.slice(0, 20) });
+  }
+
+  // Detecta quando um jogo é encerrado e mostra notificação
+  prevGameStatus = {};
+  detectGameEnds(data) {
+    if (!data) return;
+    const favTeamId = this.state.favTeamId;
+    data.jogos.forEach(g => {
+      const prevStatus = this.prevGameStatus[g.id];
+      this.prevGameStatus[g.id] = g.status;
+      // Detecta transição para Encerrado
+      if (prevStatus && prevStatus !== 'Encerrado' && g.status === 'Encerrado') {
+        const teamA = data.timeById[g.timeCasaId], teamB = data.timeById[g.timeForaId];
+        const nameA = teamA ? teamA.nome : 'Time A';
+        const nameB = teamB ? teamB.nome : 'Time B';
+        const resultStr = (g.golsCasa ?? 0) + ' × ' + (g.golsFora ?? 0);
+        let msg = nameA + ' ' + resultStr + ' ' + nameB;
+        // Se tem time favorito e está no jogo, destaca
+        if (favTeamId && (g.timeCasaId === favTeamId || g.timeForaId === favTeamId)) {
+          msg = '⚽ FINAL: ' + msg;
+        }
+        this.showToast(msg);
+      }
+    });
+  }
+
+  renderVals() {
+    const dataState = CopaData.getState();
+    const data = CopaData.getDisplayData(this.state.playing) || dataState.data || CopaData.emptyData();
+
+    const ui = {
+      nav: this.state.nav, filter: this.state.filter ?? this.props.defaultFilter ?? 'Todos',
+      filterGrupo: this.state.filterGrupo, filterRodada: this.state.filterRodada,
+      view: this.state.view, tab: this.state.tab, openId: this.state.openId,
+      group: this.state.group, wide: this.state.wide, now: new Date(),
+      debug: /[?&]debug=1\b/.test(location.search),
+      brokenImages: this.state.brokenImages,
+      newsOpenId: this.state.newsOpenId, teamOpenId: this.state.teamOpenId,
+      followedTeams: this.state.followedTeams, searchQuery: this.state.searchQuery,
+      scorersGrupo: this.state.scorersGrupo, favTeamId: this.state.favTeamId, radioError: this.state.radioError
+    };
+    const actions = {
+      pickFilter: f => this.pickFilter(f),
+      pickView: v => this.pickView(v),
+      pickGrupo: g => this.pickGrupo(g),
+      pickRodada: r => this.pickRodada(r),
+      openMatch: id => this.setState({ openId: id, tab: null }),
+      setTab: t => this.setState({ tab: t }),
+      setGroup: g => this.setState({ group: g }),
+      openVideoAt: (url, t) => this.openVideoAt(url, t),
+      openNews: id => this.openNews(id),
+      openTeam: id => this.openTeam(id),
+      toggleFollow: id => this.toggleFollow(id),
+      openSearchResult: id => this.openSearchResult(id),
+      pickScorersGrupo: g => this.setState({ scorersGrupo: g }),
+      shareMatch: id => this.shareMatch(id)
+    };
+    const base = CopaViewModel.buildVals(data, ui, actions);
+
+    const nav = this.state.nav;
+    const navItem = n => ({ fg: n === nav ? 'var(--ink-solid)' : 'rgba(var(--ink-rgb),.42)', bar: n === nav ? '#3FA9FF' : 'transparent' });
+    const navList = ['Início', 'Jogos', 'Tabela', 'Notícias', 'Mais'].map(n => ({
+      label: n, ...navItem(n), go: () => this.go(n)
+    }));
+    const goInicio = () => this.go('Início');
+    const goJogos = () => this.go('Jogos');
+    const goTabela = () => this.go('Tabela');
+    const goNoticias = () => this.go('Notícias');
+    const goMais = () => this.go('Mais');
+
+    const gruposCount = Object.keys(data.times.reduce((s, t) => { if (t.grupo) s[t.grupo] = 1; return s; }, {})).length;
+
+    // Hero da Home: mostra o jogo ao vivo (se existir) ou o próximo jogo —
+    // reaproveita o mesmo card já pronto de homeSections (buildHomeSections já
+    // prioriza "ao vivo" antes de "próximos"), sem nenhuma lógica nova de
+    // dados. Sem jogo ao vivo nem próximo (ex.: só jogos encerrados), o hero
+    // cai no texto institucional de sempre.
+    const heroSection = (base.homeSections && base.homeSections[0]) || null;
+    const heroMatch = (heroSection && heroSection.items && heroSection.items[0]) || null;
+    const heroIsLive = !!(heroMatch && heroMatch.isLive);
+    const heroLabel = heroIsLive ? '🔴 AO VIVO AGORA' : (heroMatch ? 'PRÓXIMO JOGO' : '');
+    const heroLabelColor = heroIsLive ? '#FF6B75' : '#F2A93B';
+    const heroCtaLabel = heroIsLive ? 'ACOMPANHAR' : 'VER JOGO';
+    const videoEmbed = this.state.videoOpen ? CopaViewModel.youTubeEmbedUrl(this.state.videoUrl, this.state.videoStart) : null;
+    const hasRadio = (this.props.showRadio !== false) && base.hasRadio;
+
+    const moreDefs = [
+      { n: '01', icon: '⚽', accent: '#3FA9FF', t: 'Times participantes', d: 'Todos os times por grupo. Clique pra ver o perfil completo.', key: 'Times' },
+      { n: '02', icon: '🥇', accent: '#F5A623', t: 'Artilharia completa', d: 'Ranking de goleadores com desempate por jogos disputados. Filtro por grupo.', key: 'Artilharia' },
+      { n: '03', icon: '🔔', accent: '#A78BFA', t: 'Notificações de gol', d: 'Com esta página aberta, avisamos na tela quando o placar de um time que você segue mudar.', key: 'Notificacoes' },
+      { n: '04', icon: '🎥', accent: '#4ADE80', t: 'Central de mídia', d: 'Gravações das partidas encerradas, com os gols marcados no vídeo.', key: 'Midia' },
+      { n: '05', icon: '🎙️', accent: '#FF6B4A', t: 'Rádio ao vivo', d: hasRadio ? 'Transmissão ao vivo dos jogos, direto no player.' : 'Transmissão em breve.', key: 'Radio' },
+      { n: '06', icon: '📋', accent: '#2DD4BF', t: 'Regulamento', d: 'Formato da competição, critérios de desempate e arbitragem.', key: 'Regulamento' },
+      { n: '07', icon: '💬', accent: '#FF6B9D', t: 'Fale com a organização', d: 'Contato da comissão, imprensa e inscrições da próxima edição.', key: 'Contato' }
+    ];
+    const moreItems = moreDefs.map(m => ({ ...m, open: () => this.openMore(m.key) }));
+    const moreTitleMap = {
+      Times: 'Times participantes', Artilharia: 'Artilharia completa', Notificacoes: 'Notificações de gol', Midia: 'Central de mídia',
+      Radio: 'Rádio ao vivo', Regulamento: 'Regulamento', Contato: 'Fale com a organização'
+    };
+    const moreOpen = this.state.moreOpen;
+    const moreTitle = (moreOpen === 'Times' && base.teamProfile) ? base.teamProfile.nome : (moreTitleMap[moreOpen] || '');
+
+    const vals = {
+      ...base,
+      isWide: this.state.wide, isNarrow: !this.state.wide,
+      isInicio: nav === 'Início', isJogos: nav === 'Jogos', isTabela: nav === 'Tabela',
+      isNoticias: nav === 'Notícias', isMais: nav === 'Mais',
+      navTitle: nav, navList, moreItems,
+      goInicio, goJogos, goTabela, goNoticias, goMais,
+      navInicio: navItem('Início'), navJogos: navItem('Jogos'), navTabela: navItem('Tabela'),
+      navNoticias: navItem('Notícias'), navMais: navItem('Mais'),
+      statTimes: data.times.length, statGrupos: gruposCount, statPartidas: data.jogos.length,
+      heroMatch, heroIsLive, heroLabel, heroLabelColor, heroCtaLabel,
+      hasLiveGame: heroIsLive,
+      splash: this.state.splash,
+      hideSplash: () => {
+        try { sessionStorage.setItem('cse-splash-2026', '1'); } catch (e) {}
+        this.setState({ splash: false });
+      },
+      radio: hasRadio, hasRadio: hasRadio,
+      playing: this.state.playing, paused: !this.state.playing, radioError: this.state.radioError,
+      eqOpacity: this.state.playing ? 1 : .28,
+      volW: this.state.vol + '%',
+      togglePlay: () => this.togglePlay(),
+      nudgeVol: () => this.nudgeVol(),
+      install: () => this.install(),
+      installLabel: this.state.installed ? 'ADICIONADO ✓' : 'ADICIONAR À TELA INICIAL',
+      sheetAlign: this.state.wide ? 'center' : 'flex-end',
+      sheetPad: this.state.wide ? '32px' : '0',
+      sheetRadius: this.state.wide ? '22px' : '22px 22px 0 0',
+      loading: this.state.loading, ready: !this.state.loading,
+      goal: this.state.goal,
+      sponsors: this.props.showSponsors !== false,
+      // Campo separado (mesmo valor booleano) só para a seção institucional
+      // premium da Home — evita reaproveitar a mesma string "{{ sponsors }}"
+      // em dois blocos sc-if distintos (o runtime de templates não estava
+      // renderizando o segundo bloco quando ambos usavam a expressão idêntica).
+      institutional: this.props.showSponsors !== false,
+      skeletons: [1, 2, 3, 4],
+      closeDetail: () => this.setState({ openId: null }),
+      stop: e => e.stopPropagation(),
+      videoOpen: this.state.videoOpen,
+      videoLabel: base.detail ? (base.detail.na + ' × ' + base.detail.nb) : 'TRANSMISSÃO',
+      videoEmbedUrl: videoEmbed,
+      videoExternalUrl: this.state.videoUrl,
+      closeVideo: () => this.closeVideo(),
+      staleBanner: base.staleData,
+      // o template referencia estes soltos (irmãos de `detail`, não `detail.*`)
+      tabs: base.detail ? base.detail.tabs : [],
+      events: base.detail ? base.detail.events : [],
+      hasEvents: base.detail ? base.detail.hasEvents : false,
+      stats: base.detail ? base.detail.stats : [],
+      lineup: base.detail ? base.detail.lineup : [],
+      tabEventos: base.detail ? base.detail.tabEventos : false,
+      tabStats: base.detail ? base.detail.tabStats : false,
+      tabLineup: base.detail ? base.detail.tabLineup : false,
+
+      closeNews: () => this.closeNews(),
+
+      moreOpen: !!moreOpen, moreTitle,
+      isMoreTimes: moreOpen === 'Times', isMoreNotif: moreOpen === 'Notificacoes',
+      isMoreMidia: moreOpen === 'Midia', isMoreRadio: moreOpen === 'Radio',
+      isMoreRegulamento: moreOpen === 'Regulamento', isMoreContato: moreOpen === 'Contato',
+      isMoreArtilharia: moreOpen === 'Artilharia',
+      closeMore: () => this.closeMore(),
+      closeTeam: () => this.closeTeam(),
+      hasTeamProfile: !!base.teamProfile,
+      isFavThisTeam: base.teamProfile ? (this.state.favTeamId === base.teamProfile.id) : false,
+      toggleFavTeam: () => { if (base.teamProfile) this.setFavTeam(base.teamProfile.id); },
+      openFavoritoTeam: () => { if (base.favorito) this.openTeam(base.favorito.id); },
+      clearFavorito: () => { if (this.state.favTeamId) this.setFavTeam(this.state.favTeamId); },
+      goArtilharia: () => this.openMore('Artilharia'),
+
+      isLightTheme: this.state.theme === 'light',
+      themeToggle: () => this.toggleTheme(),
+      themeLabel: this.state.theme === 'light' ? 'ESCURO' : 'CLARO',
+      sharingId: this.state.sharing,
+
+      alerts: this.state.alerts, hasAlerts: this.state.alerts.length > 0,
+      toast: this.state.toast,
+
+      searchOpen: this.state.searchOpen,
+      openSearch: () => this.openSearch(),
+      closeSearch: () => this.closeSearch(),
+      onSearchInput: e => this.onSearchInput(e),
+      hasSearchResults: base.searchResults.length > 0,
+      searchEmptyMsg: this.state.searchQuery ? 'Nenhum time encontrado.' : 'Digite o nome de um time.',
+
+      openBell: () => this.openMore('Notificacoes')
+    };
+    this._lastVals = vals;
+    return vals;
+  }
+}
+
+// ---- vídeo mudo em loop nos cards de notícia -------------------------------
+// O template só desenha a caixa vazia (data-cse-video); quem cria e destrói o
+// <video>/<iframe> é este controlador, então o React nunca briga com ele.
+// Regras: carrega só quando entra na tela, um vídeo tocando por vez, e em
+// conexão limitada nem inicia — mostra a miniatura com botão de play.
+window.CSEVideo = (function () {
+  var tocando = null;
+  var observer = null;
+
+  function conexaoLimitada() {
+    var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (!c) return false;
+    if (c.saveData) return true;
+    return /^(slow-2g|2g|3g)$/.test(c.effectiveType || '');
+  }
+
+  function desmontar(box) {
+    if (!box) return;
+    var m = box.querySelector('video,iframe');
+    if (m) { try { if (m.pause) m.pause(); } catch (e) {} m.remove(); }
+    box.removeAttribute('data-tocando');
+    if (tocando === box) tocando = null;
+  }
+
+  function pararOsOutros(atual) {
+    if (tocando && tocando !== atual) desmontar(tocando);
+    tocando = atual;
+  }
+
+  function botao(box, texto, aoClicar) {
+    var b = box.querySelector('[data-cse-btn]');
+    var mini = box.getAttribute('data-compact') === '1';
+    if (!b) {
+      b = document.createElement('button');
+      b.setAttribute('data-cse-btn', '1');
+      b.type = 'button';
+      b.style.cssText = 'position:absolute;z-index:4;border:0;cursor:pointer;border-radius:99px;' +
+        'background:rgba(var(--ov-rgb),.62);color:var(--ink-solid);line-height:1;display:flex;align-items:center;' +
+        'justify-content:center;backdrop-filter:blur(4px);padding:0;' +
+        (mini ? 'right:4px;bottom:4px;width:20px;height:20px;font-size:9px'
+              : 'right:8px;bottom:8px;width:28px;height:28px;font-size:13px');
+      box.appendChild(b);
+    }
+    b.textContent = texto;
+    b.onclick = function (e) { e.stopPropagation(); e.preventDefault(); aoClicar(); };
+    return b;
+  }
+
+  function ligarSom(box, ligar) {
+    var v = box.querySelector('video');
+    if (v) { v.muted = !ligar; }
+    var f = box.querySelector('iframe');
+    if (f && f.contentWindow) {
+      try {
+        f.contentWindow.postMessage(JSON.stringify({
+          event: 'command', func: ligar ? 'unMute' : 'mute', args: []
+        }), '*');
+      } catch (e) {}
+    }
+    box.setAttribute('data-som', ligar ? '1' : '0');
+    botao(box, ligar ? '🔊' : '🔇', function () { ligarSom(box, box.getAttribute('data-som') !== '1'); });
+  }
+
+  function falhou(box) {
+    // Sem vídeo, a imagem que já está desenhada por baixo reaparece sozinha.
+    desmontar(box);
+    box.setAttribute('data-falhou', '1');
+    var b = box.querySelector('[data-cse-btn]');
+    if (b) b.remove();
+  }
+
+  function montar(box) {
+    if (box.getAttribute('data-falhou') === '1') return;
+    if (box.querySelector('video,iframe')) return;
+    var src = box.getAttribute('data-cse-video');
+    var kind = box.getAttribute('data-kind');
+    if (!src) return;
+    pararOsOutros(box);
+
+    if (kind === 'youtube') {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube.com/embed/' + encodeURIComponent(src) +
+        '?autoplay=1&mute=1&loop=1&playlist=' + encodeURIComponent(src) +
+        '&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1&enablejsapi=1';
+      f.setAttribute('allow', 'autoplay; encrypted-media');
+      f.setAttribute('frameborder', '0');
+      f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1;pointer-events:none';
+      f.onerror = function () { falhou(box); };
+      box.appendChild(f);
+    } else {
+      var v = document.createElement('video');
+      v.muted = true; v.loop = true; v.autoplay = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); v.setAttribute('loop', '');
+      v.preload = 'auto';
+      v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;pointer-events:none';
+      v.onerror = function () { falhou(box); };
+      v.src = src;
+      box.appendChild(v);
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { mostrarPlay(box); });
+    }
+    box.setAttribute('data-tocando', '1');
+    ligarSom(box, false);
+  }
+
+  function mostrarPlay(box) {
+    desmontar(box);
+    botao(box, '▶', function () {
+      box.removeAttribute('data-espera-toque');
+      montar(box);
+    });
+    box.setAttribute('data-espera-toque', '1');
+  }
+
+  function cuidar(box) {
+    var src = box.getAttribute('data-cse-video');
+    if (box.getAttribute('data-init') === src) return;
+    // caixa reaproveitada pelo React com outro vídeo: recomeça do zero
+    desmontar(box);
+    box.removeAttribute('data-falhou');
+    box.removeAttribute('data-espera-toque');
+    var b = box.querySelector('[data-cse-btn]');
+    if (b) b.remove();
+    box.setAttribute('data-init', src);
+    if (observer) observer.observe(box);
+  }
+
+  function sync() {
+    if (!('IntersectionObserver' in window)) return;
+    if (!observer) {
+      observer = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          var box = e.target;
+          if (e.isIntersecting && e.intersectionRatio >= 0.5) {
+            if (box.getAttribute('data-espera-toque') === '1') return;
+            if (conexaoLimitada()) { mostrarPlay(box); return; }
+            montar(box);
+          } else {
+            desmontar(box);
+          }
+        });
+      }, { threshold: [0, 0.5] });
+    }
+    var caixas = document.querySelectorAll('[data-cse-video]');
+    for (var i = 0; i < caixas.length; i++) cuidar(caixas[i]);
+  }
+
+  return { sync: sync };
+})();
+
+// ---- compartilhar resultado (imagem estilo story, 1080x1920) --------------
+window.CSEShare = (function () {
+  var W = 1080, H = 1920;
+
+  function hexToRgb(hex) {
+    hex = String(hex || '').replace('#', '');
+    if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(hex, 16);
+    if (isNaN(n)) return { r: 63, g: 169, b: 255 };
+    return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+  }
+  function shade(hex, amt) {
+    var c = hexToRgb(hex);
+    var f = function (v) { return Math.max(0, Math.min(255, Math.round(v * amt))); };
+    return 'rgb(' + f(c.r) + ',' + f(c.g) + ',' + f(c.b) + ')';
+  }
+  function initials(name) {
+    var parts = String(name || '?').trim().split(/[\s/]+/).filter(Boolean);
+    if (!parts.length) return '?';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+  function loadImage(url) {
+    return new Promise(function (resolve) {
+      if (!url) { resolve(null); return; }
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { resolve(null); };
+      img.src = url;
+    });
+  }
+  function drawBadge(ctx, cx, cy, r, team, img) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    if (img) {
+      // cobre o círculo inteiro (object-fit:cover)
+      var s = Math.max((r * 2) / img.width, (r * 2) / img.height);
+      var iw = img.width * s, ih = img.height * s;
+      ctx.drawImage(img, cx - iw / 2, cy - ih / 2, iw, ih);
+    } else {
+      var grad = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+      grad.addColorStop(0, team.corHex || '#3FA9FF');
+      grad.addColorStop(1, shade(team.corHex || '#3FA9FF', 0.42));
+      ctx.fillStyle = grad;
+      ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+      ctx.fillStyle = '#fff';
+      ctx.font = '900 ' + Math.round(r * 0.62) + 'px Archivo, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(initials(team.nome), cx, cy + r * 0.06);
+    }
+    ctx.restore();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255,255,255,.22)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+  }
+  function wrapCentered(ctx, text, cx, y, maxWidth) {
+    text = String(text || '').toUpperCase();
+    if (ctx.measureText(text).width <= maxWidth) { ctx.fillText(text, cx, y); return y; }
+    var words = text.split(' '), line = '', lines = [];
+    for (var i = 0; i < words.length; i++) {
+      var test = line ? line + ' ' + words[i] : words[i];
+      if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = words[i]; }
+      else line = test;
+    }
+    if (line) lines.push(line);
+    lines = lines.slice(0, 2);
+    lines.forEach(function (l, i) { ctx.fillText(l, cx, y + i * (ctx.__lh || 40)); });
+    return y + (lines.length - 1) * (ctx.__lh || 40);
+  }
+
+  async function build(game, teamA, teamB, config) {
+    try { await document.fonts.ready; } catch (e) {}
+    var canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext('2d');
+
+    // fundo
+    var bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#123C8F');
+    bg.addColorStop(0.32, '#0B1B3C');
+    bg.addColorStop(1, '#05070F');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+    var glow = ctx.createRadialGradient(W / 2, 420, 40, W / 2, 420, 760);
+    glow.addColorStop(0, 'rgba(63,169,255,.35)');
+    glow.addColorStop(1, 'rgba(63,169,255,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    // topo: marca
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#0B3FA8';
+    roundRect(ctx, W / 2 - 56, 110, 112, 112, 30);
+    var chip = ctx.createLinearGradient(W / 2 - 56, 110, W / 2 + 56, 222);
+    chip.addColorStop(0, '#0B3FA8'); chip.addColorStop(0.55, '#1E6BFF'); chip.addColorStop(1, '#3FA9FF');
+    ctx.fillStyle = chip;
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = '900 34px Archivo, system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('CSE', W / 2, 168);
+
+    ctx.font = '800 26px Archivo, system-ui, sans-serif';
+    ctx.fillStyle = '#8FD0FF';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText((config.nomeCampeonato || 'COPA').toUpperCase(), W / 2, 272);
+
+    var roundLabel = (game.rodada ? 'RODADA ' + game.rodada : '') + (game.fase ? (game.rodada ? ' · ' : '') + game.fase.toUpperCase() : '');
+    if (roundLabel) {
+      ctx.font = '700 24px Archivo, system-ui, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,.55)';
+      ctx.fillText(roundLabel, W / 2, 316);
+    }
+
+    // status
+    var statusText = game.status === 'WO' ? 'VITÓRIA POR W.O.' : 'ENCERRADO';
+    ctx.font = '900 28px Archivo, system-ui, sans-serif';
+    var stW = ctx.measureText(statusText).width + 64;
+    roundRect(ctx, W / 2 - stW / 2, 380, stW, 60, 30);
+    ctx.fillStyle = 'rgba(255,255,255,.08)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(statusText, W / 2, 410);
+    ctx.textBaseline = 'alphabetic';
+
+    // escudos + placar
+    var imgA = await loadImage(teamA.escudo).catch(function () { return null; });
+    var imgB = await loadImage(teamB.escudo).catch(function () { return null; });
+    var badgeR = 150, badgeY = 660;
+    drawBadge(ctx, 270, badgeY, badgeR, teamA, imgA);
+    drawBadge(ctx, W - 270, badgeY, badgeR, teamB, imgB);
+
+    var golsCasa = game.golsCasa == null ? 0 : game.golsCasa;
+    var golsFora = game.golsFora == null ? 0 : game.golsFora;
+    ctx.textAlign = 'center';
+    ctx.font = '900 128px Archivo, system-ui, sans-serif';
+    ctx.fillStyle = '#fff';
+    ctx.fillText(golsCasa + ' × ' + golsFora, W / 2, badgeY + 46);
+
+    ctx.font = '800 34px Archivo, system-ui, sans-serif';
+    ctx.fillStyle = '#fff';
+    ctx.__lh = 40;
+    wrapCentered(ctx, teamA.nome, 270, badgeY + badgeR + 66, 320);
+    wrapCentered(ctx, teamB.nome, W - 270, badgeY + badgeR + 66, 320);
+
+    // rodapé
+    var dataFmt = '';
+    var m = String(game.data || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) {
+      var MO = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+      dataFmt = m[3] + ' ' + MO[Number(m[2]) - 1] + ' ' + m[1];
+    }
+    var footerY = H - 190;
+    ctx.strokeStyle = 'rgba(255,255,255,.18)';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(W / 2 - 220, footerY); ctx.lineTo(W / 2 + 220, footerY); ctx.stroke();
+
+    ctx.font = '700 26px Archivo, system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,.65)';
+    ctx.fillText([dataFmt, game.local].filter(Boolean).join('  ·  '), W / 2, footerY + 52);
+
+    ctx.font = '800 24px Archivo, system-ui, sans-serif';
+    ctx.fillStyle = '#3FA9FF';
+    ctx.fillText('copasbtenergisa.netlify.app', W / 2, footerY + 96);
+
+    return new Promise(function (resolve, reject) {
+      canvas.toBlob(function (blob) {
+        if (blob) resolve(blob); else reject(new Error('toBlob falhou'));
+      }, 'image/png', 0.95);
+    });
+  }
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  async function deliver(blob, title, champName) {
+    var filename = 'resultado-' + title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '.png';
+    var file = null;
+    try { file = new File([blob], filename, { type: 'image/png' }); } catch (e) {}
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: title, text: title + ' · ' + champName });
+        return;
+      } catch (e) {
+        if (e && e.name === 'AbortError') return; // usuário cancelou — não baixa por baixo
+      }
+    }
+    downloadBlob(blob, filename);
+  }
+
+  return { build: build, deliver: deliver };
+})();
+
+</script>
+</body>
+</html>

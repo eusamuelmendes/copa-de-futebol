@@ -1,0 +1,3 @@
+# O sistema roda apenas com a biblioteca padrão do Python 3.10+.
+# A dependência abaixo é opcional, necessária somente para exportar relatórios em PDF.
+reportlab>=4.0
